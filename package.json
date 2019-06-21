@@ -3,9 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-firebase/auth": "^0.2.9",
+    "firebase": "^6.2.0",
+    "firestorter": "^1.2.2",
+    "grommet": "^2.7.1",
+    "grommet-icons": "^4.2.0",
+    "history": "^4.9.0",
+    "lodash": "^4.17.11",
+    "material-ui": "^0.20.2",
+    "moment": "^2.24.0",
+    "prop": "^0.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
+    "react-redux": "^5.1.1",
+    "react-redux-firebase": "^2.2.6",
+    "react-redux-modal-flex": "^2.0.0",
+    "react-rounded-image": "^2.0.2",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^4.4.0-beta.8",
+    "react-scripts": "3.0.1",
+    "react-select-search": "^0.9.6",
+    "react-typeform": "^1.0.3",
+    "recompose": "^0.30.0",
+    "redux": "^4.0.1",
+    "redux-firestore": "^0.8.0",
+    "redux-thunk": "^2.3.0",
+    "rxjs": "^6.5.2",
+    "styled-components": "^4.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -27,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-plugin-react-hooks": "^1.6.0"
   }
 }
