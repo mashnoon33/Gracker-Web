@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Edit } from "grommet-icons";
+import { Next } from "grommet-icons";
 
-import { Box, Button, Grommet, TextInput } from "grommet";
+import { Box, Button, Form,FormField , TextInput } from "grommet";
 import { createProject } from "../../store/actions/projectActions";
 import firebase from 'firebase/app';
 
@@ -24,24 +24,36 @@ export class AddAssignment extends Component {
   };
   handleSubmit = e => {
     e.preventDefault();
-    this.props.createProject(this.state, this.props.auth.uid);
+    console.log("Ass submit")
   };
   render() {
     const { name } = this.state.name;
 
     return (
-      <Box direction="row" width="350px" flex="false">
-        <TextInput
-          placeholder="type here"
-          // type="search"
-          value={name}
-          onChange={event => this.setState({ name: event.target.value })}
-        />
-        <Button
-          icon={<Edit/>}
-          // label="Edit"
-          onClick={this.handleSubmit}
-        />
+      <Box direction="row" width="400" flex="false">
+        <Form>
+          
+          <Box direction='row'>
+            <TextInput
+              color='white'
+              required='true'
+              // width='large'
+              width='large'
+              placeholder="type here"
+              // type="search"
+              value={name}
+              onChange={event => this.setState({ name: event.target.value })}
+            />
+            <Button
+              icon={<Next />}
+              type="submit"
+              // label="Edit"
+              onClick={this.handleSubmit}
+            />
+
+          </Box>
+     
+        </Form>
      </Box>
     );
   }

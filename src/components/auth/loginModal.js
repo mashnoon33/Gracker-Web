@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Edit } from "grommet-icons";
 
-import { Box, Button, Grommet, Image } from "grommet";
+import { Box, Button, Grid, Image } from "grommet";
 import { createProject } from "../../store/actions/projectActions";
 import firebase from 'firebase/app';
 
@@ -12,13 +12,10 @@ import { withFirebase, isLoaded, isEmpty } from 'react-redux-firebase'
 
 import { signIn } from '../../store/actions/authActions'
 
-import { UserNew, Google, Login } from "grommet-icons";
+import { Logout, Google, Login } from "grommet-icons";
 
 import { actions as ModalActions } from 'react-redux-modal-flex';
-import Modal from "react-redux-modal-flex/lib/Modal";
 import ExampleComponent from "react-rounded-image";
-
-
 
     function LoginModal({ firebase, auth }) {
         function loginWithGoogle() {
@@ -31,16 +28,21 @@ import ExampleComponent from "react-rounded-image";
 
 
  
-        console.log(auth)
+        // console.log(auth)
         return (
 
-            <Box height="medium"
+            <Box
                 // elevation="small"
-                round="small"
-                background="white"
+                // round="small"
+                width="large"
+                // background="white"
                 align="center"
                 flex="false"
-                justify="center">
+                justify="center"
+            >
+               
+                
+                
 
                 {
                     !isLoaded(auth)
@@ -52,19 +54,47 @@ import ExampleComponent from "react-rounded-image";
                                 label="Login"
                                 onClick={loginWithGoogle}
 
-            />
-                            : <Box>
+                            />
+                            :
+                            <Grid
+                                columns={['xxsmall', 'flex', 'xxsmall']}
+                                rows={['xxsmall']}
+                                fill="horizontal"
 
+
+
+                                gap="small"
+                                areas={[
+                                    { name: 'header', start: [0, 0], end: [0, 0] },
+                                    { name: 'nav', start: [1, 0], end: [1, 0] },
+                                    { name: 'main', start: [2, 0], end: [2, 0] },
+                                ]}
+                            >
+                                <Box gridArea="header" justify="center" align='center'
+                                >
                                     <ExampleComponent
                                         image={auth.photoURL}
                                         roundedSize="0"
-                                        imageWidth="110"
-                                        imageHeight="110"
+                                        imageWidth="30"
+                                        imageHeight="30"
+                                    />
+                                </Box>
+                                <Box gridArea="nav" justify="center"
+                                >                 <h3>{auth.displayName}</h3>
+                                </Box>
+                                <Box gridArea="main" justify="center"
+                                >
+                                    <Button onClick={logout} icon={<Logout />}
                                     />
 
-                                <Button onClick={logout} label="logout"/>
-
-                            </Box>
+                                </Box>
+                            </Grid>
+                            
+                            
+                            
+                            
+                            
+                   
                 }
               
             </Box>
