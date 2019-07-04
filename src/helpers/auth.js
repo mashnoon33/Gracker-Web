@@ -1,12 +1,10 @@
-import {firebaseAuth, googleProvider} from "../config/firebase";
+import { firebaseAuth, googleProvider } from '../config/firebase'
 
 export function loginWithGoogle() {
-    return firebaseAuth().signInWithRedirect(googleProvider);
-    //return authenticate(loginWithFirebase(googleProvider));
+  return firebaseAuth().signInWithRedirect(googleProvider)
+  //return authenticate(loginWithFirebase(googleProvider));
 }
-
 
 export function logout() {
-    return firebaseAuth().signOut();
+  return firebaseAuth().signOut()
 }
-

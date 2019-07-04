@@ -5,10 +5,10 @@ import selectedCourse from './selectedCourseReducer'
 import selectedAss from './selectedAssReducer'
 
 import { combineReducers } from 'redux'
-import { firebaseReducer } from 'react-redux-firebase'
-import { firestoreReducer } from 'redux-firestore';
-// import { reducer as modal } from 'react-redux-modal-flex';
+import { firestoreConnect, firebaseReducer } from 'react-redux-firebase'
+import { firestoreReducer } from 'redux-firestore'
 
+// import { reducer as modal } from 'react-redux-modal-flex';
 
 const rootReducer = combineReducers({
   darkMode: darkModeReducer,
@@ -17,9 +17,7 @@ const rootReducer = combineReducers({
   firebase: firebaseReducer,
 
   selectedCourse: selectedCourse,
-  selectedAss: selectedAss
-
- 
-});
+  selectedAss: selectedAss,
+})
 
 export default rootReducer

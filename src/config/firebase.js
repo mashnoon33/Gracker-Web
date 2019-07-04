@@ -1,21 +1,21 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/auth';
-
-
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/auth'
 
 const config = {
   apiKey: process.env.REACT_APP_apiKey,
   authDomain: process.env.REACT_APP_authDomain,
   databaseURL: process.env.REACT_APP_databaseURL,
   storageBucket: process.env.REACT_APP_storageBucket,
-  projectId: "garcker-mash-studio",
-  appId: process.env.REACT_APP_appId
-};
+  projectId: 'garcker-mash-studio',
+  appId: process.env.REACT_APP_appId,
+}
 
-firebase.initializeApp(config);
-firebase.firestore().enablePersistence()
-  .catch(function (err) {
+firebase.initializeApp(config)
+firebase
+  .firestore()
+  .enablePersistence()
+  .catch(function(err) {
     if (err.code === 'failed-precondition') {
       // Multiple tabs open, persistence can only be enabled
       // in one tab at a a time.
@@ -25,8 +25,7 @@ firebase.firestore().enablePersistence()
       // features required to enable persistence
       // ...
     }
-  });
+  })
 firebase.firestore().settings({ timestampsInSnapshots: true })
 
-export default firebase;
-
+export default firebase
