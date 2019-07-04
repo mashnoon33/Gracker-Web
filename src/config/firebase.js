@@ -2,14 +2,15 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
+
+
 const config = {
-  apiKey: "AIzaSyAgA9N_ZLKBjAXTpECCRMafKIafzzuDnZk",
-  authDomain: "garcker-mash-studio.firebaseapp.com",
-  databaseURL: "https://garcker-mash-studio.firebaseio.com",
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  databaseURL: process.env.REACT_APP_databaseURL,
+  storageBucket: process.env.REACT_APP_storageBucket,
   projectId: "garcker-mash-studio",
-  storageBucket: "garcker-mash-studio.appspot.com",
-  messagingSenderId: "551481167824",
-  appId: "1:551481167824:web:b1f389e80c18dc5a"
+  appId: process.env.REACT_APP_appId
 };
 
 firebase.initializeApp(config);
