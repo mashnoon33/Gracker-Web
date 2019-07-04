@@ -26,6 +26,9 @@ import moment from "moment";
 import SelectSearch from "react-select-search";
 import LoginModal from "./components/auth/loginModal"
 import AddAssignment from "./components/assignments/AddAssignment";
+import { select_course } from "./store/actions/selectedCourseActions"
+import { select_ass } from "./store/actions/selectedAssActions"
+
 
 // const appTokenKey = "appToken"; // also duplicated in Login.js
 
@@ -72,7 +75,7 @@ class App extends React.Component {
 
     super(props);
     this.state = {
-      selected_adder: { name: "fuck you" },
+      // selected_adder: { name: "fuck you" },
       selected_course: null,
       selected_ass: null,
 
@@ -89,19 +92,13 @@ class App extends React.Component {
     
     <Keyboard
       onDown={() => {
-        if (this.state.selected_ass !== null) {
-          this.setState({
-            selected_ass: asses[asses.indexOf(this.state.selected_ass) +1< asses.length ? asses.indexOf(this.state.selected_ass) + 1 : 0]
-
-          });
+        if (this.props.selected_ass !== null) {
+          this.props.select_ass(asses[asses.indexOf(this.props.selected_ass) + 1 < asses.length ? asses.indexOf(this.props.selected_ass) + 1 : 0])
         }
       }}
       onUp={() => {
-        if (this.state.selected_ass !== null) {
-          this.setState({
-            selected_ass: asses[asses.indexOf(this.state.selected_ass) > 0 ? asses.indexOf(this.state.selected_ass) - 1 : asses.length-1]
-
-          });
+        if (this.props.selected_ass !== null) {
+          this.props.select_ass(asses[asses.indexOf(this.props.selected_ass) > 0 ? asses.indexOf(this.props.selected_ass) - 1 : asses.length - 1])
         }
       }}
     >
@@ -126,9 +123,10 @@ class App extends React.Component {
               key={ass.id.toString()}
               disabled={ass.done ? true : false}
               onClick={() => {
-                this.setState({
-                  selected_ass: ass
-                });
+                // this.setState({
+                //   selected_ass: ass
+                // });
+                this.props.select_ass(ass)
               }}
               
             >
@@ -138,8 +136,8 @@ class App extends React.Component {
                 height="xxsmall"
                 // width="350px"
                 fill='horizontal'
-                background={this.state.selected_ass === null ? 'transparent' : this.state.selected_ass.id === ass.id ? this.props.darkMode ? '#4D4B5C' :  'brand' : 'transparent'}
-                elevation={this.state.selected_ass === null ? '' : this.state.selected_ass.id === ass.id ? 'medium' : ''}
+                background={this.props.selected_ass === null ? 'transparent' : this.props.selected_ass.id === ass.id ? this.props.darkMode ? '#4D4B5C' :  'brand' : 'transparent'}
+                elevation={this.props.selected_ass === null ? '' : this.props.selected_ass.id === ass.id ? 'medium' : ''}
 
 
                 align="center"
@@ -150,7 +148,7 @@ class App extends React.Component {
               >
 
                 {/* {
-                  this.state.selected_ass === null ? null : this.state.selected_ass.id === ass.id ? <Box width='3px' elevation='small' fill='vertical'  background='light-3'> </Box> :null
+                  this.props.selected_ass === null ? null : this.props.selected_ass.id === ass.id ? <Box width='3px' elevation='small' fill='vertical'  background='light-3'> </Box> :null
                 } */}
 
                 {/* <CheckBox
@@ -254,18 +252,23 @@ class App extends React.Component {
         hoverIndicator={true}
 
         onClick={() => {
-          this.setState({
-            selected_course: null,
-            selected_ass: null
-          });
+          // this.setState({
+          //   selected_course: null,
+          //   selected_ass: null
+          // });
+
+          this.props.select_course(null)
+          this.props.select_ass(null)
+
+
 
         }}
       >
         <Box
           height="xxsmall"
           width="400px"
-          background={this.state.selected_course === null ? this.props.darkMode ? '#4D4B5C' :  'brand' : "transparent"}
-          elevation={this.state.selected_course === null ? 'medium' : ''}
+          background={this.props.selected_course === null ? this.props.darkMode ? '#4D4B5C' :  'brand' : "transparent"}
+          elevation={this.props.selected_course === null ? 'medium' : ''}
           align="start"
           flex="false"
           justify="center"
@@ -292,18 +295,20 @@ class App extends React.Component {
               hoverIndicator={true}
               key={course.id.toString()}
               onClick={() => {
-                this.setState({
-                  selected_course: course,
-                                    selected_ass: null
-                });
+                // this.setState({
+                //   selected_course: course,
+                //                     selected_ass: null
+                // });
+                this.props.select_course(course)
+                this.props.select_ass(null)
                 
               }}
             >
               <Box
                 height="xxsmall"
                 width="400px"
-                background={this.state.selected_course === null ? 'transparent' :  this.state.selected_course.id === course.id? this.props.darkMode ? '#4D4B5C' :  'brand': 'transparent' }
-                elevation={this.state.selected_course === null ? '' : this.state.selected_course.id === course.id ? 'medium' : ''}
+                background={this.props.selected_course === null ? 'transparent' :  this.props.selected_course.id === course.id? this.props.darkMode ? '#4D4B5C' :  'brand': 'transparent' }
+                elevation={this.props.selected_course === null ? '' : this.props.selected_course.id === course.id ? 'medium' : ''}
 
                 align="start"
                 flex="false"
@@ -431,11 +436,11 @@ class App extends React.Component {
 
 
                 {
-                  this.state.selected_course == null ? <this.AssCard courses={courses} asses={projects} />
+                  this.props.selected_course == null ? <this.AssCard courses={courses} asses={projects} />
                     : <this.AssCard courses={courses.filter((course) => {
-                      return course.id === this.state.selected_course.id;
+                      return course.id === this.props.selected_course.id;
                     })} asses={projects.filter((ass) => {
-                      return ass.course === this.state.selected_course.id;
+                      return ass.course === this.props.selected_course.id;
                     })} />
                 }
               </Box>
@@ -449,9 +454,9 @@ class App extends React.Component {
 
               width='medium'
 
-              // flex={ this.state.selected_ass !== null ? 'full': 'shrink'}
+              // flex={ this.props.selected_ass !== null ? 'full': 'shrink'}
             >
-              {this.state.selected_ass !== null ?
+              {this.props.selected_ass !== null ?
 
                 <Box direction='column' >
                   <Box flex={false} tag="header" pad="small" fill='horizontal' 
@@ -461,18 +466,18 @@ class App extends React.Component {
                   </Box>
                 </Box> : null}
               
-              {this.state.selected_ass !== null ?
+              {this.props.selected_ass !== null ?
                 <Box align="start" justify="start" gap='xsmall' margin={{ left: "medium", top: "50px", bottom: "0px" }}>
 
                   <Text size='xxlarge' weight='bold '>
-                    {this.state.selected_ass.name}
+                    {this.props.selected_ass.name}
                     </Text>
 
 
                   <Box direction='row' justify="start"
                     align='center' >
 
-                    {moment(this.state.selected_ass.dueDate.toDate()).diff(moment(), 'minutes') < 0 ? <Box
+                    {moment(this.props.selected_ass.dueDate.toDate()).diff(moment(), 'minutes') < 0 ? <Box
 
                       // width='xxsmall'
                       background={this.props.darkMode ? 'neutral-4' : 'status-error'}
@@ -487,7 +492,7 @@ class App extends React.Component {
 
                     >
                       <Text color={this.props.darkMode ? 'light-1' : ''} size='small' weight='bold' color='white'>
-                        Late by  {moment().diff(moment(this.state.selected_ass.dueDate.toDate()), 'days')} days
+                        Late by  {moment().diff(moment(this.props.selected_ass.dueDate.toDate()), 'days')} days
                       </Text>
                     </Box> : null
                     }
@@ -502,7 +507,7 @@ class App extends React.Component {
                     label=
 
                     {<Text color= {this.props.darkMode ? 'light-1' :  '' }size='medium'>
-                      {moment(this.state.selected_ass.dueDate.toDate()).format('MMMM Do YYYY')}
+                      {moment(this.props.selected_ass.dueDate.toDate()).format('MMMM Do YYYY')}
                     </Text>}
 
                     onClick={() => {
@@ -515,9 +520,9 @@ class App extends React.Component {
                   <DropButton
                     dropContent={
                       <Box background={this.props.darkMode ? '#20273C' : "light-2"} >
-                        <Calendar size='medium' date={this.state.selected_ass.dueDate.toDate()
+                        <Calendar size='medium' date={this.props.selected_ass.dueDate.toDate()
                         }
-                        // onSelect={this.state.selected_ass.dueDate = firebase.firestore.Timestamp.fromDate(new Date())}
+                        // onSelect={this.props.selected_ass.dueDate = firebase.firestore.Timestamp.fromDate(new Date())}
 
                         />
                     </Box> 
@@ -528,7 +533,7 @@ class App extends React.Component {
                       <Alarm   />
 
                       <Text>
-                        {this.state.selected_ass.dueDate.toDate() ? moment(this.state.selected_ass.dueDate.toDate()).format('MMMM Do YYYY') : "Select date"}
+                        {this.props.selected_ass.dueDate.toDate() ? moment(this.props.selected_ass.dueDate.toDate()).format('MMMM Do YYYY') : "Select date"}
                       </Text>
                     </Box>
                   </DropButton>
@@ -540,17 +545,16 @@ class App extends React.Component {
                     margin='0px'
                     label={<Text color= {this.props.darkMode ? 'light-1' :  '' }size='medium'>
                       {courses
-                        ? courses.find(obj => obj.id === this.state.selected_ass.course)
-                          ? courses.find(obj => obj.id === this.state.selected_ass.course).name
+                        ? courses.find(obj => obj.id === this.props.selected_ass.course)
+                          ? courses.find(obj => obj.id === this.props.selected_ass.course).name
                           : ""
                         : ""}
                     </Text>}
                     
                     onClick={() => {
-                      this.setState({
-                        selected_course: courses.find(obj => obj.id === this.state.selected_ass.course),
-                        // selected_ass: null
-                      });
+                      this.props.select_course(courses.find(obj => obj.id === this.props.selected_ass.course))
+
+
 
                     }}
                     
@@ -606,7 +610,11 @@ const mapStateToProps = state => {
     return {
       darkMode: state.darkMode,
       auth: state.firebase.auth,
-      projects: state.projects
+      projects: state.projects,
+      selected_course: state.selectedCourse,
+      selected_ass: state.selectedAss
+
+
     };
   }
 
@@ -614,14 +622,27 @@ const mapStateToProps = state => {
     darkMode:state.darkMode,
     auth: state.firebase.auth,
     projects: state.firestore.ordered['Assignments'],
-    courses: state.firestore.ordered['Courses']
+    courses: state.firestore.ordered['Courses'],
+    selected_course: state.selectedCourse,
+        selected_ass: state.selectedAss
+
+
   };
 };
+
+const mapDispatchToProps = dispatch => {
+  return {
+    select_ass: (ass) => dispatch(select_ass(ass)),
+    select_course: (course) => dispatch(select_course(course)),
+  };
+};
+
+
 
 // export default connect(mapStateToProps)(App)
 
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   // connect(({ firebase: { auth } }) => ({ auth })),
   // spinnerWhileLoading(['projects']),
   firestoreConnect(props => [
