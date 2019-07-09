@@ -13,11 +13,11 @@ const theme = {
 	global: {
 		breakpoints: {
 			small: {
-				value: 1000,
+				value: 700,
 			},
 
 			medium: {
-				value: 1368,
+				value: 1100,
 			},
 		},
 		colors: {
@@ -90,46 +90,103 @@ class App extends React.Component {
 				>
 					{
 						<ResponsiveContext.Consumer>
-							{size =>
-								size !== "small" ? (
-									<Stack anchor='bottom-right' fill>
-										<Box fill background={this.props.darkMode ? "#2f3852" : ""}>
-											<Box
-												direction='row'
-												flex
-												overflow={{
-													horizontal: "hidden",
-												}}
-											>
-												{/* <ResponsiveContext.Consumer>
+							{size => {
+								switch (size) {
+									case "large":
+										return (
+											<Stack anchor='bottom-right' fill>
+												<Box
+													fill
+													background={this.props.darkMode ? "#2f3852" : ""}
+												>
+													<Box
+														direction='row'
+														flex
+														overflow={{
+															horizontal: "hidden",
+														}}
+													>
+														{/* <ResponsiveContext.Consumer>
 									{size => (size !== "small" ? <SideBar /> : null)}
 								</ResponsiveContext.Consumer> */}
 
-												<SideBar />
-												<Assignment />
-												<Detail />
-											</Box>
-										</Box>
+														<SideBar />
+														<Assignment />
+														<Detail />
+													</Box>
+												</Box>
 
-										<Box margin='medium'>
-											<Box
-												pad='small'
-												elevation='medium'
-												background={this.props.darkMode ? "#4D4B5C" : "brand"}
-												round
-											>
-												<CircleQuestion size='medium' />
+												<Box margin='medium'>
+													<Box
+														pad='small'
+														elevation='medium'
+														background={
+															this.props.darkMode ? "#4D4B5C" : "brand"
+														}
+														round
+													>
+														<CircleQuestion size='medium' />
+													</Box>
+												</Box>
+											</Stack>
+										);
+									case "small":
+										return this.props.selected_course == null ? (
+											<Box fill='vertical' background='red	'>
+												{" "}
+												<SideBar />
 											</Box>
-										</Box>
-									</Stack>
-								) : this.props.selected_course == null ? (
-									<SideBar />
-								) : this.props.selected_ass == null ? (
-									<Assignment />
-								) : (
-									<Detail />
-								)
-							}
+										) : this.props.selected_ass == null ? (
+											<Assignment />
+										) : (
+											<Detail />
+										);
+
+									case "medium":
+										return (
+											<Stack anchor='bottom-right' fill>
+												<Box
+													fill
+													background={this.props.darkMode ? "#2f3852" : ""}
+												>
+													<Box
+														direction='row'
+														flex
+														overflow={{
+															horizontal: "hidden",
+														}}
+													>
+														{this.props.selected_course == null ? (
+															<Box fill='vertical' background='red	'>
+																{" "}
+																<SideBar />
+															</Box>
+														) : (
+															<Assignment />
+														)}
+
+														<Detail />
+													</Box>
+												</Box>
+
+												<Box margin='medium'>
+													<Box
+														pad='small'
+														elevation='medium'
+														background={
+															this.props.darkMode ? "#4D4B5C" : "brand"
+														}
+														round
+													>
+														<CircleQuestion size='medium' />
+													</Box>
+												</Box>
+											</Stack>
+										);
+									default:
+										return null;
+								}
+							}}
 						</ResponsiveContext.Consumer>
 					}
 				</Box>

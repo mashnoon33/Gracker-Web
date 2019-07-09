@@ -163,61 +163,61 @@ class SideBar extends React.Component {
 				direction='column'
 				overflow='auto'
 				flex={false}
+				fill='vertical'
 			>
-				<Sidebar
-					isCollapsed={true}
-					title={
-						<Box fill='horizontal' tag='header' pad='small'>
-							<LoginModal />
-						</Box>
-					}
+				<Box
+					pad={{ left: "20px", right: "20px", bottom: "0px" }}
+					fill='horizontal'
+					tag='header'
+					// pad='small'
 				>
-					<Box fill>
-						<Box flex overflow='auto'>
-							{courses === undefined || courses.length === 0 ? null : (
-								<this.CourseList
-									courses={courses[0].Courses ? courses[0].Courses : courses}
-								/>
-							)}
-						</Box>
+					<LoginModal />
+				</Box>
+				<Box fill>
+					<Box flex overflow='auto'>
+						{courses === undefined || courses.length === 0 ? null : (
+							<this.CourseList
+								courses={courses[0].Courses ? courses[0].Courses : courses}
+							/>
+						)}
+					</Box>
 
-						<Box flex={false} pad='small'>
-							{/* {
+					<Box flex={false} pad='small'>
+						{/* {
                       courses === undefined || courses.length === 0 ? null :
                         <this.Adder courses={courses[0].Courses ? courses[0].Courses : courses} />
                     } */}
-						</Box>
+					</Box>
 
-						<Box fill='horizontal' direction='column' gap='small'>
-							<Button
-								focusIndicator={false}
-								hoverIndicator={true}
-								onClick={() => {}}
+					<Box fill='horizontal' direction='column' gap='small'>
+						<Button
+							focusIndicator={false}
+							hoverIndicator={true}
+							onClick={() => {}}
+						>
+							<Box
+								height='xxsmall'
+								fill='horizontal'
+								align='start'
+								flex='false'
+								justify='center'
 							>
 								<Box
-									height='xxsmall'
-									fill='horizontal'
-									align='start'
-									flex='false'
-									justify='center'
+									direction='row'
+									margin={{ left: "20px", top: "0px", bottom: "0px" }}
 								>
-									<Box
-										direction='row'
-										margin={{ left: "20px", top: "0px", bottom: "0px" }}
+									<Text
+										color={this.props.darkMode ? "dark-3" : "dark-3"}
+										weight='bold'
+										size='12'
 									>
-										<Text
-											color={this.props.darkMode ? "dark-3" : "dark-3"}
-											weight='bold'
-											size='12'
-										>
-											Settings
-										</Text>
-									</Box>
+										Settings
+									</Text>
 								</Box>
-							</Button>
-						</Box>
+							</Box>
+						</Button>
 					</Box>
-				</Sidebar>
+				</Box>
 			</Box>
 		);
 	}

@@ -8,10 +8,11 @@ import {
 	AccordionPanel,
 	TextArea,
 	CheckBox,
+	ResponsiveContext,
 } from "grommet";
 import "react-infinite-calendar/styles.css"; // Make sure to import the default stylesheet
 
-import { CatalogOption, Alarm, Notes } from "grommet-icons";
+import { CatalogOption, Alarm, Notes, LinkPrevious } from "grommet-icons";
 import "@vaadin/vaadin-date-picker";
 import { connect } from "react-redux";
 import { compose } from "redux";
@@ -51,9 +52,25 @@ class Detail extends React.Component {
 				flex='false'
 				direction='column'
 				width='420px'
+				background={this.props.darkMode ? "#2f3852" : ""}
 			>
 				{this.props.selected_ass !== null ? (
 					<Box direction='column'>
+						<ResponsiveContext.Consumer>
+							{size =>
+								size === "small" ? (
+									<Button
+										onClick={() => {
+											console.log("Back Button Pressed");
+											this.props.select_ass(null);
+										}}
+									>
+										{" "}
+										<LinkPrevious />{" "}
+									</Button>
+								) : null
+							}
+						</ResponsiveContext.Consumer>
 						<Box flex={false} tag='header' pad='small' fill='horizontal' />
 					</Box>
 				) : null}
@@ -70,7 +87,7 @@ class Detail extends React.Component {
 								<CheckBox
 									checked={this.props.selected_ass.done}
 									onChange={() => {
-										console.log("Mashnoon");
+										console.log(this.props.selected_ass);
 										this.props.checkBox(
 											this.props.selected_ass,
 											this.props.auth.uid

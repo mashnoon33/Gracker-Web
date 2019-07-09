@@ -1,11 +1,18 @@
 import React from "react";
-import { Box, Button, Text, Keyboard, CheckBox } from "grommet";
+import {
+	Box,
+	Button,
+	Text,
+	Keyboard,
+	CheckBox,
+	ResponsiveContext,
+} from "grommet";
 import { connect } from "react-redux";
 import { compose } from "redux";
 // import Modal from "react-redux-modal-flex";
 // import TypeFormComponent from "./components/adder/form";
 import moment from "moment";
-import { Edit, Trash } from "grommet-icons";
+import { Edit, Trash, LinkPrevious } from "grommet-icons";
 import { checkBox } from "./../../store/actions/projectActions";
 import { select_course } from "./../../store/actions/selectedCourseActions";
 import { select_ass } from "./../../store/actions/selectedAssActions";
@@ -109,10 +116,7 @@ class Assignments extends React.Component {
 												onChange={() => {
 													console.log("Mashnoon");
 
-													this.props.checkBox(
-														this.props.selected_ass,
-														this.props.auth.uid
-													);
+													this.props.checkBox(ass, this.props.auth.uid);
 												}}
 											/>
 										</Box>
@@ -234,6 +238,22 @@ class Assignments extends React.Component {
 							gap='small'
 							pad={{ horizontal: "small" }}
 						>
+							<ResponsiveContext.Consumer>
+								{size =>
+									size !== "large" ? (
+										<Button
+											onClick={() => {
+												console.log("Back Button Pressed");
+												this.props.select_course(null);
+											}}
+										>
+											{" "}
+											<LinkPrevious />{" "}
+										</Button>
+									) : null
+								}
+							</ResponsiveContext.Consumer>
+
 							<Box flex={false}>
 								<h3>{this.props.selected_course.name}</h3>
 							</Box>
