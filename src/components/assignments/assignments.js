@@ -226,7 +226,6 @@ class Assignments extends React.Component {
 				}}
 			>
 				<Box
-					tag='header'
 					pad='small'
 					elevation='xsmall'
 					background={this.props.darkMode ? "#29324D" : "light-1"}

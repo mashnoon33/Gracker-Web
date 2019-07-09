@@ -55,7 +55,7 @@ class Detail extends React.Component {
 				background={this.props.darkMode ? "#2f3852" : ""}
 			>
 				{this.props.selected_ass !== null ? (
-					<Box direction='column'>
+					<Box direction='column' pad='small'>
 						<ResponsiveContext.Consumer>
 							{size =>
 								size === "small" ? (
@@ -80,16 +80,28 @@ class Detail extends React.Component {
 						align='start'
 						justify='start'
 						gap='small'
-						margin={{ left: "medium", top: "50px", bottom: "0px" }}
+						margin={{ left: "medium", top: "20px", bottom: "0px" }}
 					>
 						<Box direction='row' justify='start' align='center'>
 							<Box margin={{ right: "7px" }}>
 								<CheckBox
-									checked={this.props.selected_ass.done}
+									checked={
+										this.props.asses
+											? this.props.asses.find(
+													obj => obj.id === this.props.selected_ass.id
+											  )
+												? this.props.asses.find(
+														obj => obj.id === this.props.selected_ass.id
+												  ).done
+												: true
+											: true
+									}
 									onChange={() => {
 										console.log(this.props.selected_ass);
 										this.props.checkBox(
-											this.props.selected_ass,
+											this.props.asses.find(
+												obj => obj.id === this.props.selected_ass.id
+											),
 											this.props.auth.uid
 										);
 									}}

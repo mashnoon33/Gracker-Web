@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Text } from "grommet";
+import { Box, Button, Text, ResponsiveContext } from "grommet";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import LoginModal from "./../auth/loginModal";
@@ -38,7 +38,7 @@ class SideBar extends React.Component {
 						}
 						elevation={this.props.selected_course === null ? "medium" : ""}
 						align='start'
-						flex='false'
+						flex={false}
 						justify='center'
 					>
 						<Box
@@ -156,69 +156,74 @@ class SideBar extends React.Component {
 		const { courses } = this.props;
 
 		return (
-			<Box
-				background={this.props.darkMode ? "#20273C" : "light-2"}
-				elevation='small'
-				align='center'
-				direction='column'
-				overflow='auto'
-				flex={false}
-				fill='vertical'
-			>
-				<Box
-					pad={{ left: "20px", right: "20px", bottom: "0px" }}
-					fill='horizontal'
-					tag='header'
-					// pad='small'
-				>
-					<LoginModal />
-				</Box>
-				<Box fill>
-					<Box flex overflow='auto'>
-						{courses === undefined || courses.length === 0 ? null : (
-							<this.CourseList
-								courses={courses[0].Courses ? courses[0].Courses : courses}
-							/>
-						)}
-					</Box>
+			<ResponsiveContext.Consumer>
+				{size => (
+					<Box
+						background={this.props.darkMode ? "#20273C" : "light-2"}
+						elevation='small'
+						align='center'
+						direction='column'
+						overflow='auto'
+						width={size === "large" ? "300px" : ""}
+						flex={size === "large" ? false : true}
+						fill={size === "large" ? "" : "horizontal"}
+					>
+						<Box
+							pad={{ left: "20px", right: "20px", vertical: "10px" }}
+							fill='horizontal'
+							tag='header'
+							// pad='small'
+						>
+							<LoginModal />
+						</Box>
+						<Box fill>
+							<Box flex overflow='auto'>
+								{courses === undefined || courses.length === 0 ? null : (
+									<this.CourseList
+										courses={courses[0].Courses ? courses[0].Courses : courses}
+									/>
+								)}
+							</Box>
 
-					<Box flex={false} pad='small'>
-						{/* {
+							<Box flex={false} pad='small'>
+								{/* {
                       courses === undefined || courses.length === 0 ? null :
                         <this.Adder courses={courses[0].Courses ? courses[0].Courses : courses} />
                     } */}
-					</Box>
-
-					<Box fill='horizontal' direction='column' gap='small'>
-						<Button
-							focusIndicator={false}
-							hoverIndicator={true}
-							onClick={() => {}}
-						>
-							<Box
-								height='xxsmall'
-								fill='horizontal'
-								align='start'
-								flex='false'
-								justify='center'
-							>
-								<Box
-									direction='row'
-									margin={{ left: "20px", top: "0px", bottom: "0px" }}
-								>
-									<Text
-										color={this.props.darkMode ? "dark-3" : "dark-3"}
-										weight='bold'
-										size='12'
-									>
-										Settings
-									</Text>
-								</Box>
 							</Box>
-						</Button>
+
+							<Box fill='horizontal' direction='column' gap='small'>
+								<Button
+									focusIndicator={false}
+									hoverIndicator={true}
+									onClick={() => {}}
+								>
+									<Box
+										height='xxsmall'
+										fill='horizontal'
+										align='start'
+										flex='false'
+										justify='center'
+									>
+										<Box
+											direction='row'
+											margin={{ left: "20px", top: "0px", bottom: "0px" }}
+										>
+											<Text
+												color={this.props.darkMode ? "dark-3" : "dark-3"}
+												weight='bold'
+												size='12'
+											>
+												Settings
+											</Text>
+										</Box>
+									</Box>
+								</Button>
+							</Box>
+						</Box>
 					</Box>
-				</Box>
-			</Box>
+				)}
+			</ResponsiveContext.Consumer>
 		);
 	}
 }

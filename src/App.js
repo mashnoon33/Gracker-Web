@@ -139,7 +139,20 @@ class App extends React.Component {
 										) : this.props.selected_ass == null ? (
 											<Assignment />
 										) : (
-											<Detail />
+											<Box
+												fill
+												background={this.props.darkMode ? "#2f3852" : ""}
+											>
+												<Box
+													direction='row'
+													flex
+													overflow={{
+														horizontal: "hidden",
+													}}
+												>
+													<Detail />
+												</Box>
+											</Box>
 										);
 
 									case "medium":
@@ -157,7 +170,7 @@ class App extends React.Component {
 														}}
 													>
 														{this.props.selected_course == null ? (
-															<Box fill='vertical' background='red	'>
+															<Box fill='horizontal'>
 																{" "}
 																<SideBar />
 															</Box>
