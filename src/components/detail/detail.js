@@ -6,6 +6,7 @@ import {
 	Calendar,
 	Accordion,
 	AccordionPanel,
+	DropButton,
 	TextArea,
 	CheckBox,
 	ResponsiveContext,
@@ -45,20 +46,21 @@ class Detail extends React.Component {
 			);
 		}
 		return (
-			<Box
-				align='start'
-				justify='start'
-				// pad='medium'
-				flex='false'
-				direction='column'
-				width='420px'
-				background={this.props.darkMode ? "#2f3852" : ""}
-			>
-				{this.props.selected_ass !== null ? (
-					<Box direction='column' pad='small'>
-						<ResponsiveContext.Consumer>
-							{size =>
-								size === "small" ? (
+			<ResponsiveContext.Consumer>
+				{size => (
+					<Box
+						align='start'
+						justify='start'
+						// pad='medium'
+						flex={false}
+						direction='column'
+						fill={size === "small" ? "horizontal" : ""}
+						width='430px'
+						background={this.props.darkMode ? "#2f3852" : ""}
+					>
+						{this.props.selected_ass !== null ? (
+							<Box direction='column' pad='small'>
+								{size === "small" ? (
 									<Button
 										onClick={() => {
 											console.log("Back Button Pressed");
@@ -68,177 +70,109 @@ class Detail extends React.Component {
 										{" "}
 										<LinkPrevious />{" "}
 									</Button>
-								) : null
-							}
-						</ResponsiveContext.Consumer>
-						<Box flex={false} tag='header' pad='small' fill='horizontal' />
-					</Box>
-				) : null}
+								) : null}
 
-				{this.props.selected_ass !== null ? (
-					<Box
-						align='start'
-						justify='start'
-						gap='small'
-						margin={{ left: "medium", top: "20px", bottom: "0px" }}
-					>
-						<Box direction='row' justify='start' align='center'>
-							<Box margin={{ right: "7px" }}>
-								<CheckBox
-									checked={
-										this.props.asses
-											? this.props.asses.find(
-													obj => obj.id === this.props.selected_ass.id
-											  )
-												? this.props.asses.find(
+								<Box flex={false} tag='header' pad='small' fill='horizontal' />
+							</Box>
+						) : null}
+
+						{this.props.selected_ass !== null ? (
+							<Box
+								align='start'
+								justify='start'
+								gap='small'
+								fill='horizontal'
+								// background='red'
+								pad={{ horizontal: "medium", top: "20px", bottom: "0px" }}
+							>
+								<Box direction='row' justify='start' align='center'>
+									<Box margin={{ right: "7px" }}>
+										<CheckBox
+											checked={
+												this.props.asses
+													? this.props.asses.find(
+															obj => obj.id === this.props.selected_ass.id
+													  )
+														? this.props.asses.find(
+																obj => obj.id === this.props.selected_ass.id
+														  ).done
+														: true
+													: true
+											}
+											onChange={() => {
+												console.log(this.props.selected_ass);
+												this.props.checkBox(
+													this.props.asses.find(
 														obj => obj.id === this.props.selected_ass.id
-												  ).done
-												: true
-											: true
+													),
+													this.props.auth.uid
+												);
+											}}
+										/>
+									</Box>
+									<Text size='xxlarge' weight='bold '>
+										{this.props.selected_ass.name}
+									</Text>
+								</Box>
+
+								<Button
+									plain={true}
+									hoverIndicator={true}
+									icon={<CatalogOption size='medium' />}
+									margin='0px'
+									label={
+										<Text
+											color={this.props.darkMode ? "light-1" : ""}
+											size='medium'
+										>
+											{this.props.courses
+												? this.props.courses.find(
+														obj => obj.id === this.props.selected_ass.course
+												  )
+													? this.props.courses.find(
+															obj => obj.id === this.props.selected_ass.course
+													  ).name
+													: ""
+												: ""}
+										</Text>
 									}
-									onChange={() => {
-										console.log(this.props.selected_ass);
-										this.props.checkBox(
-											this.props.asses.find(
-												obj => obj.id === this.props.selected_ass.id
-											),
-											this.props.auth.uid
+									onClick={() => {
+										this.props.select_course(
+											this.props.courses.find(
+												obj => obj.id === this.props.selected_ass.course
+											)
 										);
 									}}
 								/>
-							</Box>
-							<Text size='xxlarge' weight='bold '>
-								{this.props.selected_ass.name}
-							</Text>
-						</Box>
-
-						<Button
-							plain={true}
-							hoverIndicator={true}
-							icon={<CatalogOption size='medium' />}
-							margin='0px'
-							label={
-								<Text
-									color={this.props.darkMode ? "light-1" : ""}
-									size='medium'
-								>
-									{this.props.courses
-										? this.props.courses.find(
-												obj => obj.id === this.props.selected_ass.course
-										  )
-											? this.props.courses.find(
-													obj => obj.id === this.props.selected_ass.course
-											  ).name
-											: ""
-										: ""}
-								</Text>
-							}
-							onClick={() => {
-								this.props.select_course(
-									this.props.courses.find(
-										obj => obj.id === this.props.selected_ass.course
-									)
-								);
-							}}
-						/>
-
-						<Box
-							background={this.props.darkMode ? "#20273C" : "light-2"}
-							elevation='xsmall'
-							round='small'
-							pad='small'
-							gap='small'
-							direction='column'
-							align='start'
-							flex={false}
-						>
-							<Accordion>
-								<AccordionPanel
-									label={
-										<Box>
-											<Box direction='row' gap='small'>
-												<Alarm />
-
-												<Text>
-													{moment(
-														this.props.selected_ass.dueDate == null
-															? "2019-07-4"
-															: this.props.selected_ass.dueDate.toDate()
-													).format("MMMM Do, YYYY")}{" "}
-												</Text>
-												<Box direction='row' justify='start' align='center'>
-													{moment(
-														this.props.selected_ass.dueDate == null
-															? Date()
-															: this.props.selected_ass.dueDate.toDate()
-													).diff(moment(), "minutes") < 0 ? (
-														<Box
-															// width='xxsmall'
-															background={
-																this.props.darkMode
-																	? "neutral-4"
-																	: "status-error"
-															}
-															round='xxsmall'
-															height='20px'
-															// width='20px'
-															margin={{ right: "5px", bottom: "0px" }}
-															justify='center'
-															align='center'
-															pad={{
-																left: "3px",
-																right: "3px",
-																vertical: "2px",
-															}}
-														>
-															<Text size='small' weight='bold' color='white'>
-																Late by{" "}
-																{moment().diff(
-																	moment(
-																		this.props.selected_ass.dueDate == null
-																			? Date()
-																			: this.props.selected_ass.dueDate.toDate()
-																	),
-																	"days"
-																)}{" "}
-																days
-															</Text>
-														</Box>
-													) : null}
-												</Box>
-											</Box>
+								<DropButton
+									dropContent={
+										<Box
+											background={this.props.darkMode ? "#20273C" : "light-2"}
+										>
+											<Calendar
+												size='medium'
+												date={this.props.selected_ass.dueDate.toDate()}
+											/>
 										</Box>
 									}
 								>
-									<Calendar
-										size='small'
-										daysOfWeek={true}
-										firstDayOfWeek={1}
-										date={this.props.selected_ass.dueDate.toDate()}
-									/>
-								</AccordionPanel>
-							</Accordion>
-						</Box>
-						<Box
-							background={this.props.darkMode ? "#20273C" : "light-2"}
-							elevation='xsmall'
-							round='small'
-							fill='horizontal'
-							pad='small'
-							height='small'
-							gap='small'
-							direction='column'
-							align='start'
-						>
-							<Box direction='row' gap='small'>
-								<Notes />
-								<Text>Notes</Text>
+									<Box direction='row' gap='small'>
+										<Alarm />
+
+										<Text>
+											{this.props.selected_ass.dueDate.toDate()
+												? moment(
+														this.props.selected_ass.dueDate.toDate()
+												  ).format("MMMM Do YYYY")
+												: "Select date"}
+										</Text>
+									</Box>
+								</DropButton>
 							</Box>
-							<TextArea size='medium' fill />
-						</Box>
+						) : null}
 					</Box>
-				) : null}
-			</Box>
+				)}
+			</ResponsiveContext.Consumer>
 		);
 	}
 }

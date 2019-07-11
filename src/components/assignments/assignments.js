@@ -6,6 +6,8 @@ import {
 	Keyboard,
 	CheckBox,
 	ResponsiveContext,
+	TextInput,
+	Calendar,
 } from "grommet";
 import { connect } from "react-redux";
 import { compose } from "redux";
@@ -13,9 +15,14 @@ import { compose } from "redux";
 // import TypeFormComponent from "./components/adder/form";
 import moment from "moment";
 import { Edit, Trash, LinkPrevious } from "grommet-icons";
-import { checkBox } from "./../../store/actions/projectActions";
+import {
+	checkBox,
+	addAss,
+	addCourse,
+} from "./../../store/actions/projectActions";
 import { select_course } from "./../../store/actions/selectedCourseActions";
 import { select_ass } from "./../../store/actions/selectedAssActions";
+import { ColorInput } from "grommet-controls";
 
 // const appTokenKey = "appToken"; // also duplicated in Login.js
 
@@ -23,6 +30,178 @@ class Assignments extends React.Component {
 	constructor(props) {
 		super(props);
 	}
+
+	state = {
+		ass_name: "",
+		selected_course: { id: "" },
+		dueDate: new Date(),
+		course_name: "",
+		color: "#FFFFFF",
+		course_abbr: "",
+	};
+
+	AddCourseCard = ({ courses }) => (
+		<Box
+			direction='column'
+			gap='small'
+			margin='large'
+			round='small'
+			pad='small'
+			background='#20273C'
+			flex={false}
+		>
+			<TextInput
+				placeholder='Course Name'
+				value={this.state.course_name}
+				onChange={event => {
+					this.setState({
+						course_name: event.target.value,
+					});
+				}}
+			/>
+			<TextInput
+				placeholder='Abbriviation'
+				value={this.state.course_abbr}
+				onChange={event => {
+					this.setState({
+						course_abbr: event.target.value,
+					});
+				}}
+			/>
+			<Box round='medium' direction='row' gap='small' />
+			<Box align='center'>
+				<ColorInput
+					value={this.state.color}
+					columns={9}
+					wrap={true}
+					onChange={({ target: { value } }) => this.setState({ color: value })}
+					colors={["#EC608F", "#F88662", "#E27271", "#62B2F1", "#1D8A99"]}
+				/>
+			</Box>
+			<Box align='center'>
+				<Button
+					primary
+					label='Add'
+					onClick={() => {
+						this.props.addCourse(
+							this.state.course_name,
+							this.props.auth.uid,
+							this.state.course_abbr,
+							this.state.color
+						);
+						this.setState({
+							course_name: "",
+							color: "#FFFFFF",
+							course_abbr: "",
+						});
+					}}
+					disabled={
+						(this.state.course_name !== "") &
+						(this.state.course_abbr !== "") &
+						(this.state.color !== "")
+							? false
+							: true
+					}
+				/>
+			</Box>
+		</Box>
+	);
+
+	AddAssCard = ({ courses }) => (
+		<Box
+			direction='column'
+			gap='small'
+			margin='large'
+			round='small'
+			pad='small'
+			background='#20273C'
+			flex={false}
+		>
+			<TextInput
+				placeholder='Assignment Name'
+				value={this.state.ass_name}
+				onChange={event => {
+					this.setState({
+						ass_name: event.target.value,
+					});
+				}}
+			/>
+			<Box round='medium' direction='row' gap='small'>
+				{courses !== undefined &&
+					courses.map(course => {
+						return (
+							<Button
+								focusIndicator={false}
+								onClick={() => {
+									this.setState({
+										selected_course: course,
+									});
+								}}
+							>
+								<Box
+									background={
+										this.state.selected_course.id === course.id
+											? course.color
+											: "#20273C"
+									}
+									pad='xsmall'
+									round='medium'
+									flex={false}
+								>
+									<Text
+										size='15px'
+										color={
+											this.state.selected_course.id === course.id
+												? "20273C"
+												: course.color
+										}
+										weight='bold'
+									>
+										{" "}
+										{course.name}
+									</Text>
+								</Box>
+							</Button>
+						);
+					})}
+			</Box>
+			<Box align='center'>
+				<Calendar
+					date={this.state.dueDate}
+					onSelect={date => {
+						this.setState({
+							dueDate: new Date(date),
+						});
+					}}
+				/>
+			</Box>
+			<Box align='center'>
+				<Button
+					primary
+					label='Add'
+					onClick={() => {
+						this.props.addCourse(
+							this.state.course_name,
+							this.props.auth.uid,
+							this.state.course_abbr,
+							this.state.color
+						);
+						this.setState({
+							ass_name: "",
+							selected_course: { id: "" },
+							dueDate: new Date(),
+						});
+					}}
+					disabled={
+						(this.state.ass_name !== "") &
+						(this.state.selected_course.id !== "")
+							? false
+							: true
+					}
+				/>
+			</Box>
+		</Box>
+	);
 
 	AssCard = ({ asses, courses }) => (
 		<Keyboard
@@ -304,7 +483,10 @@ class Assignments extends React.Component {
 					overflow='auto'
 				>
 					{this.props.selected_course == null ? (
-						<this.AssCard courses={courses} asses={projects} />
+						<Box>
+							<this.AddCourseCard courses={courses} />
+							<this.AddAssCard courses={courses} />
+						</Box>
 					) : (
 						<this.AssCard
 							courses={courses.filter(course => {
@@ -347,6 +529,10 @@ const mapDispatchToProps = dispatch => {
 		select_ass: ass => dispatch(select_ass(ass)),
 		select_course: course => dispatch(select_course(course)),
 		checkBox: (ass, uid) => dispatch(checkBox(ass, uid)),
+		addAss: (assName, course, uid, date) =>
+			dispatch(addAss(assName, course, uid, date)),
+		addCourse: (courseName, uid, abbr, color) =>
+			dispatch(addCourse(courseName, uid, abbr, color)),
 	};
 };
 

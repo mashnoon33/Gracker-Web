@@ -42,9 +42,28 @@ class SideBar extends React.Component {
 						justify='center'
 					>
 						<Box
-							direction='column'
+							direction='row'
 							margin={{ left: "20px", top: "0px", bottom: "0px" }}
+							gap='small'
 						>
+							<Box
+								background='white'
+								round='xxsmall'
+								height='12px'
+								width='10px'
+								fill='vertical'
+								margin={{
+									right: "2px",
+									vertical: "0px",
+								}}
+								justify='center'
+								align='center'
+								pad={{
+									left: "3px",
+									right: "3px",
+									vertical: "2px",
+								}}
+							/>
 							<Text
 								color={this.props.darkMode ? "light-1" : ""}
 								weight='bold'
@@ -111,6 +130,24 @@ class SideBar extends React.Component {
 										}}
 										gap='small'
 									>
+										<Box
+											background={course.color}
+											round='xxsmall'
+											height='12px'
+											width='10px'
+											fill='vertical'
+											margin={{
+												right: "2px",
+												vertical: "0px",
+											}}
+											justify='center'
+											align='center'
+											pad={{
+												left: "3px",
+												right: "3px",
+												vertical: "2px",
+											}}
+										/>
 										<Text
 											color={this.props.darkMode ? "light-1" : ""}
 											weight='bold'

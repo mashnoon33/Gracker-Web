@@ -17,8 +17,14 @@ const theme = {
 			},
 
 			medium: {
-				value: 1100,
+				value: 1000,
 			},
+			// large: {
+			// 	value: 1500,
+			// },
+			// xlarge: {
+			// 	value: 3000,
+			// },
 		},
 		colors: {
 			border: {
@@ -106,10 +112,6 @@ class App extends React.Component {
 															horizontal: "hidden",
 														}}
 													>
-														{/* <ResponsiveContext.Consumer>
-									{size => (size !== "small" ? <SideBar /> : null)}
-								</ResponsiveContext.Consumer> */}
-
 														<SideBar />
 														<Assignment />
 														<Detail />
@@ -131,10 +133,25 @@ class App extends React.Component {
 											</Stack>
 										);
 									case "small":
-										return this.props.selected_course == null ? (
+										return this.props.selected_ass !== null ? (
+											<Box
+												fill
+												background={this.props.darkMode ? "#2f3852" : ""}
+											>
+												<Box
+													direction='row'
+													flex
+													overflow={{
+														horizontal: "hidden",
+													}}
+												>
+													<Detail />
+												</Box>
+											</Box>
+										) : this.props.selected_course == null ? (
 											<Box fill='vertical' background='red	'>
 												{" "}
-												<SideBar />
+												<Assignment />
 											</Box>
 										) : this.props.selected_ass == null ? (
 											<Assignment />
@@ -196,6 +213,7 @@ class App extends React.Component {
 												</Box>
 											</Stack>
 										);
+
 									default:
 										return null;
 								}
