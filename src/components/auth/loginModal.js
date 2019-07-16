@@ -10,9 +10,8 @@ import firebase from "firebase/app";
 import { compose } from "redux";
 import { withFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 
-import { Logout, Google, Toast, Actions } from "grommet-icons";
+import { Logout, Google, StatusPlaceholder, Actions } from "grommet-icons";
 
-import { actions as ModalActions } from "react-redux-modal-flex";
 import ExampleComponent from "react-rounded-image";
 
 class LoginModal extends React.Component {
@@ -49,18 +48,34 @@ class LoginModal extends React.Component {
 					/>
 				) : (
 					<Grid
-						columns={["flex", "xxsmall"]}
+						columns={["xxsmall", "flex", "xxsmall"]}
 						rows={["xxsmall"]}
 						fill='horizontal'
 						gap='small'
 						areas={[
-							{ name: "nav", start: [0, 0], end: [0, 0] },
-							{ name: "main", start: [1, 0], end: [1, 0] },
+							{ name: "header", start: [0, 0], end: [0, 0] },
+							{ name: "nav", start: [1, 0], end: [1, 0] },
+							{ name: "main", start: [2, 0], end: [2, 0] },
 						]}
 					>
-						<Box gridArea='nav' align='center' direction='row'>
+						<Box gridArea='header' justify='center' align='center'>
+							<Button
+								icon={
+									<StatusPlaceholder
+										color={this.props.darkMode ? "accent-1" : "status-ok"}
+									/>
+								}
+							/>
+						</Box>
+						<Box gridArea='nav' align='center' justify='start' direction='row'>
 							{" "}
-							<h3>Gracker</h3>
+							<Text
+								color={this.props.darkMode ? "accent-1" : "status-ok"}
+								weight='bold'
+								size='large'
+							>
+								Gracker
+							</Text>
 							<Offline>
 								<Box
 									width='xxsmall'

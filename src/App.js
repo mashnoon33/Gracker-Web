@@ -8,6 +8,7 @@ import { compose } from "redux";
 import Detail from "./components/detail/detail";
 import SideBar from "./components/sideBar/sideBar";
 import Assignment from "./components/assignments/assignments";
+import Dashboard from "./components/dashboard/dashboard";
 
 const theme = {
 	global: {
@@ -86,6 +87,7 @@ const theme = {
 
 class App extends React.Component {
 	render() {
+		
 		return (
 			<Grommet theme={theme} full>
 				<Box
@@ -113,8 +115,14 @@ class App extends React.Component {
 														}}
 													>
 														<SideBar />
-														<Assignment />
-														<Detail />
+														{this.props.selected_course == null ? (
+															<Dashboard />
+														) : (
+															<>
+																<Assignment />
+																<Detail />
+															</>
+														)}
 													</Box>
 												</Box>
 
@@ -151,7 +159,7 @@ class App extends React.Component {
 										) : this.props.selected_course == null ? (
 											<Box fill='vertical' background='red	'>
 												{" "}
-												<Assignment />
+												<Dashboard />
 											</Box>
 										) : this.props.selected_ass == null ? (
 											<Assignment />
@@ -195,7 +203,11 @@ class App extends React.Component {
 															<Assignment />
 														)}
 
-														<Detail />
+														{this.props.selected_course == null ? (
+															<Dashboard />
+														) : (
+															<Detail />
+														)}
 													</Box>
 												</Box>
 

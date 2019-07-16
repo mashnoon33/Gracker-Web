@@ -44,10 +44,11 @@ class Assignments extends React.Component {
 		<Box
 			direction='column'
 			gap='small'
-			margin='large'
+			margin='small'
 			round='small'
 			pad='small'
 			background='#20273C'
+			width='400px'
 			flex={false}
 		>
 			<TextInput
@@ -111,9 +112,10 @@ class Assignments extends React.Component {
 		<Box
 			direction='column'
 			gap='small'
-			margin='large'
+			margin='small'
 			round='small'
 			pad='small'
+			width='400px'
 			background='#20273C'
 			flex={false}
 		>
@@ -126,11 +128,12 @@ class Assignments extends React.Component {
 					});
 				}}
 			/>
-			<Box round='medium' direction='row' gap='small'>
+			<div>
 				{courses !== undefined &&
 					courses.map(course => {
 						return (
 							<Button
+								margin='xsmall'
 								focusIndicator={false}
 								onClick={() => {
 									this.setState({
@@ -145,14 +148,14 @@ class Assignments extends React.Component {
 											: "#20273C"
 									}
 									pad='xsmall'
-									round='medium'
+									round='small'
 									flex={false}
 								>
 									<Text
 										size='15px'
 										color={
 											this.state.selected_course.id === course.id
-												? "20273C"
+												? "white"
 												: course.color
 										}
 										weight='bold'
@@ -164,7 +167,7 @@ class Assignments extends React.Component {
 							</Button>
 						);
 					})}
-			</Box>
+			</div>
 			<Box align='center'>
 				<Calendar
 					date={this.state.dueDate}
@@ -180,11 +183,11 @@ class Assignments extends React.Component {
 					primary
 					label='Add'
 					onClick={() => {
-						this.props.addCourse(
-							this.state.course_name,
+						this.props.addAss(
+							this.state.ass_name,
+							this.state.selected_course,
 							this.props.auth.uid,
-							this.state.course_abbr,
-							this.state.color
+							this.state.dueDate
 						);
 						this.setState({
 							ass_name: "",
@@ -403,12 +406,10 @@ class Assignments extends React.Component {
 				overflow={{
 					horizontal: "hidden",
 				}}
+				pad={{ vertical: "10px", right: "40px" }}
+				background={this.props.darkMode ? "#29324D" : "light-1"}
 			>
-				<Box
-					pad='small'
-					elevation='xsmall'
-					background={this.props.darkMode ? "#29324D" : "light-1"}
-				>
+				<Box pad={{ vertical: "small" }}>
 					{this.props.selected_course !== null ? (
 						<Box
 							direction='row'
@@ -432,8 +433,31 @@ class Assignments extends React.Component {
 								}
 							</ResponsiveContext.Consumer>
 
-							<Box flex={false}>
-								<h3>{this.props.selected_course.name}</h3>
+							<Box
+								flex={false}
+								direction='row'
+								fill='horizontal'
+								align='center'
+							>
+								<Box
+									background={this.props.selected_course.color}
+									round='xxsmall'
+									height='20px'
+									width='10px'
+									// fill='vertical'
+									margin={{
+										right: "10px",
+										vertical: "0px",
+									}}
+									justify='center'
+									align='center'
+									pad={{
+										left: "3px",
+										right: "3px",
+										vertical: "2px",
+									}}
+								/>
+								<Text weight='bold'>{this.props.selected_course.name}</Text>
 							</Box>
 							<Box
 								direction='row'
@@ -477,17 +501,14 @@ class Assignments extends React.Component {
 				<Box
 					background={this.props.darkMode ? "#29324D" : "light-1"}
 					// width='medium'
-					elevation='small'
+					// elevation='small'
 					fill='vertical'
 					direction='column'
 					overflow='auto'
 				>
-					{this.props.selected_course == null ? (
-						<Box>
-							<this.AddCourseCard courses={courses} />
-							<this.AddAssCard courses={courses} />
-						</Box>
-					) : (
+					{this.props.selected_course == null ||
+					courses === undefined ||
+					projects === undefined ? null : (
 						<this.AssCard
 							courses={courses.filter(course => {
 								return course.id === this.props.selected_course.id;

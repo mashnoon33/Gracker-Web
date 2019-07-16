@@ -47,7 +47,7 @@ class SideBar extends React.Component {
 							gap='small'
 						>
 							<Box
-								background='white'
+								background={this.props.darkMode ? "white" : "black"}
 								round='xxsmall'
 								height='12px'
 								width='10px'
@@ -191,12 +191,17 @@ class SideBar extends React.Component {
 
 	render() {
 		const { courses } = this.props;
+		this.props.courses
+			? this.props.courses.length > 0
+				? select_course(courses[0])
+				: select_course(courses[0])
+			: select_course(null);
 
 		return (
 			<ResponsiveContext.Consumer>
 				{size => (
 					<Box
-						background={this.props.darkMode ? "#20273C" : "light-2"}
+						background={this.props.darkMode ? "#20273C" : "light-3"}
 						elevation='small'
 						align='center'
 						direction='column'
@@ -206,7 +211,7 @@ class SideBar extends React.Component {
 						fill={size === "large" ? "" : "horizontal"}
 					>
 						<Box
-							pad={{ left: "20px", right: "20px", vertical: "10px" }}
+							pad={{ vertical: "10px" }}
 							fill='horizontal'
 							tag='header'
 							// pad='small'
