@@ -4,6 +4,8 @@ const initState = {
 	color: "pink",
 };
 
+// const initState = null;
+
 const selectedCourse = (state = initState, action) => {
 	switch (action.type) {
 		case "SELECT":

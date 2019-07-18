@@ -9,6 +9,8 @@ import {
 	TextInput,
 	Calendar,
 } from "grommet";
+import { SwatchColorPicker } from "office-ui-fabric-react/lib/SwatchColorPicker";
+
 import { connect } from "react-redux";
 import { compose } from "redux";
 // import Modal from "react-redux-modal-flex";
@@ -247,7 +249,7 @@ class Dashboard extends React.Component {
 			{size => (
 				<Box
 					direction='column'
-					gap='small'
+					gap='xsmall'
 					margin='small'
 					round='small'
 					pad='small'
@@ -282,14 +284,34 @@ class Dashboard extends React.Component {
 					/>
 					<Box round='medium' direction='row' gap='small' />
 					<Box align='center'>
-						<ColorInput
-							value={this.state.color}
-							columns={9}
-							wrap={true}
-							onChange={({ target: { value } }) =>
-								this.setState({ color: value })
-							}
-							colors={["#EC608F", "#F88662", "#E27271", "#62B2F1", "#1D8A99"]}
+						<SwatchColorPicker
+							columnCount={10}
+							cellHeight={30}
+							cellMargin={2}
+							cellWidth={30}
+							cellBorderWidth={0}
+							selectedId={this.state.color}
+							isControlled={true}
+							doNotContainWithinFocusZone={false}
+							onColorChanged={(id, color) => {
+								this.setState({
+									color: color,
+								});
+								console.log(this.state.color);
+							}}
+							cellShape={"square"}
+							colorCells={[
+								{ id: "a", label: "red", color: "#a4262c" },
+								{ id: "b", label: "orange", color: "#ca5010" },
+								{ id: "c", label: "orangeYellow", color: "#986f0b" },
+								{ id: "d", label: "yellowGreen", color: "#8cbd18" },
+								{ id: "e", label: "green", color: "#0b6a0b" },
+								{ id: "f", label: "cyan", color: "#038387" },
+								{ id: "g", label: "cyanBlue", color: "#004e8c" },
+								{ id: "h", label: "magenta", color: "#881798" },
+								{ id: "i", label: "magentaPink", color: "#9b0062" },
+								{ id: "k", label: "gray", color: "#7a7574" },
+							]}
 						/>
 					</Box>
 					<Box align='center'>

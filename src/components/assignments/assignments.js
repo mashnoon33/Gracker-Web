@@ -40,172 +40,6 @@ class Assignments extends React.Component {
 		course_abbr: "",
 	};
 
-	AddCourseCard = ({ courses }) => (
-		<Box
-			direction='column'
-			gap='small'
-			margin='small'
-			round='small'
-			pad='small'
-			background='#20273C'
-			width='400px'
-			flex={false}
-		>
-			<TextInput
-				placeholder='Course Name'
-				value={this.state.course_name}
-				onChange={event => {
-					this.setState({
-						course_name: event.target.value,
-					});
-				}}
-			/>
-			<TextInput
-				placeholder='Abbriviation'
-				value={this.state.course_abbr}
-				onChange={event => {
-					this.setState({
-						course_abbr: event.target.value,
-					});
-				}}
-			/>
-			<Box round='medium' direction='row' gap='small' />
-			<Box align='center'>
-				<ColorInput
-					value={this.state.color}
-					columns={9}
-					wrap={true}
-					onChange={({ target: { value } }) => this.setState({ color: value })}
-					colors={["#EC608F", "#F88662", "#E27271", "#62B2F1", "#1D8A99"]}
-				/>
-			</Box>
-			<Box align='center'>
-				<Button
-					primary
-					label='Add'
-					onClick={() => {
-						this.props.addCourse(
-							this.state.course_name,
-							this.props.auth.uid,
-							this.state.course_abbr,
-							this.state.color
-						);
-						this.setState({
-							course_name: "",
-							color: "#FFFFFF",
-							course_abbr: "",
-						});
-					}}
-					disabled={
-						(this.state.course_name !== "") &
-						(this.state.course_abbr !== "") &
-						(this.state.color !== "")
-							? false
-							: true
-					}
-				/>
-			</Box>
-		</Box>
-	);
-
-	AddAssCard = ({ courses }) => (
-		<Box
-			direction='column'
-			gap='small'
-			margin='small'
-			round='small'
-			pad='small'
-			width='400px'
-			background='#20273C'
-			flex={false}
-		>
-			<TextInput
-				placeholder='Assignment Name'
-				value={this.state.ass_name}
-				onChange={event => {
-					this.setState({
-						ass_name: event.target.value,
-					});
-				}}
-			/>
-			<div>
-				{courses !== undefined &&
-					courses.map(course => {
-						return (
-							<Button
-								margin='xsmall'
-								focusIndicator={false}
-								onClick={() => {
-									this.setState({
-										selected_course: course,
-									});
-								}}
-							>
-								<Box
-									background={
-										this.state.selected_course.id === course.id
-											? course.color
-											: "#20273C"
-									}
-									pad='xsmall'
-									round='small'
-									flex={false}
-								>
-									<Text
-										size='15px'
-										color={
-											this.state.selected_course.id === course.id
-												? "white"
-												: course.color
-										}
-										weight='bold'
-									>
-										{" "}
-										{course.name}
-									</Text>
-								</Box>
-							</Button>
-						);
-					})}
-			</div>
-			<Box align='center'>
-				<Calendar
-					date={this.state.dueDate}
-					onSelect={date => {
-						this.setState({
-							dueDate: new Date(date),
-						});
-					}}
-				/>
-			</Box>
-			<Box align='center'>
-				<Button
-					primary
-					label='Add'
-					onClick={() => {
-						this.props.addAss(
-							this.state.ass_name,
-							this.state.selected_course,
-							this.props.auth.uid,
-							this.state.dueDate
-						);
-						this.setState({
-							ass_name: "",
-							selected_course: { id: "" },
-							dueDate: new Date(),
-						});
-					}}
-					disabled={
-						(this.state.ass_name !== "") &
-						(this.state.selected_course.id !== "")
-							? false
-							: true
-					}
-				/>
-			</Box>
-		</Box>
-	);
-
 	AssCard = ({ asses, courses }) => (
 		<Keyboard
 			onDown={() => {
@@ -406,7 +240,7 @@ class Assignments extends React.Component {
 				overflow={{
 					horizontal: "hidden",
 				}}
-				pad={{ vertical: "10px", right: "40px" }}
+				pad={{ vertical: "10px" }}
 				background={this.props.darkMode ? "#29324D" : "light-1"}
 			>
 				<Box pad={{ vertical: "small" }}>
@@ -415,7 +249,7 @@ class Assignments extends React.Component {
 							direction='row'
 							align='center'
 							gap='small'
-							pad={{ horizontal: "small" }}
+							// pad={{ horizontal: "small" }}
 						>
 							<ResponsiveContext.Consumer>
 								{size =>
@@ -462,6 +296,7 @@ class Assignments extends React.Component {
 							<Box
 								direction='row'
 								fill='horizontal'
+								flex={false}
 								// width='fill'
 								justify='end'
 								gap='small'
