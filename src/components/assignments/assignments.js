@@ -245,24 +245,21 @@ class Assignments extends React.Component {
 			>
 				<Box pad={{ vertical: "small" }}>
 					{this.props.selected_course !== null ? (
-						<Box
-							direction='row'
-							align='center'
-							gap='small'
-							// pad={{ horizontal: "small" }}
-						>
+						<Box direction='row' align='center' gap='small'>
 							<ResponsiveContext.Consumer>
 								{size =>
 									size !== "large" ? (
-										<Button
-											onClick={() => {
-												console.log("Back Button Pressed");
-												this.props.select_course(null);
-											}}
-										>
-											{" "}
-											<LinkPrevious />{" "}
-										</Button>
+										<Box flex={false} pad={{ left: "small" }}>
+											<Button
+												onClick={() => {
+													console.log("Back Button Pressed");
+													this.props.select_course(null);
+												}}
+											>
+												{" "}
+												<LinkPrevious />{" "}
+											</Button>
+										</Box>
 									) : null
 								}
 							</ResponsiveContext.Consumer>

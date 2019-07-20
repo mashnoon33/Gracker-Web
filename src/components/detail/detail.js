@@ -17,7 +17,7 @@ import { CatalogOption, Alarm, Notes, LinkPrevious } from "grommet-icons";
 import "@vaadin/vaadin-date-picker";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { checkBox } from "./../../store/actions/projectActions";
+import { checkBox, delete_ass } from "./../../store/actions/projectActions";
 import { select_course } from "./../../store/actions/selectedCourseActions";
 import { select_ass } from "./../../store/actions/selectedAssActions";
 import moment from "moment";
@@ -100,7 +100,6 @@ class Detail extends React.Component {
 													: true
 											}
 											onChange={() => {
-												console.log(this.props.selected_ass);
 												this.props.checkBox(
 													this.props.asses.find(
 														obj => obj.id === this.props.selected_ass.id
@@ -168,6 +167,17 @@ class Detail extends React.Component {
 										</Text>
 									</Box>
 								</DropButton>
+								<Button
+									label='delete'
+									color='status-critical'
+									plain
+									onClick={() => {
+										this.props.delete_ass(
+											this.props.selected_ass,
+											this.props.auth.uid
+										);
+									}}
+								/>
 							</Box>
 						) : null}
 					</Box>
@@ -205,6 +215,7 @@ const mapDispatchToProps = dispatch => {
 		select_ass: ass => dispatch(select_ass(ass)),
 		select_course: course => dispatch(select_course(course)),
 		checkBox: (ass, uid) => dispatch(checkBox(ass, uid)),
+		delete_ass: (ass, uid) => dispatch(delete_ass(ass, uid)),
 	};
 };
 

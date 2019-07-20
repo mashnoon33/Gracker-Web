@@ -5,6 +5,8 @@ const selectedAss = (state = initState, action) => {
 			return action.ass;
 		case "DESELECT_ASS":
 			return null;
+		case "DELETE_ASS_SUCCESS":
+			return null;
 		default:
 			return state;
 	}
