@@ -69,6 +69,35 @@ export const delete_ass = (ass, uid) => {
 				dispatch({ type: "DELETE_ASS_SUCCESS" });
 			})
 			.catch(err => {
+				dispatch({ type: "CREATE_ASS_ERROR" }, err);
+			});
+	};
+};
+
+export const delete_course = (course, uid, asses) => {
+	return (dispatch, getState, { getFirestore }) => {
+		const firestore = getFirestore();
+
+		for (var index in asses) {
+			if (asses[index].course === course.id) {
+				firestore
+					.collection("Users")
+					.doc(uid)
+					.collection("Assignments")
+					.doc(asses[index].id)
+					.delete();
+			}
+		}
+		firestore
+			.collection("Users")
+			.doc(uid)
+			.collection("Assignments")
+			.doc(course.id)
+			.delete()
+			.then(() => {
+				dispatch({ type: "DELETE_COURSE_SUCCESS" });
+			})
+			.catch(err => {
 				dispatch({ type: "CREATE_COURSE_ERROR" }, err);
 			});
 	};
