@@ -19,10 +19,10 @@ import {
 	checkBox,
 	addAss,
 	addCourse,
+	delete_course,
 } from "./../../store/actions/projectActions";
 import { select_course } from "./../../store/actions/selectedCourseActions";
 import { select_ass } from "./../../store/actions/selectedAssActions";
-import { ColorInput } from "grommet-controls";
 
 // const appTokenKey = "appToken"; // also duplicated in Login.js
 
@@ -254,6 +254,7 @@ class Assignments extends React.Component {
 												onClick={() => {
 													console.log("Back Button Pressed");
 													this.props.select_course(null);
+													this.props.select_ass(null);
 												}}
 											>
 												{" "}
@@ -273,6 +274,7 @@ class Assignments extends React.Component {
 								<Box
 									background={this.props.selected_course.color}
 									round='xxsmall'
+									flex={false}
 									height='20px'
 									width='10px'
 									// fill='vertical'
@@ -288,34 +290,57 @@ class Assignments extends React.Component {
 										vertical: "2px",
 									}}
 								/>
-								<Text weight='bold'>{this.props.selected_course.name}</Text>
-							</Box>
-							<Box
-								direction='row'
-								fill='horizontal'
-								flex={false}
-								// width='fill'
-								justify='end'
-								gap='small'
-							>
-								<Button plain>
-									{({ hover }) =>
-										hover ? (
-											<Edit color='status-ok' size='15px' />
-										) : (
-											<Edit size='15px' />
-										)
-									}
-								</Button>
-								<Button plain>
-									{({ hover }) =>
-										hover ? (
-											<Trash color='status-error' size='15px' />
-										) : (
-											<Trash size='15px' />
-										)
-									}
-								</Button>
+								<Box flex={false}>
+									<Text weight='bold'>{this.props.selected_course.name}</Text>
+								</Box>
+								<Box>
+									<Box
+										direction='row'
+										// fill='horizontal'
+										flex={false}
+										// width='fill'
+										// justify='end'
+										gap='small'
+									>
+										<Button plain>
+											{({ hover }) =>
+												hover ? (
+													<Edit color='status-ok' size='15px' />
+												) : (
+													<Edit size='15px' />
+												)
+											}
+										</Button>
+										<Button plain>
+											{({ hover }) =>
+												hover ? (
+													<Trash
+														color='status-error'
+														size='15px'
+														onClick={() => {
+															this.props.delete_course(
+																this.props.selected_course,
+																this.props.auth.uid,
+																this.props.projects
+															);
+														}}
+													/>
+												) : (
+													<Trash
+														size='15px'
+														onClick={() => {
+															this.props.delete_course(
+																this.props.selected_course,
+																this.props.auth.uid,
+																this.props.projects
+															);
+														}}
+													/>
+												)
+											}
+										</Button>
+									</Box>
+								</Box>
 							</Box>
 						</Box>
 					) : (
@@ -382,10 +407,8 @@ const mapDispatchToProps = dispatch => {
 		select_ass: ass => dispatch(select_ass(ass)),
 		select_course: course => dispatch(select_course(course)),
 		checkBox: (ass, uid) => dispatch(checkBox(ass, uid)),
-		addAss: (assName, course, uid, date) =>
-			dispatch(addAss(assName, course, uid, date)),
-		addCourse: (courseName, uid, abbr, color) =>
-			dispatch(addCourse(courseName, uid, abbr, color)),
+		delete_course: (course, uid, asses) =>
+			dispatch(delete_course(course, uid, asses)),
 	};
 };
 

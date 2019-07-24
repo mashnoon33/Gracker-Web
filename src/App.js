@@ -87,7 +87,6 @@ const theme = {
 
 class App extends React.Component {
 	render() {
-		
 		return (
 			<Grommet theme={theme} full>
 				<Box
@@ -118,10 +117,10 @@ class App extends React.Component {
 														{this.props.selected_course == null ? (
 															<Dashboard />
 														) : (
-															<>
+															<div>
 																<Assignment />
 																<Detail />
-															</>
+															</div>
 														)}
 													</Box>
 												</Box>

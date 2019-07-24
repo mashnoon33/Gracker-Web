@@ -9,7 +9,7 @@ import {
 	TextInput,
 	Calendar,
 } from "grommet";
-import { SwatchColorPicker } from "office-ui-fabric-react/lib/SwatchColorPicker";
+import { CirclePicker } from "react-color";
 
 import { connect } from "react-redux";
 import { compose } from "redux";
@@ -90,6 +90,13 @@ class Dashboard extends React.Component {
 											//   selected_ass: ass
 											// });
 											this.props.select_ass(ass);
+											this.props.select_course(
+												courses
+													? courses.find(obj => obj.id === ass.course)
+														? courses.find(obj => obj.id === ass.course)
+														: null
+													: null
+											);
 										}}
 									>
 										{({ hover }) => (
@@ -284,34 +291,27 @@ class Dashboard extends React.Component {
 					/>
 					<Box round='medium' direction='row' gap='small' />
 					<Box align='center'>
-						<SwatchColorPicker
-							columnCount={10}
-							cellHeight={30}
-							cellMargin={2}
-							cellWidth={30}
-							cellBorderWidth={0}
-							selectedId={this.state.color}
-							isControlled={true}
-							doNotContainWithinFocusZone={false}
-							onColorChanged={(id, color) => {
-								this.setState({
-									color: color,
-								});
-								console.log(this.state.color);
-							}}
-							cellShape={"square"}
-							colorCells={[
-								{ id: "a", label: "red", color: "#a4262c" },
-								{ id: "b", label: "orange", color: "#ca5010" },
-								{ id: "c", label: "orangeYellow", color: "#986f0b" },
-								{ id: "d", label: "yellowGreen", color: "#8cbd18" },
-								{ id: "e", label: "green", color: "#0b6a0b" },
-								{ id: "f", label: "cyan", color: "#038387" },
-								{ id: "g", label: "cyanBlue", color: "#004e8c" },
-								{ id: "h", label: "magenta", color: "#881798" },
-								{ id: "i", label: "magentaPink", color: "#9b0062" },
-								{ id: "k", label: "gray", color: "#7a7574" },
+						<CirclePicker
+							color={this.state.color}
+							colors={[
+								"#a4262c",
+								"#ca5010",
+								"#986f0b",
+								"#8cbd18",
+								"#0b6a0b",
+								"#038387",
+								// "#004e8c",
+								"#881798",
+								// "#9b0062",
+								"#7a7574",
 							]}
+							width='350px'
+							onChange={color => {
+								console.log(color);
+								this.setState({
+									color: color.hex,
+								});
+							}}
 						/>
 					</Box>
 					<Box align='center'>
@@ -500,7 +500,7 @@ class Dashboard extends React.Component {
 						<this.Stats courses={courses} asses={asses} />
 					) : null} */}
 					{asses !== undefined ? (
-						<>
+						<div>
 							<this.AssView
 								courses={courses}
 								asses={asses.filter(ass => {
@@ -521,7 +521,7 @@ class Dashboard extends React.Component {
 								})}
 								late={true}
 							/>
-						</>
+						</div>
 					) : null}
 					<this.AddCourseCard courses={courses} />
 					<this.AddAssCard courses={courses} />

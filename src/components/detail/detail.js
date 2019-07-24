@@ -14,7 +14,6 @@ import {
 import "react-infinite-calendar/styles.css"; // Make sure to import the default stylesheet
 
 import { CatalogOption, Alarm, Notes, LinkPrevious } from "grommet-icons";
-import "@vaadin/vaadin-date-picker";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { checkBox, delete_ass } from "./../../store/actions/projectActions";
