@@ -25,8 +25,8 @@ const store = createStore(
 		applyMiddleware(
 			ReduxThunk.withExtraArgument({ getFirebase, getFirestore })
 		),
-		reduxFirestore(firebase),
-		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+		reduxFirestore(firebase)
+		// window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 	)
 );
 
@@ -55,4 +55,4 @@ ReactDOM.render(
 	</Provider>,
 	document.getElementById("root")
 );
-serviceWorker.register();
+serviceWorker.unregister();
