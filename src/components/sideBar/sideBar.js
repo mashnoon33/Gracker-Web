@@ -161,31 +161,6 @@ class SideBar extends React.Component {
 						</Button>
 					);
 				})}
-			<Button onClick={() => {}}>
-				<Box
-					height='xxsmall'
-					fill='horizontal'
-					align='start'
-					flex='false'
-					justify='center'
-				>
-					<Box
-						direction='row'
-						margin={{ left: "20px", top: "0px", bottom: "0px" }}
-						gap='10px'
-						align='center'
-					>
-						{/* <Add size='small'/> */}
-						<Text
-							color={this.props.darkMode ? "dark-3" : "dark-3"}
-							weight='bold'
-							size='12'
-						>
-							New Course
-						</Text>
-					</Box>
-				</Box>
-			</Button>
 		</Box>
 	);
 
@@ -202,13 +177,15 @@ class SideBar extends React.Component {
 				{size => (
 					<Box
 						background={this.props.darkMode ? "#20273C" : "light-3"}
+						// elevation='small'
+						round='small'
 						elevation='small'
 						align='center'
 						direction='column'
 						overflow='auto'
-						width={size === "large" ? "300px" : ""}
+						width={size === "large" ? "" : ""}
 						flex={size === "large" ? false : true}
-						fill={size === "large" ? "" : "horizontal"}
+						fill={size === "large" ? "vertical" : "horizontal"}
 					>
 						<Box
 							pad={{ vertical: "10px" }}

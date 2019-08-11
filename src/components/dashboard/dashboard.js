@@ -49,6 +49,7 @@ class Dashboard extends React.Component {
 				<Box
 					direction='column'
 					gap='small'
+					elevation='small'
 					margin='small'
 					round='small'
 					pad={{ vertical: "small" }}
@@ -255,8 +256,15 @@ class Dashboard extends React.Component {
 		<ResponsiveContext.Consumer>
 			{size => (
 				<Box
+					// animation={{
+					// 	type: "pulse",
+					// 	duration: 20,
+					// 	delay: 500,
+					// 	size: "xsmall",
+					// }}
 					direction='column'
 					gap='xsmall'
+					elevation='small'
 					margin='small'
 					round='small'
 					pad='small'
@@ -352,6 +360,7 @@ class Dashboard extends React.Component {
 					direction='column'
 					gap='small'
 					margin='small'
+					elevation='small'
 					round='small'
 					pad='small'
 					width={size === "small" ? "" : "400px"}
@@ -373,6 +382,11 @@ class Dashboard extends React.Component {
 							});
 						}}
 					/>
+					<div>
+						{courses !== undefined && courses.length === 0 ? (
+							<Text>Please add a course first!</Text>
+						) : null}
+					</div>
 					<div>
 						{courses !== undefined &&
 							courses.map(course => {
@@ -462,6 +476,7 @@ class Dashboard extends React.Component {
 					direction='column'
 					gap='small'
 					margin='small'
+					elevation='small'
 					round='small'
 					// pad='small'
 					background={this.props.darkMode ? "#20273C" : "light-3"}
@@ -489,7 +504,8 @@ class Dashboard extends React.Component {
 
 		return (
 			<Box
-				background={this.props.darkMode ? "#29324D" : "light-1"}
+				pad='small'
+				// background={this.props.darkMode ? "#29324D" : "light-1"}
 				fill
 				overflow={{
 					horizontal: "hidden",
@@ -523,8 +539,8 @@ class Dashboard extends React.Component {
 							/>
 						</div>
 					) : null}
-					<this.AddCourseCard courses={courses} />
 					<this.AddAssCard courses={courses} />
+					<this.AddCourseCard courses={courses} />
 				</Masonry>
 			</Box>
 		);

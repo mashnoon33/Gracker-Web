@@ -21,7 +21,7 @@ const theme = {
 				value: 1000,
 			},
 			// large: {
-			// 	value: 1500,
+			// 	value: 1400,
 			// },
 			// xlarge: {
 			// 	value: 3000,
@@ -55,7 +55,7 @@ const theme = {
 			dark: {
 				none: "none",
 				xsmall: "0px 2px 2px rgba(255, 255, 255, 0.10)",
-				small: "0px 4px 4px rgba(255, 255, 255, 0.10)",
+				small: "0px 2px 4px rgba(0, 0, 0, 0.20)",
 				medium: "0px 6px 8px rgba(255, 255, 255, 0.10)",
 				large: "0px 8px 16px rgba(255, 255, 255, 0.10)",
 				xlarge: "0px 12px 24px rgba(255, 255, 255, 0.10)",
@@ -90,6 +90,7 @@ class App extends React.Component {
 		return (
 			<Grommet theme={theme} full>
 				<Box
+					background={this.props.darkMode ? "#2f3852" : ""}
 					overflow={{
 						vertical: "hidden",
 					}}
@@ -98,28 +99,58 @@ class App extends React.Component {
 					{
 						<ResponsiveContext.Consumer>
 							{size => {
+								console.log(size);
 								switch (size) {
 									case "large":
 										return (
 											<Stack anchor='bottom-right' fill>
-												<Box
-													fill
-													background={this.props.darkMode ? "#2f3852" : ""}
-												>
+												<Box fill>
 													<Box
 														direction='row'
 														flex
 														overflow={{
 															horizontal: "hidden",
 														}}
+														justify='center'
 													>
-														<SideBar />
+														<Box
+															width='380px'
+															// round='small'
+															fill='vertical'
+															// background='red'
+															// elevation='medium'
+															pad='medium'
+															flex={false}
+														>
+															<SideBar />
+														</Box>
 														{this.props.selected_course == null ? (
 															<Dashboard />
 														) : (
 															<>
-																<Assignment />
-																<Detail />
+																<Box
+																	width='440px'
+																	// round='small'
+																	fill='vertical'
+																	// background='red'
+																	// elevation='medium'
+																	pad='medium'
+																	// flex={false}
+																>
+																	<Assignment />
+																</Box>
+
+																<Box
+																	width='550px'
+																	// round='small'
+																	fill='vertical'
+																	// background='red'
+																	// elevation='medium'
+																	pad='medium'
+																	// flex={}
+																>
+																	<Detail />
+																</Box>
 															</>
 														)}
 													</Box>
@@ -194,19 +225,121 @@ class App extends React.Component {
 														}}
 													>
 														{this.props.selected_course == null ? (
-															<Box fill='horizontal'>
-																{" "}
+															<Box
+																width='380px'
+																// round='small'
+																fill='vertical'
+																// background='red'
+																// elevation='medium'
+																pad='medium'
+																flex={false}
+															>
 																<SideBar />
 															</Box>
 														) : (
-															<Assignment />
+															<Box
+																width='380px'
+																// round='small'
+																fill='vertical'
+																// background='red'
+																// elevation='medium'
+																pad='medium'
+																flex={false}
+															>
+																<Assignment />
+															</Box>
 														)}
 
 														{this.props.selected_course == null ? (
 															<Dashboard />
 														) : (
-															<Detail />
+															<Box
+																width='500px'
+																// round='small'
+																fill='vertical'
+																// background='red'
+																// elevation='medium'
+																pad='medium'
+															>
+																<Detail />
+															</Box>
 														)}
+													</Box>
+												</Box>
+
+												<Box margin='medium'>
+													<Box
+														pad='small'
+														elevation='medium'
+														background={
+															this.props.darkMode ? "#4D4B5C" : "brand"
+														}
+														round
+													>
+														<CircleQuestion size='medium' />
+													</Box>
+												</Box>
+											</Stack>
+										);
+
+									case "xlarge":
+										return (
+											<Stack anchor='bottom-right' fill>
+												<Box fill>
+													<Box
+														direction='row'
+														flex
+														overflow={{
+															horizontal: "hidden",
+														}}
+														align='center'
+													>
+														<Box
+															width='380px'
+															// round='small'
+															fill='vertical'
+															// background='red'
+															// elevation='medium'
+															pad='medium'
+															flex={false}
+														>
+															<SideBar />
+														</Box>
+														<>
+															<Box
+																width='440px'
+																// round='small'
+																fill='vertical'
+																// background='red'
+																// elevation='medium'
+																pad='medium'
+																// flex={false}
+															>
+																<Assignment />
+															</Box>
+
+															<Box
+																width='550px'
+																// round='small'
+																fill='vertical'
+																// background='red'
+																// elevation='medium'
+																pad='medium'
+																// flex={}
+															>
+																<Detail />
+															</Box>
+															<Box
+																width='550px'
+																// round='small'
+																fill='vertical'
+																// background='red'
+																// elevation='medium'
+																// flex={}
+															>
+																<Dashboard />
+															</Box>
+														</>
 													</Box>
 												</Box>
 

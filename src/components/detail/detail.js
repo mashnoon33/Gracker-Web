@@ -11,12 +11,15 @@ import {
 	CheckBox,
 	ResponsiveContext,
 } from "grommet";
-import "react-infinite-calendar/styles.css"; // Make sure to import the default stylesheet
 
 import { CatalogOption, Alarm, Notes, LinkPrevious } from "grommet-icons";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { checkBox, delete_ass } from "./../../store/actions/projectActions";
+import {
+	checkBox,
+	delete_ass,
+	changeDate,
+} from "./../../store/actions/projectActions";
 import { select_course } from "./../../store/actions/selectedCourseActions";
 import { select_ass } from "./../../store/actions/selectedAssActions";
 import moment from "moment";
@@ -24,6 +27,7 @@ import moment from "moment";
 class Detail extends React.Component {
 	state = {
 		date: Date(10 - 10 - 1910),
+		open: undefined,
 	};
 
 	render() {
@@ -35,8 +39,10 @@ class Detail extends React.Component {
 					// flex='shrink'
 					direction='column'
 					flex={false}
-					width='420px'
-					// background='red'
+					fill='vertical'
+					background={this.props.darkMode ? "#20273C" : ""}
+					elevation='small'
+					round='small'
 				>
 					<Text color='light-6' size='large'>
 						Select an assignment to begin
@@ -51,11 +57,12 @@ class Detail extends React.Component {
 						align='start'
 						justify='start'
 						// pad='medium'
+						elevation='small'
+						round='small'
 						flex={false}
 						direction='column'
-						fill={size === "small" ? "horizontal" : ""}
-						width='430px'
-						background={this.props.darkMode ? "#2f3852" : ""}
+						fill={size === "small" ? "horizontal" : "vertical"}
+						background={this.props.darkMode ? "#20273C" : ""}
 					>
 						{this.props.selected_ass !== null ? (
 							<Box direction='column' pad='small'>
@@ -143,13 +150,36 @@ class Detail extends React.Component {
 									}}
 								/>
 								<DropButton
+									open={this.state.open}
 									dropContent={
 										<Box
 											background={this.props.darkMode ? "#20273C" : "light-2"}
 										>
 											<Calendar
 												size='medium'
-												date={this.props.selected_ass.dueDate.toDate()}
+												date={
+													this.props.asses
+														? this.props.asses.find(
+																obj => obj.id === this.props.selected_ass.id
+														  )
+															? this.props.asses
+																	.find(
+																		obj => obj.id === this.props.selected_ass.id
+																	)
+																	.dueDate.toDate()
+															: Date()
+														: Date()
+												}
+												onSelect={date => {
+													this.props.changeDate(
+														this.props.selected_ass,
+														this.props.auth.uid,
+														new Date(date)
+													);
+													this.setState({
+														open: undefined,
+													});
+												}}
 											/>
 										</Box>
 									}
@@ -160,7 +190,18 @@ class Detail extends React.Component {
 										<Text>
 											{this.props.selected_ass.dueDate.toDate()
 												? moment(
-														this.props.selected_ass.dueDate.toDate()
+														this.props.asses
+															? this.props.asses.find(
+																	obj => obj.id === this.props.selected_ass.id
+															  )
+																? this.props.asses
+																		.find(
+																			obj =>
+																				obj.id === this.props.selected_ass.id
+																		)
+																		.dueDate.toDate()
+																: Date()
+															: Date()
 												  ).format("MMMM Do YYYY")
 												: "Select date"}
 										</Text>
@@ -214,6 +255,7 @@ const mapDispatchToProps = dispatch => {
 		select_ass: ass => dispatch(select_ass(ass)),
 		select_course: course => dispatch(select_course(course)),
 		checkBox: (ass, uid) => dispatch(checkBox(ass, uid)),
+		changeDate: (ass, uid, newDate) => dispatch(changeDate(ass, uid, newDate)),
 		delete_ass: (ass, uid) => dispatch(delete_ass(ass, uid)),
 	};
 };

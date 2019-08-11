@@ -1,10 +1,10 @@
-// const initState = {
-// 	name: "Experimental Photo",
-// 	id: "def77960-ac12-11e9-9c19-e59daa39b1d6",
-// 	color: "#8cbd18",
-// };
+const initState = {
+	name: "allalla",
+	id: "c70063f0-bbbf-11e9-a393-0d53508d062c",
+	color: "#8cbd18",
+};
 
-const initState = null;
+// const initState = null;
 
 const selectedCourse = (state = initState, action) => {
 	switch (action.type) {

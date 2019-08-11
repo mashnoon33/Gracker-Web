@@ -237,9 +237,11 @@ class Assignments extends React.Component {
 			<Box
 				direction='column'
 				fill
-				overflow={{
-					horizontal: "hidden",
-				}}
+				elevation='small'
+				round='small'
+				// overflow={{
+				// 	horizontal: "hidden",
+				// }}
 				pad={{ vertical: "10px" }}
 				background={this.props.darkMode ? "#29324D" : "light-1"}
 			>
@@ -248,7 +250,7 @@ class Assignments extends React.Component {
 						<Box direction='row' align='center' gap='small'>
 							<ResponsiveContext.Consumer>
 								{size =>
-									size !== "large" ? (
+									size !== "large" && size !== "xlarge" ? (
 										<Box flex={false} pad={{ left: "small" }}>
 											<Button
 												onClick={() => {
@@ -266,80 +268,88 @@ class Assignments extends React.Component {
 							</ResponsiveContext.Consumer>
 
 							<Box
-								flex={false}
+								// flex={false}
 								direction='row'
 								fill='horizontal'
 								align='center'
+								pad={{
+									right: "10px",
+								}}
 							>
 								<Box
-									background={this.props.selected_course.color}
-									round='xxsmall'
-									flex={false}
-									height='20px'
-									width='10px'
-									// fill='vertical'
-									margin={{
-										right: "10px",
-										vertical: "0px",
-									}}
-									justify='center'
-									align='center'
-									pad={{
-										left: "3px",
-										right: "3px",
-										vertical: "2px",
-									}}
-								/>
-								<Box flex={false}>
-									<Text weight='bold'>{this.props.selected_course.name}</Text>
-								</Box>
-								<Box>
+									// flex={false}
+									// background='red'
+									fill='horizontal'
+									direction='row-responsive'
+								>
 									<Box
-										direction='row'
-										// fill='horizontal'
+										background={this.props.selected_course.color}
+										round='xxsmall'
 										flex={false}
-										// width='fill'
-										// justify='end'
-										gap='small'
-									>
-										<Button plain>
-											{({ hover }) =>
-												hover ? (
-													<Edit color='status-ok' size='15px' />
-												) : (
-													<Edit size='15px' />
-												)
-											}
-										</Button>
-										<Button plain>
-											{({ hover }) =>
-												hover ? (
-													<Trash
-														color='status-error'
-														size='15px'
-														onClick={() => {
-															this.props.delete_course(
-																this.props.selected_course,
-																this.props.auth.uid,
-																this.props.projects
-															);
-														}}
-													/>
-												) : (
-													<Trash
-														size='15px'
-														onClick={() => {
-															this.props.delete_course(
-																this.props.selected_course,
-																this.props.auth.uid,
-																this.props.projects
-															);
-														}}
-													/>
-												)
-											}
-										</Button>
+										height='20px'
+										width='10px'
+										// fill='vertical'
+										margin={{
+											right: "10px",
+											vertical: "0px",
+										}}
+										justify='center'
+										align='center'
+										pad={{
+											left: "3px",
+											right: "3px",
+											vertical: "2px",
+										}}
+									/>
+									<Box flex={false}>
+										<Text weight='bold'>{this.props.selected_course.name}</Text>
 									</Box>
+								</Box>
+								<Box
+									direction='row'
+									// fill='horizontal'
+									flex={false}
+									// width='fill'
+									// justify='end'
+									gap='small'
+								>
+									<Button plain>
+										{({ hover }) =>
+											hover ? (
+												<Edit color='status-ok' size='15px' />
+											) : (
+												<Edit size='15px' />
+											)
+										}
+									</Button>
+									<Button plain>
+										{({ hover }) =>
+											hover ? (
+												<Trash
+													color='status-error'
+													size='15px'
+													onClick={() => {
+														this.props.delete_course(
+															this.props.selected_course,
+															this.props.auth.uid,
+															this.props.projects
+														);
+													}}
+												/>
+											) : (
+												<Trash
+													size='15px'
+													onClick={() => {
+														this.props.delete_course(
+															this.props.selected_course,
+															this.props.auth.uid,
+															this.props.projects
+														);
+													}}
+												/>
+											)
+										}
+									</Button>
 								</Box>
 							</Box>
 						</Box>
