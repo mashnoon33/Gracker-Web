@@ -47,143 +47,96 @@ class LoginModal extends React.Component {
 						onClick={this.loginWithGoogle}
 					/>
 				) : (
-					<Grid
-						columns={["xxsmall", "flex", "xxsmall"]}
-						rows={["xxsmall"]}
+					<DropButton
+						dropAlign={{ top: "bottom", left: "left" }}
 						fill='horizontal'
-						gap='small'
-						areas={[
-							{ name: "header", start: [0, 0], end: [0, 0] },
-							{ name: "nav", start: [1, 0], end: [1, 0] },
-							{ name: "main", start: [2, 0], end: [2, 0] },
-						]}
-					>
-						<Box gridArea='header' justify='center' align='center'>
-							<Button
-								icon={
-									<StatusPlaceholder
-										color={this.props.darkMode ? "accent-1" : "status-ok"}
-									/>
-								}
-							/>
-						</Box>
-						<Box gridArea='nav' align='center' justify='start' direction='row'>
-							{" "}
-							<Text
-								color={this.props.darkMode ? "accent-1" : "status-ok"}
-								weight='bold'
-								size='large'
+						icon={
+							<Box
+								gridArea='main'
+								justify='start'
+								round='small'
+								fill='horizontal'
+								direction='row'
+								align='center'
+								background={this.props.dark ? "#2F3852" : "light-4"}
+								elevation='xsmall'
+								gap='small'
+								pad='small'
 							>
-								Gracker
-							</Text>
-							<Offline>
-								<Box
-									width='xxsmall'
-									round='xsmall'
-									height='20px'
-									margin='xsmall'
-									background={this.props.dark ? "#A2423D" : "status-error"}
-									justify='center'
-									align='center'
+								<ExampleComponent
+									image={auth.photoURL}
+									roundedSize='0'
+									imageWidth='30'
+									imageHeight='30'
+								/>
+								<Text size='medium' weight='bold' color='status-ok'>
+									{auth.displayName}
+								</Text>
+							</Box>
+						}
+						dropContent={
+							<Box
+								direction='column'
+								align='start'
+								justify='start'
+								background={this.props.dark ? "#29324D" : "white"}
+							>
+								<Button
+									pad='small'
+									fill='horizontal'
+									hoverIndicator
+									onClick={() => {
+										console.log("atleast this one fired");
+										this.props.toggle(this.props.dark ? false : true);
+									}}
 								>
-									<Text size='small' weight='bold' color='white'>
-										Offline
-									</Text>
-								</Box>
-							</Offline>
-						</Box>
-						<Box gridArea='main' justify='center'>
-							<DropButton
-								icon={
-									<ExampleComponent
-										image={auth.photoURL}
-										roundedSize='0'
-										imageWidth='30'
-										imageHeight='30'
-									/>
-								}
-								dropAlign={{ top: "bottom", left: "left" }}
-								dropContent={
 									<Box
-										direction='column'
-										align='start'
+										pad={{ left: "10px", right: "10px" }}
+										gap='xsmall'
+										height='35px'
+										// width="350px"
+										fill='horizontal'
+										// background= {this.props.dark ? '#4D4B5C' : 'brand'}
+
+										align='center'
+										flex='false'
 										justify='start'
-										background={this.props.dark ? "#29324D" : "white"}
+										direction='row'
 									>
-										<Box
-											pad={{ left: "10px", right: "10px" }}
-											gap='xsmall'
-											height='35px'
-											// width="350px"
-											fill='horizontal'
-											// background= {this.props.dark ? '#4D4B5C' : 'brand'}
-
-											align='center'
-											flex='false'
-											justify='start'
-											direction='row'
-										>
-											<Text size='smal'>{auth.displayName}</Text>
-										</Box>
-
-										<Button
-											pad='small'
-											fill='horizontal'
-											hoverIndicator
-											onClick={() => {
-												console.log("atleast this one fired");
-												this.props.toggle(this.props.dark ? false : true);
-											}}
-										>
-											<Box
-												pad={{ left: "10px", right: "10px" }}
-												gap='xsmall'
-												height='35px'
-												// width="350px"
-												fill='horizontal'
-												// background= {this.props.dark ? '#4D4B5C' : 'brand'}
-
-												align='center'
-												flex='false'
-												justify='start'
-												direction='row'
-											>
-												<Actions />
-												<Text>
-													{!this.props.dark
-														? " enable darkmode"
-														: " disable darkmode"}
-												</Text>
-											</Box>
-										</Button>
-										<Button
-											fill='horizontal'
-											pad='small'
-											hoverIndicator
-											onClick={this.logout}
-										>
-											<Box
-												pad={{ left: "10px", right: "10px" }}
-												gap='xsmall'
-												height='35px'
-												// width="350px"
-												fill='horizontal'
-												// background= {this.props.dark ? '#4D4B5C' : 'brand'}
-
-												align='center'
-												flex='false'
-												justify='start'
-												direction='row'
-											>
-												<Logout />
-												<Text>logout</Text>
-											</Box>
-										</Button>
+										<Actions />
+										<Text>
+											{!this.props.dark
+												? " enable darkmode"
+												: " disable darkmode"}
+										</Text>
 									</Box>
-								}
-							/>
-						</Box>
-					</Grid>
+								</Button>
+								<Button
+									fill='horizontal'
+									pad='small'
+									hoverIndicator
+									onClick={this.logout}
+								>
+									<Box
+										pad={{ left: "10px", right: "10px" }}
+										gap='xsmall'
+										height='35px'
+										// width="350px"
+										fill='horizontal'
+										// background= {this.props.dark ? '#4D4B5C' : 'brand'}
+
+										align='center'
+										flex='false'
+										justify='start'
+										direction='row'
+									>
+										<Logout />
+										<Text>logout</Text>
+									</Box>
+								</Button>
+							</Box>
+						}
+					/>
 				)}
 			</Box>
 		);

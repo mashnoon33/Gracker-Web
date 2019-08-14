@@ -91,7 +91,7 @@ export const delete_course = (course, uid, asses) => {
 		firestore
 			.collection("Users")
 			.doc(uid)
-			.collection("Assignments")
+			.collection("Courses")
 			.doc(course.id)
 			.delete()
 			.then(() => {
@@ -113,6 +113,20 @@ export const checkBox = (ass, uid) => {
 			.doc(ass.id)
 			.update({
 				done: !ass.done,
+			});
+	};
+};
+
+export const changeDate = (ass, uid, date) => {
+	return (dispatch, getState, { getFirestore }) => {
+		const firestore = getFirestore();
+		firestore
+			.collection("Users")
+			.doc(uid)
+			.collection("Assignments")
+			.doc(ass.id)
+			.update({
+				dueDate: date,
 			});
 	};
 };

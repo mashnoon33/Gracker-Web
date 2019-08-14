@@ -35,7 +35,7 @@ class Detail extends React.Component {
 					// flex='shrink'
 					direction='column'
 					flex={false}
-					width='420px'
+					width='430px'
 					// background='red'
 				>
 					<Text color='light-6' size='large'>
@@ -164,6 +164,34 @@ class Detail extends React.Component {
 												  ).format("MMMM Do YYYY")
 												: "Select date"}
 										</Text>
+										{moment(this.props.selected_ass.dueDate.toDate()).diff(
+											moment(),
+											"minutes"
+										) < 0 ? (
+											<Box
+												// width='xxsmall'
+												background={
+													this.props.darkMode ? "neutral-4" : "status-error"
+												}
+												round='xxsmall'
+												margin={{
+													right: "5px",
+													vertical: "0px",
+												}}
+												justify='center'
+												align='center'
+												pad={{
+													left: "3px",
+													right: "3px",
+													vertical: "2px",
+												}}
+											>
+												<Text size='xsmall' weight='bold' color='white'>
+													{" "}
+													Late{" "}
+												</Text>
+											</Box>
+										) : null}
 									</Box>
 								</DropButton>
 								<Button

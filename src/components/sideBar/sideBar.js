@@ -1,11 +1,14 @@
 import React from "react";
-import { Box, Button, Text, ResponsiveContext } from "grommet";
+import { Box, Button, Text, ResponsiveContext, Grid } from "grommet";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import LoginModal from "./../auth/loginModal";
+import { Offline, Online } from "react-detect-offline";
+
 import { select_course } from "./../../store/actions/selectedCourseActions";
 import { select_ass } from "./../../store/actions/selectedAssActions";
 import { Sidebar } from "./grommetSideBar";
+import { Logout, Google, StatusPlaceholder, Actions } from "grommet-icons";
 
 class SideBar extends React.Component {
 	constructor(props) {
@@ -36,7 +39,7 @@ class SideBar extends React.Component {
 									: "light-5"
 								: ""
 						}
-						elevation={this.props.selected_course === null ? "medium" : ""}
+						elevation={this.props.selected_course === null ? "xsmall" : ""}
 						align='start'
 						flex={false}
 						justify='center'
@@ -113,7 +116,7 @@ class SideBar extends React.Component {
 										this.props.selected_course === null
 											? ""
 											: this.props.selected_course.id === course.id
-											? "medium"
+											? "xsmall"
 											: ""
 									}
 									align='start'
@@ -161,31 +164,6 @@ class SideBar extends React.Component {
 						</Button>
 					);
 				})}
-			<Button onClick={() => {}}>
-				<Box
-					height='xxsmall'
-					fill='horizontal'
-					align='start'
-					flex='false'
-					justify='center'
-				>
-					<Box
-						direction='row'
-						margin={{ left: "20px", top: "0px", bottom: "0px" }}
-						gap='10px'
-						align='center'
-					>
-						{/* <Add size='small'/> */}
-						<Text
-							color={this.props.darkMode ? "dark-3" : "dark-3"}
-							weight='bold'
-							size='12'
-						>
-							New Course
-						</Text>
-					</Box>
-				</Box>
-			</Button>
 		</Box>
 	);
 
@@ -216,7 +194,27 @@ class SideBar extends React.Component {
 							tag='header'
 							// pad='small'
 						>
-							<LoginModal />
+							<Box
+								gridArea='header'
+								justify='start'
+								align='center'
+								direction='row'
+							>
+								<Button
+									icon={
+										<StatusPlaceholder
+											color={this.props.darkMode ? "accent-1" : "status-ok"}
+										/>
+									}
+								/>
+								<Text
+									color={this.props.darkMode ? "accent-1" : "status-ok"}
+									weight='bold'
+									size='large'
+								>
+									Gracker
+								</Text>
+							</Box>
 						</Box>
 						<Box fill>
 							<Box flex overflow='auto'>
@@ -237,27 +235,17 @@ class SideBar extends React.Component {
 							<Box fill='horizontal' direction='column' gap='small'>
 								<Button
 									focusIndicator={false}
-									hoverIndicator={true}
+									// hoverIndicator={true}
 									onClick={() => {}}
 								>
-									<Box
-										height='xxsmall'
-										fill='horizontal'
-										align='start'
-										flex='false'
-										justify='center'
-									>
+									<Box fill='horizontal' flex='false' justify='center'>
 										<Box
 											direction='row'
-											margin={{ left: "20px", top: "0px", bottom: "0px" }}
+											fill='horizontal'
+
+											// margin={{ left: "20px", top: "0px", bottom: "0px" }}
 										>
-											<Text
-												color={this.props.darkMode ? "dark-3" : "dark-3"}
-												weight='bold'
-												size='12'
-											>
-												Settings
-											</Text>
+											<LoginModal />
 										</Box>
 									</Box>
 								</Button>

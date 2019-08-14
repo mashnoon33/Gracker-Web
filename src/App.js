@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grommet, Stack, ResponsiveContext } from "grommet";
+import { Box, Grommet, Stack, ResponsiveContext, Text } from "grommet";
 import { CircleQuestion } from "grommet-icons";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
@@ -9,6 +9,8 @@ import Detail from "./components/detail/detail";
 import SideBar from "./components/sideBar/sideBar";
 import Assignment from "./components/assignments/assignments";
 import Dashboard from "./components/dashboard/dashboard";
+import { withFirebase, isLoaded, isEmpty } from "react-redux-firebase";
+import LoginModal from "./components/auth/loginModal";
 
 const theme = {
 	global: {
@@ -46,7 +48,7 @@ const theme = {
 		elevation: {
 			light: {
 				none: "none",
-				xsmall: "0px 1px 2px rgba(0, 0, 0, 0.20)",
+				xsmall: "0px 1px 2px rgba(0, 0, 0, 0.05)",
 				small: "0px 2px 4px rgba(0, 0, 0, 0.20)",
 				medium: "0px 4px 8px rgba(0, 0, 0, 0.20)",
 				large: "0px 8px 16px rgba(0, 0, 0, 0.20)",
@@ -54,11 +56,11 @@ const theme = {
 			},
 			dark: {
 				none: "none",
-				xsmall: "0px 2px 2px rgba(255, 255, 255, 0.10)",
-				small: "0px 4px 4px rgba(255, 255, 255, 0.10)",
-				medium: "0px 6px 8px rgba(255, 255, 255, 0.10)",
-				large: "0px 8px 16px rgba(255, 255, 255, 0.10)",
-				xlarge: "0px 12px 24px rgba(255, 255, 255, 0.10)",
+				xsmall: "0px 2px 2px rgba(0, 0, 0, 0.05)",
+				small: "0px 2px 4px rgba(0, 0, 0, 0.20)",
+				medium: "0px 6px 8px rgba(0, 0, 0, 0.20)",
+				large: "0px 8px 16px rgba(0, 0, 0, 0.20)",
+				xlarge: "0px 12px 24px rgba(0, 0, 0, 0.20)",
 			},
 		},
 		font: {
@@ -140,6 +142,22 @@ class App extends React.Component {
 											</Stack>
 										);
 									case "small":
+										// if (isLoaded(this.props.auth)) {
+										// 	return (
+										// 		<Box fill>
+										// 			<Text> Loading</Text>
+										// 		</Box>
+										// 	);
+										// }
+
+										if (isEmpty(this.props.auth)) {
+											return (
+												<Box fill align='center' justify='center'>
+													<LoginModal />
+												</Box>
+											);
+										}
+
 										return this.props.selected_ass !== null ? (
 											<Box
 												fill

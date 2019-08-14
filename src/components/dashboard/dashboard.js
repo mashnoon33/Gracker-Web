@@ -49,6 +49,7 @@ class Dashboard extends React.Component {
 				<Box
 					direction='column'
 					gap='small'
+					elevation='small'
 					margin='small'
 					round='small'
 					pad={{ vertical: "small" }}
@@ -66,12 +67,12 @@ class Dashboard extends React.Component {
 						{late ? (
 							<CalIcon color='accent-4' />
 						) : (
-							<ScheduleNew color='accent-1' />
+							<ScheduleNew color='status-ok' />
 						)}
 						<Text
 							size='medium'
 							weight='bold'
-							color={late ? "accent-4" : "accent-1"}
+							color={late ? "accent-4" : "status-ok"}
 						>
 							{late ? "Late Assignments" : "Upcoming Assignment"}
 						</Text>
@@ -255,18 +256,26 @@ class Dashboard extends React.Component {
 		<ResponsiveContext.Consumer>
 			{size => (
 				<Box
+					// animation={{
+					// 	type: "pulse",
+					// 	duration: 20,
+					// 	delay: 500,
+					// 	size: "xsmall",
+					// }}
 					direction='column'
 					gap='xsmall'
+					elevation='small'
 					margin='small'
 					round='small'
+					fill={size === "small" ? "horizontal" : ""}
 					pad='small'
 					background={this.props.darkMode ? "#20273C" : "light-3"}
 					width={size === "small" ? "" : "400px"}
 					flex={false}
 				>
 					<Box direction='row' justify='start' align='center' gap='small'>
-						<Add color='accent-1' />
-						<Text size='medium' weight='bold' color='accent-1'>
+						<Add color='status-ok' />
+						<Text size='medium' weight='bold' color='status-ok'>
 							Course
 						</Text>
 					</Box>
@@ -352,6 +361,8 @@ class Dashboard extends React.Component {
 					direction='column'
 					gap='small'
 					margin='small'
+					elevation='small'
+					fill={size === "small" ? "horizontal" : ""}
 					round='small'
 					pad='small'
 					width={size === "small" ? "" : "400px"}
@@ -359,8 +370,8 @@ class Dashboard extends React.Component {
 					flex={false}
 				>
 					<Box direction='row' justify='start' align='center' gap='small'>
-						<Add color='accent-1' />
-						<Text size='medium' weight='bold' color='accent-1'>
+						<Add color='status-ok' />
+						<Text size='medium' weight='bold' color='status-ok'>
 							Assignment
 						</Text>
 					</Box>
@@ -373,6 +384,11 @@ class Dashboard extends React.Component {
 							});
 						}}
 					/>
+					<div>
+						{courses !== undefined && courses.length === 0 ? (
+							<Text>Please add a course first!</Text>
+						) : null}
+					</div>
 					<div>
 						{courses !== undefined &&
 							courses.map(course => {
@@ -462,6 +478,7 @@ class Dashboard extends React.Component {
 					direction='column'
 					gap='small'
 					margin='small'
+					elevation='small'
 					round='small'
 					// pad='small'
 					background={this.props.darkMode ? "#20273C" : "light-3"}
@@ -489,42 +506,52 @@ class Dashboard extends React.Component {
 
 		return (
 			<Box
-				background={this.props.darkMode ? "#29324D" : "light-1"}
+				pad='small'
+				background={this.props.darkMode ? "#29324D" : "#F8F8F8"}
 				fill
 				overflow={{
 					horizontal: "hidden",
 				}}
 			>
 				<Masonry>
-					{/* {asses !== undefined ? (
-						<this.Stats courses={courses} asses={asses} />
-					) : null} */}
 					{asses !== undefined ? (
-						<div>
-							<this.AssView
-								courses={courses}
-								asses={asses.filter(ass => {
-									return (
-										moment(ass.dueDate.toDate()).diff(moment(), "minutes") > 0
-									);
-								})}
-								late={false}
-							/>
-
-							<this.AssView
-								courses={courses}
-								asses={asses.filter(ass => {
-									return (
-										moment(ass.dueDate.toDate()).diff(moment(), "minutes") <
-											0 && !ass.done
-									);
-								})}
-								late={true}
-							/>
-						</div>
+						<ResponsiveContext.Consumer>
+							{size => (
+								<>
+									<Box fill={size === "small" ? "horizontal" : ""}>
+										<this.AssView
+											courses={courses}
+											asses={asses.filter(ass => {
+												return (
+													moment(ass.dueDate.toDate()).diff(
+														moment(),
+														"minutes"
+													) > 0
+												);
+											})}
+											late={false}
+										/>
+									</Box>
+									<Box fill={size === "small" ? "horizontal" : ""}>
+										<this.AssView
+											courses={courses}
+											asses={asses.filter(ass => {
+												return (
+													moment(ass.dueDate.toDate()).diff(
+														moment(),
+														"minutes"
+													) < 0 && !ass.done
+												);
+											})}
+											late={true}
+										/>
+									</Box>
+								</>
+							)}
+						</ResponsiveContext.Consumer>
 					) : null}
-					<this.AddCourseCard courses={courses} />
 					<this.AddAssCard courses={courses} />
+					<this.AddCourseCard courses={courses} />
 				</Masonry>
 			</Box>
 		);
