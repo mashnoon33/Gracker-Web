@@ -41,11 +41,25 @@ class LoginModal extends React.Component {
 					<span>Loading...</span>
 				) : isEmpty(auth) ? (
 					// <GoogleButton/> button can be used instead
-					<Button
-						icon={<Google />}
-						label='Login'
-						onClick={this.loginWithGoogle}
-					/>
+					<Box
+						gridArea='main'
+						justify='start'
+						round='small'
+						fill='horizontal'
+						direction='row'
+						align='center'
+						background={this.props.dark ? "#2F3852" : "light-4"}
+						elevation='xsmall'
+						gap='small'
+						pad='small'
+					>
+						<Button
+							icon={<Google />}
+							label='Sign In'
+							onClick={this.loginWithGoogle}
+							plain
+						/>
+					</Box>
 				) : (
 					<DropButton
 						dropAlign={{ top: "bottom", left: "left" }}
@@ -58,10 +72,10 @@ class LoginModal extends React.Component {
 								fill='horizontal'
 								direction='row'
 								align='center'
-								background={this.props.dark ? "#2F3852" : "light-4"}
-								elevation='xsmall'
+								// background={this.props.dark ? "#2F3852" : "light-4"}
+								// elevation='xsmall'
 								gap='small'
-								pad='small'
+								pad='xsmall'
 							>
 								<ExampleComponent
 									image={auth.photoURL}
@@ -69,7 +83,7 @@ class LoginModal extends React.Component {
 									imageWidth='30'
 									imageHeight='30'
 								/>
-								<Text size='medium' weight='bold' color='status-ok'>
+								<Text size='16px' weight='500' color='status-ok'>
 									{auth.displayName}
 								</Text>
 							</Box>

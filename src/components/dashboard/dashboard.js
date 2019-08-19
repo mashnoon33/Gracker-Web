@@ -32,16 +32,31 @@ import Masonry from "react-masonry-component";
 class Dashboard extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			width: 0,
+			height: 0,
+			ass_name: "",
+			selected_course: { id: "" },
+			dueDate: new Date(),
+			course_name: "",
+			color: "#FFFFFF",
+			course_abbr: "",
+		};
+		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 	}
 
-	state = {
-		ass_name: "",
-		selected_course: { id: "" },
-		dueDate: new Date(),
-		course_name: "",
-		color: "#FFFFFF",
-		course_abbr: "",
-	};
+	componentDidMount() {
+		this.updateWindowDimensions();
+		window.addEventListener("resize", this.updateWindowDimensions);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener("resize", this.updateWindowDimensions);
+	}
+
+	updateWindowDimensions() {
+		this.setState({ width: window.innerWidth, height: window.innerHeight });
+	}
 
 	AssView = ({ asses, courses, late }) => (
 		<ResponsiveContext.Consumer>
@@ -415,7 +430,7 @@ class Dashboard extends React.Component {
 											flex={false}
 										>
 											<Text
-												size='15px'
+												size='13px'
 												color={
 													this.state.selected_course.id === course.id
 														? "white"
@@ -471,88 +486,298 @@ class Dashboard extends React.Component {
 		</ResponsiveContext.Consumer>
 	);
 
-	Stats = (asses, courses) => (
-		<ResponsiveContext.Consumer>
-			{size => (
+	AssCard = ({ asses, courses }) => (
+		<Keyboard
+			onDown={() => {
+				if (this.props.selected_ass !== null) {
+					this.props.select_ass(
+						asses[
+							asses.indexOf(this.props.selected_ass) + 1 < asses.length
+								? asses.indexOf(this.props.selected_ass) + 1
+								: 0
+						]
+					);
+				}
+			}}
+			onUp={() => {
+				if (this.props.selected_ass !== null) {
+					this.props.select_ass(
+						asses[
+							asses.indexOf(this.props.selected_ass) > 0
+								? asses.indexOf(this.props.selected_ass) - 1
+								: asses.length - 1
+						]
+					);
+				}
+			}}
+		>
+			<Box
+				// elevation="small"
+				// round="small"
+				// flex='false'
+				// fill='horizontal'
+				fill
+				// background="white"
+				pad={{ left: "00px", right: "00px", top: "10px", bottom: "10px" }}
+			>
+				{asses !== undefined &&
+					asses.map(ass => {
+						return (
+							<Button
+								focusIndicator={false}
+								key={ass.name.toString()}
+								// disabled={ass.done ? true : false}
+								plain
+								onClick={() => {
+									// this.setState({
+									//   selected_ass: ass
+									// });
+									this.props.select_ass(ass);
+								}}
+							>
+								{({ hover }) => (
+									<Box
+										pad={{ left: "15px", right: "10px" }}
+										height='xxsmall'
+										// width="350px"
+										fill='horizontal'
+										background={
+											this.props.selected_ass !== null
+												? this.props.selected_ass.id === ass.id
+													? this.props.darkMode
+														? "#4D4B5C"
+														: "brand"
+													: hover
+													? this.props.darkMode
+														? "#30384f"
+														: "light-5"
+													: ""
+												: hover
+												? this.props.darkMode
+													? "#30384f"
+													: "light-5"
+												: ""
+										}
+										elevation={
+											this.props.selected_ass === null
+												? ""
+												: this.props.selected_ass.id === ass.id
+												? "medium"
+												: ""
+										}
+										align='center'
+										flex='false'
+										justify='start'
+										direction='row'
+										key={ass.id.toString()}
+									>
+										<Box flex={false}>
+											<CheckBox
+												name={ass.id.toString()}
+												checked={ass.done}
+												onChange={() => {
+													console.log("Mashnoon");
+
+													this.props.checkBox(ass, this.props.auth.uid);
+												}}
+											/>
+										</Box>
+										<Box
+											width='38px'
+											height='38px'
+											align='center'
+											justify='center'
+											direction='column'
+											flex={false}
+											// background='red'
+										>
+											<Text
+												color={this.props.darkMode ? "light-1" : ""}
+												size='small'
+											>
+												{" "}
+												{moment(ass.dueDate.toDate()).format("MMM")}
+											</Text>
+
+											<Text
+												color={this.props.darkMode ? "light-1" : ""}
+												size='medium'
+												weight='bold'
+											>
+												{" "}
+												{ass.dueDate.toDate().getDate()}
+											</Text>
+										</Box>
+
+										<Box
+											direction='column'
+											margin={{
+												left: "10px",
+												top: "0px",
+												bottom: "0px",
+											}}
+											flex={false}
+										>
+											<Box direction='row' justify='start' align='center'>
+												{moment(ass.dueDate.toDate()).diff(
+													moment(),
+													"minutes"
+												) < 0 ? (
+													<Box
+														// width='xxsmall'
+														background={
+															this.props.darkMode ? "neutral-4" : "status-error"
+														}
+														round='xxsmall'
+														height='12px'
+														width='20px'
+														margin={{
+															right: "5px",
+															vertical: "0px",
+														}}
+														justify='center'
+														align='center'
+														pad={{
+															left: "3px",
+															right: "3px",
+															vertical: "2px",
+														}}
+													>
+														<Text size='xsmall' weight='bold' color='white' />
+													</Box>
+												) : null}
+
+												<Text
+													color={this.props.darkMode ? "light-1" : ""}
+													weight='bold'
+													size='16px'
+												>
+													{ass.name}
+												</Text>
+											</Box>
+
+											<Text
+												color={this.props.darkMode ? "light-1" : ""}
+												size='14px'
+											>
+												{courses
+													? courses.find(obj => obj.id === ass.course)
+														? courses.find(obj => obj.id === ass.course).name
+														: ""
+													: ""}
+											</Text>
+										</Box>
+									</Box>
+								)}
+							</Button>
+						);
+					})}
+			</Box>
+		</Keyboard>
+	);
+
+	Days = ({ offset }) => (
+		<Box
+			width='300px'
+			// fill='vertical'
+			height={(this.state.height / 2 - 30).toString() + "px"}
+			// elevation='small'
+			round='small'
+			border='black'
+			flex={false}
+			margin='xsmall'
+			background='#FAFAFA'
+		>
+			<Box margin='xxssmall' direction='row' align='center'>
 				<Box
-					direction='column'
-					gap='small'
+					round='20px'
+					width='29px'
+					height='29px'
+					background='#DA4167'
+					align='center'
+					justify='center'
 					margin='small'
-					elevation='small'
-					round='small'
-					// pad='small'
-					background={this.props.darkMode ? "#20273C" : "light-3"}
-					width={size === "small" ? "" : "400px"}
-					flex={false}
-					height='small'
+					pad='xsmall'
 				>
-					<Box
-						height='50%'
-						pad='small'
-						round={{ size: "small", corner: "top" }}
-					>
-						<Text size='large'>
-							{" "}
-							{asses !== undefined ? asses.length : ""}{" "}
-						</Text>
-					</Box>
+					<Text color='white' weight='500' size=' '>
+						{" "}
+						{offset}
+					</Text>
 				</Box>
+
+				<Text size='20px' weight='500' color='#DA4167'>
+					{moment()
+						.add(offset, "days")
+						.format("dddd")}
+				</Text>
+				{/* <Text size='small'>
+						{" "}
+						{moment()
+							.startOf("week")
+							.add(offset, "days")
+							.format("MMMM Do YYYY")}
+					</Text> */}
+			</Box>
+			{this.props.asses === undefined ? null : (
+				<this.AssCard
+					courses={this.props.courses}
+					asses={this.props.asses.filter(ass => {
+						return moment(ass.dueDate.toDate()).isSame(
+							moment()
+								.startOf("week")
+								.add(1 + offset, "days"),
+							"day"
+						);
+					})}
+				/>
 			)}
-		</ResponsiveContext.Consumer>
+		</Box>
 	);
 
 	render() {
-		const { asses, courses } = this.props;
-
 		return (
 			<Box
 				pad='small'
-				background={this.props.darkMode ? "#29324D" : "#F8F8F8"}
+				background={this.props.darkMode ? "#29324D" : "white"}
 				fill
 				overflow={{
-					horizontal: "hidden",
+					horizontal: "scroll",
 				}}
 			>
+				<Box
+					pad={{ top: "10px", bottom: "20px" }}
+					fill='horizontal'
+					tag='header'
+					// pad='small'
+				>
+					<Box
+						gridArea='header'
+						justify='start'
+						align='center'
+						direction='row'
+						margin={{
+							vertical: "15px",
+							left: "8px",
+						}}
+					>
+						<Text
+							color={this.props.darkMode ? "accent-1" : "#2FB266"}
+							weight='500'
+							size='25px'
+						>
+							Dashboard
+						</Text>
+					</Box>
+				</Box>
+				{/* <Box direction='row' fill='vertical' gap='xsmall'> */}
 				<Masonry>
-					{asses !== undefined ? (
-						<ResponsiveContext.Consumer>
-							{size => (
-								<>
-									<Box fill={size === "small" ? "horizontal" : ""}>
-										<this.AssView
-											courses={courses}
-											asses={asses.filter(ass => {
-												return (
-													moment(ass.dueDate.toDate()).diff(
-														moment(),
-														"minutes"
-													) > 0
-												);
-											})}
-											late={false}
-										/>
-									</Box>
-									<Box fill={size === "small" ? "horizontal" : ""}>
-										<this.AssView
-											courses={courses}
-											asses={asses.filter(ass => {
-												return (
-													moment(ass.dueDate.toDate()).diff(
-														moment(),
-														"minutes"
-													) < 0 && !ass.done
-												);
-											})}
-											late={true}
-										/>
-									</Box>
-								</>
-							)}
-						</ResponsiveContext.Consumer>
-					) : null}
-					<this.AddAssCard courses={courses} />
-					<this.AddCourseCard courses={courses} />
+					{" "}
+					{Array.from(Array(7).keys()).map(offset => {
+						return <this.Days offset={offset} />;
+					})}
 				</Masonry>
+
+				{/* </Box> */}
 			</Box>
 		);
 	}

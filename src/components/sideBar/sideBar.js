@@ -8,7 +8,7 @@ import { Offline, Online } from "react-detect-offline";
 import { select_course } from "./../../store/actions/selectedCourseActions";
 import { select_ass } from "./../../store/actions/selectedAssActions";
 import { Sidebar } from "./grommetSideBar";
-import { Logout, Google, StatusPlaceholder, Actions } from "grommet-icons";
+import { Logout, Google, StatusPlaceholder, Actions, Add } from "grommet-icons";
 
 class SideBar extends React.Component {
 	constructor(props) {
@@ -27,30 +27,36 @@ class SideBar extends React.Component {
 			>
 				{({ hover }) => (
 					<Box
-						height='xxsmall'
+						height='35px'
 						background={
 							this.props.selected_course == null
 								? this.props.darkMode
 									? "#4D4B5C"
-									: "brand"
+									: "#2FB266"
 								: hover
 								? this.props.darkMode
 									? "#30384f"
-									: "light-5"
+									: "#2FB266"
 								: ""
 						}
-						elevation={this.props.selected_course === null ? "xsmall" : ""}
+						// elevation={this.props.selected_course === null ? "xsmall" : ""}
 						align='start'
 						flex={false}
 						justify='center'
 					>
 						<Box
 							direction='row'
-							margin={{ left: "20px", top: "0px", bottom: "0px" }}
+							margin={{ left: "medium", top: "0px", bottom: "0px" }}
 							gap='small'
 						>
 							<Box
-								background={this.props.darkMode ? "white" : "black"}
+								background={
+									this.props.selected_course == null
+										? this.props.darkMode
+											? "#FFFAFF"
+											: "#FFFAFF"
+										: "#2FB266"
+								}
 								round='xxsmall'
 								height='12px'
 								width='10px'
@@ -68,9 +74,15 @@ class SideBar extends React.Component {
 								}}
 							/>
 							<Text
-								color={this.props.darkMode ? "light-1" : ""}
-								weight='bold'
-								size='12'
+								color={
+									this.props.selected_course == null
+										? this.props.darkMode
+											? "#FFFAFF"
+											: "#FFFAFF"
+										: "#0A0908"
+								}
+								weight='500'
+								size='16px'
 							>
 								Dashboard
 							</Text>
@@ -78,6 +90,89 @@ class SideBar extends React.Component {
 					</Box>
 				)}
 			</Button>
+
+			<Button
+				focusIndicator={false}
+				plain
+				onClick={() => {
+					this.props.select_course(null);
+					this.props.select_ass(null);
+				}}
+			>
+				{({ hover }) => (
+					<Box
+						height='35px'
+						// background={
+						// 	this.props.selected_course == null
+						// 		? this.props.darkMode
+						// 			? "#4D4B5C"
+						// 			: "#2FB266"
+						// 		: hover
+						// 		? this.props.darkMode
+						// 			? "#30384f"
+						// 			: "#2FB266"
+						// 		: ""
+						// }
+						// elevation={this.props.selected_course === null ? "xsmall" : ""}
+						align='start'
+						flex={false}
+						justify='center'
+					>
+						<Box
+							direction='row'
+							margin={{ left: "medium", top: "0px", bottom: "0px" }}
+							gap='small'
+						>
+							<Box
+								background={"grey"}
+								round='xxsmall'
+								height='12px'
+								width='10px'
+								fill='vertical'
+								margin={{
+									right: "2px",
+									vertical: "0px",
+								}}
+								justify='center'
+								align='center'
+								pad={{
+									left: "3px",
+									right: "3px",
+									vertical: "2px",
+								}}
+							/>
+							<Text
+								// color={
+								// 	this.props.selected_course == null
+								// 		? this.props.darkMode
+								// 			? "#FFFAFF"
+								// 			: "#FFFAFF"
+								// 		: "#0A0908"
+								// }
+								weight='500'
+								size='16px'
+							>
+								Calendar
+							</Text>
+						</Box>
+					</Box>
+				)}
+			</Button>
+
+			<Box>
+				<Text
+					margin={{
+						top: "medium",
+						left: "medium",
+						bottom: " medium",
+					}}
+					weight='bold'
+					color='#767376'
+					size='14px'
+				>
+					COURSES
+				</Text>
+			</Box>
 
 			{courses !== undefined &&
 				courses.map(course => {
@@ -94,13 +189,12 @@ class SideBar extends React.Component {
 							{({ hover }) => (
 								// TODO: Add Hover highlight background for darkmdode!
 								<Box
-									height='xxsmall'
 									background={
 										this.props.selected_course !== null
 											? this.props.selected_course.id === course.id
 												? this.props.darkMode
 													? "#4D4B5C"
-													: "brand"
+													: "#2FB266"
 												: hover
 												? this.props.darkMode
 													? "#30384f"
@@ -112,13 +206,7 @@ class SideBar extends React.Component {
 												: "light-5"
 											: ""
 									}
-									elevation={
-										this.props.selected_course === null
-											? ""
-											: this.props.selected_course.id === course.id
-											? "xsmall"
-											: ""
-									}
+									height='35px'
 									align='start'
 									flex='false'
 									justify='center'
@@ -126,15 +214,22 @@ class SideBar extends React.Component {
 									<Box
 										direction='Row'
 										margin={{
-											left: "20px",
+											left: "medium",
 											top: "0px",
 											bottom: "0px",
-											right: "10px",
 										}}
 										gap='small'
 									>
 										<Box
-											background={course.color}
+											background={
+												this.props.selected_course !== null
+													? this.props.selected_course.id === course.id
+														? this.props.darkMode
+															? course.color
+															: "#FFFAFF"
+														: course.color
+													: course.color
+											}
 											round='xxsmall'
 											height='12px'
 											width='10px'
@@ -152,9 +247,17 @@ class SideBar extends React.Component {
 											}}
 										/>
 										<Text
-											color={this.props.darkMode ? "light-1" : ""}
-											weight='bold'
-											size='12'
+											color={
+												this.props.selected_course !== null
+													? this.props.selected_course.id === course.id
+														? this.props.darkMode
+															? "#FFFAFF"
+															: "#FFFAFF"
+														: ""
+													: " "
+											}
+											weight='500'
+											size='16px'
 										>
 											{course.name}
 										</Text>
@@ -164,6 +267,58 @@ class SideBar extends React.Component {
 						</Button>
 					);
 				})}
+
+			<Button
+				focusIndicator={false}
+				plain
+				onClick={() => {
+					this.props.select_course(null);
+					this.props.select_ass(null);
+				}}
+			>
+				{({ hover }) => (
+					<Box
+						height='35px'
+						// background={
+						// 	this.props.selected_course == null
+						// 		? this.props.darkMode
+						// 			? "#4D4B5C"
+						// 			: "#2FB266"
+						// 		: hover
+						// 		? this.props.darkMode
+						// 			? "#30384f"
+						// 			: "#2FB266"
+						// 		: ""
+						// }
+						// elevation={this.props.selected_course === null ? "xsmall" : ""}
+						align='start'
+						flex={false}
+						justify='center'
+					>
+						<Box
+							direction='row'
+							margin={{ left: "medium", top: "0px", bottom: "0px" }}
+							gap='small'
+						>
+							<Add size='16px' />
+							<Text
+								// color={
+								// 	this.props.selected_course == null
+								// 		? this.props.darkMode
+								// 			? "#FFFAFF"
+								// 			: "#FFFAFF"
+								// 		: "#0A0908"
+								// }
+								weight='500'
+								size='16px'
+								color='grey'
+							>
+								Add New Course
+							</Text>
+						</Box>
+					</Box>
+				)}
+			</Button>
 		</Box>
 	);
 
@@ -179,7 +334,7 @@ class SideBar extends React.Component {
 			<ResponsiveContext.Consumer>
 				{size => (
 					<Box
-						background={this.props.darkMode ? "#20273C" : "light-3"}
+						background={this.props.darkMode ? "#20273C" : "#F4EFF4"}
 						elevation='small'
 						align='center'
 						direction='column'
@@ -199,18 +354,12 @@ class SideBar extends React.Component {
 								justify='start'
 								align='center'
 								direction='row'
+								margin='medium'
 							>
-								<Button
-									icon={
-										<StatusPlaceholder
-											color={this.props.darkMode ? "accent-1" : "status-ok"}
-										/>
-									}
-								/>
 								<Text
-									color={this.props.darkMode ? "accent-1" : "status-ok"}
+									color={this.props.darkMode ? "accent-1" : "#2FB266"}
 									weight='bold'
-									size='large'
+									size='25px'
 								>
 									Gracker
 								</Text>

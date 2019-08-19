@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grommet, Stack, ResponsiveContext, Text } from "grommet";
+import { Box, Grommet, Stack, ResponsiveContext, Text, Button } from "grommet";
 import { CircleQuestion } from "grommet-icons";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
@@ -11,8 +11,18 @@ import Assignment from "./components/assignments/assignments";
 import Dashboard from "./components/dashboard/dashboard";
 import { withFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import LoginModal from "./components/auth/loginModal";
+import { Logout, Google, StatusPlaceholder, Actions } from "grommet-icons";
 
 const theme = {
+	checkBox: {
+		check: {
+			radius: "20px",
+		},
+		// color: "#DA4167",
+		border: {
+			// color: "#DA4167",
+		},
+	},
 	global: {
 		breakpoints: {
 			small: {
@@ -89,6 +99,64 @@ const theme = {
 
 class App extends React.Component {
 	render() {
+		if (isEmpty(this.props.auth)) {
+			return (
+				<Grommet theme={theme} full>
+					<Box fill align='center' justify='center' gap='small'>
+						<Box
+							align='center'
+							justify='start'
+							// elevation='small'
+							background='white'
+							pad='small'
+							round='small'
+						>
+							<Box
+								justify='start'
+								align='center'
+								direction='column'
+								animation={{
+									type: "fadeIn",
+									delay: 0,
+									duration: 2000,
+									size: "xsmall",
+								}}
+							>
+								<Button
+									icon={
+										<StatusPlaceholder
+											size='300px'
+											color={this.props.darkMode ? "accent-1" : "status-ok"}
+										/>
+									}
+								/>
+								<Text
+									color={this.props.darkMode ? "accent-1" : "status-ok"}
+									weight='bold'
+									size='70px'
+								>
+									Gracker
+								</Text>
+							</Box>
+							<Box
+								animation={{
+									type: "fadeIn",
+									delay: 0,
+									duration: 3000,
+									size: "xsmall",
+								}}
+								flex={false}
+								align='center'
+								pad='large'
+								justify='center'
+							>
+								<LoginModal />
+							</Box>
+						</Box>
+					</Box>
+				</Grommet>
+			);
+		}
 		return (
 			<Grommet theme={theme} full>
 				<Box
