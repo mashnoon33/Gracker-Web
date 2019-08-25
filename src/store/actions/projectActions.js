@@ -1,11 +1,12 @@
 import firebase from "firebase";
+import moment from "moment";
 
 const uuidv1 = require("uuid/v1");
 
-export const addAss = (assName, course, uid, date) => {
+export const addAss = (assName, course, uid, date, uuid) => {
 	var ass = {
 		name: assName,
-		id: uuidv1(),
+		id: uuid === null ? uuidv1() : uuid,
 		hide: false,
 		dueDate: date,
 		done: false,
@@ -22,7 +23,15 @@ export const addAss = (assName, course, uid, date) => {
 			.doc(ass.id)
 			.set(ass)
 			.then(() => {
-				dispatch({ type: "CREATE_PROJECT_SUCCESS" });
+				if (uuid === null) {
+					ass.dueDate = moment(ass.dueDate);
+					console.log("Mash is sexy a f");
+					dispatch({ type: "SELECT_ASS", ass });
+				} else {
+					console.log("MAtt is sexy a f");
+
+					dispatch({ type: "CREATE_PROJECT_SUCCESS" });
+				}
 			})
 			.catch(err => {
 				dispatch({ type: "CREATE_PROJECT_ERROR" }, err);
@@ -48,7 +57,7 @@ export const addCourse = (courseName, uid, abbr, color) => {
 			.doc(course.id)
 			.set(course)
 			.then(() => {
-				dispatch({ type: "CREATE_COURSE_SUCCESS" });
+				dispatch({ type: "SELECT", course });
 			})
 			.catch(err => {
 				dispatch({ type: "CREATE_COURSE_ERROR" }, err);

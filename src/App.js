@@ -12,6 +12,7 @@ import Dashboard from "./components/dashboard/dashboard";
 import { withFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import LoginModal from "./components/auth/loginModal";
 import { Logout, Google, StatusPlaceholder, Actions } from "grommet-icons";
+import AddCourse from "./components/course/addCourse";
 
 const theme = {
 	checkBox: {
@@ -26,11 +27,11 @@ const theme = {
 	global: {
 		breakpoints: {
 			small: {
-				value: 700,
+				value: 808,
 			},
 
 			medium: {
-				value: 1000,
+				value: 1108,
 			},
 			// large: {
 			// 	value: 1500,
@@ -107,33 +108,15 @@ class App extends React.Component {
 							align='center'
 							justify='start'
 							// elevation='small'
-							background='white'
+
 							pad='small'
 							round='small'
 						>
-							<Box
-								justify='start'
-								align='center'
-								direction='column'
-								animation={{
-									type: "fadeIn",
-									delay: 0,
-									duration: 2000,
-									size: "xsmall",
-								}}
-							>
-								<Button
-									icon={
-										<StatusPlaceholder
-											size='300px'
-											color={this.props.darkMode ? "accent-1" : "status-ok"}
-										/>
-									}
-								/>
+							<Box justify='start' align='center' direction='column'>
 								<Text
-									color={this.props.darkMode ? "accent-1" : "status-ok"}
+									color={this.props.darkMode ? "accent-1" : "brand"}
 									weight='bold'
-									size='70px'
+									size='5vw'
 								>
 									Gracker
 								</Text>
@@ -160,12 +143,21 @@ class App extends React.Component {
 		return (
 			<Grommet theme={theme} full>
 				<Box
+					background={this.props.darkMode ? "#2f3852" : "FFFAFF"}
 					overflow={{
 						vertical: "hidden",
 					}}
 					fill
+					animation={{
+						type: "fadeIn",
+						delay: 0,
+						duration: 2000,
+						size: "xsmall",
+					}}
 				>
-					{
+					{this.props.selected_course === "add" ? (
+						<AddCourse />
+					) : (
 						<ResponsiveContext.Consumer>
 							{size => {
 								switch (size) {
@@ -280,7 +272,7 @@ class App extends React.Component {
 														}}
 													>
 														{this.props.selected_course == null ? (
-															<Box fill='horizontal'>
+															<Box width='360px' flex={false}>
 																{" "}
 																<SideBar />
 															</Box>
@@ -316,7 +308,7 @@ class App extends React.Component {
 								}
 							}}
 						</ResponsiveContext.Consumer>
-					}
+					)}
 				</Box>
 			</Grommet>
 		);

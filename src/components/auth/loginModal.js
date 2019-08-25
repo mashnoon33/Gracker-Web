@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Edit } from "grommet-icons";
+import { Edit, Help } from "grommet-icons";
 import { Offline, Online } from "react-detect-offline";
 
 import { Box, Button, Grid, Text, DropButton } from "grommet";
@@ -17,6 +17,15 @@ import ExampleComponent from "react-rounded-image";
 class LoginModal extends React.Component {
 	loginWithGoogle() {
 		return firebase.login({ provider: "google", type: "popup" });
+	}
+
+	demoLogin() {
+		firebase
+			.auth()
+			.signInWithEmailAndPassword("demo@demo.com", "demodemo")
+			.catch(function(err) {
+				// Handle errors
+			});
 	}
 
 	logout() {
@@ -48,16 +57,21 @@ class LoginModal extends React.Component {
 						fill='horizontal'
 						direction='row'
 						align='center'
-						background={this.props.dark ? "#2F3852" : "light-4"}
-						elevation='xsmall'
+						// background={this.props.dark ? "#2F3852" : "light-4"}
+
 						gap='small'
 						pad='small'
 					>
 						<Button
 							icon={<Google />}
 							label='Sign In'
+							primary
 							onClick={this.loginWithGoogle}
-							plain
+						/>
+						<Button
+							icon={<Help color='brand' />}
+							label='Demo'
+							onClick={this.demoLogin}
 						/>
 					</Box>
 				) : (

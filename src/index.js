@@ -44,9 +44,7 @@ ReactDOM.render(
 			{" "}
 			<div
 				style={{
-					WebkitScrollbar: {
-						width: "0px",
-					},
+					backgroundColor: "#FFFAFF",
 				}}
 			>
 				<App />

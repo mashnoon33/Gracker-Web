@@ -75,6 +75,51 @@ class Assignments extends React.Component {
 				// background="white"
 				pad={{ left: "00px", right: "00px", top: "10px", bottom: "10px" }}
 			>
+				<Button
+					focusIndicator={false}
+					// disabled={ass.done ? true : false}
+					plain
+					onClick={() => {
+						this.props.select_ass("add");
+					}}
+				>
+					{({ hover }) => (
+						<Box
+							pad={{ left: "10px", right: "10px" }}
+							height='xxsmall'
+							// width="350px"
+							fill='horizontal'
+							align='center'
+							flex='false'
+							justify='start'
+							direction='row'
+						>
+							<Box
+								width='38px'
+								height='38px'
+								align='center'
+								justify='center'
+								direction='column'
+								flex={false}
+								// background='red'
+							>
+								<Add />
+							</Box>
+
+							<Box
+								direction='column'
+								margin={{
+									left: "10px",
+									top: "0px",
+									bottom: "0px",
+								}}
+								flex={false}
+							>
+								<Text>Add New Course</Text>
+							</Box>
+						</Box>
+					)}
+				</Button>
 				{asses !== undefined &&
 					asses.map(ass => {
 						return (
@@ -111,13 +156,6 @@ class Assignments extends React.Component {
 												? this.props.darkMode
 													? "#30384f"
 													: "light-5"
-												: ""
-										}
-										elevation={
-											this.props.selected_ass === null
-												? ""
-												: this.props.selected_ass.id === ass.id
-												? "medium"
 												: ""
 										}
 										align='center'
@@ -173,7 +211,12 @@ class Assignments extends React.Component {
 											}}
 											flex={false}
 										>
-											<Box direction='row' justify='start' align='center'>
+											<Box
+												direction='row'
+												width='260px'
+												justify='start'
+												align='center'
+											>
 												{moment(ass.dueDate.toDate()).diff(
 													moment(),
 													"minutes"
@@ -206,6 +249,7 @@ class Assignments extends React.Component {
 													color={this.props.darkMode ? "light-1" : ""}
 													weight='bold'
 													size='12'
+													truncate={true}
 												>
 													{ass.name}
 												</Text>
@@ -237,13 +281,14 @@ class Assignments extends React.Component {
 		return (
 			<Box
 				direction='column'
-				fill
-				elevation='small'
-				// overflow={{
-				// 	horizontal: "hidden",
-				// }}
-				pad={{ vertical: "10px" }}
+				width='360px'
+				flex={false}
 				background={this.props.darkMode ? "#29324D" : "light-1"}
+				border={{
+					color: "border",
+
+					side: "right",
+				}}
 			>
 				<Box pad={{ vertical: "small" }}>
 					{this.props.selected_course !== null ? (
@@ -272,84 +317,53 @@ class Assignments extends React.Component {
 								direction='row'
 								fill='horizontal'
 								align='center'
-								pad={{
-									right: "10px",
-								}}
 							>
 								<Box
-									// flex={false}
-									// background='red'
 									fill='horizontal'
-									direction='row-responsive'
+									tag='header'
+									// pad='small'
 								>
 									<Box
-										background={this.props.selected_course.color}
-										round='xxsmall'
-										flex={false}
-										height='20px'
-										width='10px'
-										// fill='vertical'
-										margin={{
-											right: "10px",
-											vertical: "0px",
-										}}
-										justify='center'
+										justify='start'
 										align='center'
-										pad={{
-											left: "3px",
-											right: "3px",
-											vertical: "2px",
+										direction='row'
+										margin={{
+											left: " small",
+											top: "medium",
+											bottom: "small",
 										}}
-									/>
-									<Box flex={false}>
-										<Text weight='bold'>{this.props.selected_course.name}</Text>
+									>
+										<Box
+											// flex={false}
+											// background='red'
+											fill='horizontal'
+											direction='row-responsive'
+										>
+											<Box
+												background={this.props.selected_course.color}
+												round='xxsmall'
+												width='12px'
+												flex={false}
+												// fill='vertical'
+												margin={{
+													right: "10px",
+													vertical: "0px",
+												}}
+												justify='center'
+												align='center'
+												pad={{
+													left: "3px",
+													right: "3px",
+													vertical: "2px",
+												}}
+											/>
+											<Box flex={false}>
+												<Text weight='500' size='20px' color='brand'>
+													{this.props.selected_course.name}
+												</Text>
+											</Box>
+										</Box>
 									</Box>
-								</Box>
-								<Box
-									direction='row'
-									// fill='horizontal'
-									flex={false}
-									// width='fill'
-									// justify='end'
-									gap='small'
-								>
-									<Button plain>
-										{({ hover }) =>
-											hover ? (
-												<Edit color='status-ok' size='15px' />
-											) : (
-												<Edit size='15px' />
-											)
-										}
-									</Button>
-									<Button plain>
-										{({ hover }) =>
-											hover ? (
-												<Trash
-													color='status-error'
-													size='15px'
-													onClick={() => {
-														this.props.delete_course(
-															this.props.selected_course,
-															this.props.auth.uid,
-															this.props.projects
-														);
-													}}
-												/>
-											) : (
-												<Trash
-													size='15px'
-													onClick={() => {
-														this.props.delete_course(
-															this.props.selected_course,
-															this.props.auth.uid,
-															this.props.projects
-														);
-													}}
-												/>
-											)
-										}
-									</Button>
 								</Box>
 							</Box>
 						</Box>

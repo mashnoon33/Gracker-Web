@@ -31,12 +31,12 @@ class SideBar extends React.Component {
 						background={
 							this.props.selected_course == null
 								? this.props.darkMode
-									? "#4D4B5C"
-									: "#2FB266"
+									? "brand"
+									: "brand"
 								: hover
 								? this.props.darkMode
 									? "#30384f"
-									: "#2FB266"
+									: "light-5"
 								: ""
 						}
 						// elevation={this.props.selected_course === null ? "xsmall" : ""}
@@ -55,7 +55,7 @@ class SideBar extends React.Component {
 										? this.props.darkMode
 											? "#FFFAFF"
 											: "#FFFAFF"
-										: "#2FB266"
+										: "brand"
 								}
 								round='xxsmall'
 								height='12px'
@@ -106,11 +106,11 @@ class SideBar extends React.Component {
 						// 	this.props.selected_course == null
 						// 		? this.props.darkMode
 						// 			? "#4D4B5C"
-						// 			: "#2FB266"
+						// 			: "brand"
 						// 		: hover
 						// 		? this.props.darkMode
 						// 			? "#30384f"
-						// 			: "#2FB266"
+						// 			: "brand"
 						// 		: ""
 						// }
 						// elevation={this.props.selected_course === null ? "xsmall" : ""}
@@ -194,7 +194,7 @@ class SideBar extends React.Component {
 											? this.props.selected_course.id === course.id
 												? this.props.darkMode
 													? "#4D4B5C"
-													: "#2FB266"
+													: "brand"
 												: hover
 												? this.props.darkMode
 													? "#30384f"
@@ -215,8 +215,6 @@ class SideBar extends React.Component {
 										direction='Row'
 										margin={{
 											left: "medium",
-											top: "0px",
-											bottom: "0px",
 										}}
 										gap='small'
 									>
@@ -272,7 +270,7 @@ class SideBar extends React.Component {
 				focusIndicator={false}
 				plain
 				onClick={() => {
-					this.props.select_course(null);
+					this.props.select_course("add");
 					this.props.select_ass(null);
 				}}
 			>
@@ -283,11 +281,11 @@ class SideBar extends React.Component {
 						// 	this.props.selected_course == null
 						// 		? this.props.darkMode
 						// 			? "#4D4B5C"
-						// 			: "#2FB266"
+						// 			: "brand"
 						// 		: hover
 						// 		? this.props.darkMode
 						// 			? "#30384f"
-						// 			: "#2FB266"
+						// 			: "brand"
 						// 		: ""
 						// }
 						// elevation={this.props.selected_course === null ? "xsmall" : ""}
@@ -334,6 +332,11 @@ class SideBar extends React.Component {
 			<ResponsiveContext.Consumer>
 				{size => (
 					<Box
+						border={{
+							color: "border",
+
+							side: "right",
+						}}
 						background={this.props.darkMode ? "#20273C" : "#F4EFF4"}
 						elevation='small'
 						align='center'
@@ -350,14 +353,13 @@ class SideBar extends React.Component {
 							// pad='small'
 						>
 							<Box
-								gridArea='header'
 								justify='start'
 								align='center'
 								direction='row'
 								margin='medium'
 							>
 								<Text
-									color={this.props.darkMode ? "accent-1" : "#2FB266"}
+									color={this.props.darkMode ? "accent-1" : "brand"}
 									weight='bold'
 									size='25px'
 								>
@@ -367,10 +369,8 @@ class SideBar extends React.Component {
 						</Box>
 						<Box fill>
 							<Box flex overflow='auto'>
-								{courses === undefined || courses.length === 0 ? null : (
-									<this.CourseList
-										courses={courses[0].Courses ? courses[0].Courses : courses}
-									/>
+								{courses === undefined ? null : (
+									<this.CourseList courses={courses} />
 								)}
 							</Box>
 
