@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "551481167824",
+    "firebase_url": "https://garcker-mash-studio.firebaseio.com",
+    "project_id": "garcker-mash-studio",
+    "storage_bucket": "garcker-mash-studio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551481167824:android:5acf38e7a4631604",
+        "android_client_info": {
+          "package_name": "studio.mash.gracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "551481167824-98qt4d35c65cp3dkc8vvpb4pfufjlfgf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "studio.mash.gracker",
+            "certificate_hash": "ef72fc2f83a7c3ec31525db826d16dc45d38c29d"
+          }
+        },
+        {
+          "client_id": "551481167824-agie748kaurcc60bc7n2iv4752v1er1g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "studio.mash.gracker",
+            "certificate_hash": "2bb62a655796da20669ec20948b6b3e69a9bf778"
+          }
+        },
+        {
+          "client_id": "551481167824-ad2epb55kf629tg5n6iijq18ru5qq8p2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD__79Ho53wcCv0fdD-PWIonE1zQal4uZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "551481167824-ad2epb55kf629tg5n6iijq18ru5qq8p2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "551481167824-9euu17au264i8jr6861stcltftd0v88k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "studio.mash.gracker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
