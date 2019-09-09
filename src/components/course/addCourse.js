@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef, Component } from "react";
 import {
 	Box,
 	Button,
@@ -6,7 +6,7 @@ import {
 	Calendar,
 	Accordion,
 	AccordionPanel,
-	DropButton,
+	Drop,
 	TextInput,
 	Stack,
 	ResponsiveContext,
@@ -36,10 +36,13 @@ import "react-quill/dist/quill.core.css"; // ES6
 import ReactQuill from "react-quill"; // ES6
 
 class AddCourse extends React.Component {
+	targetRef = createRef();
+
 	state = {
 		course_name: "",
 		color: "#FFFFFF",
 		course_abbr: "",
+		suggestions: [],
 	};
 	render() {
 		return (
@@ -61,11 +64,11 @@ class AddCourse extends React.Component {
 						fill
 						background={this.props.darkMode ? "#2f3852" : "FFFAFF"}
 						align='center'
-						justify='center'
+						justify='start'
 					>
 						<Box
 							align='center'
-							justify='center'
+							justify='start'
 							flex
 							overflow={{
 								horizontal: "hidden",
@@ -74,30 +77,23 @@ class AddCourse extends React.Component {
 							<Box
 								fill='vertical'
 								align='center'
-								justify='center'
+								justify='start'
 								gap='small'
 								background='#FFFAFF'
+								pad={{ top: "xlarge" }}
 							>
 								<ResponsiveContext.Consumer>
 									{size => (
 										<Box
-											// animation={{
-											// 	type: "pulse",
-											// 	duration: 20,
-											// 	delay: 500,
-											// 	size: "xsmall",
-											// }}
 											direction='column'
 											gap='xsmall'
 											align='center'
-											justify='center'
+											justify='start'
 											margin='small'
-											round='small'
 											fill='vertical'
 											pad='small'
 											background={this.props.darkMode ? "#FFFAFF" : "#FFFAFF"}
-											width={size === "small" ? "" : "400px"}
-											flex={false}
+											width={size === "small" ? "" : "550px"}
 										>
 											<Box
 												direction='row'
@@ -112,14 +108,46 @@ class AddCourse extends React.Component {
 											</Box>
 
 											<TextInput
+												ref={this.targetRef}
 												placeholder='Course Name'
+												dropHeight='large'
 												value={this.state.course_name}
+												suggestions={this.state.suggestions}
+												// plain={false}
 												onChange={event => {
 													this.setState({
 														course_name: event.target.value,
 													});
+													var suggestions = this.props.carletonCourses.filter(
+														course => {
+															return course.label
+																.toLowerCase()
+																.includes(event.target.value.toLowerCase());
+														}
+													);
+
+													console.log(suggestions);
+													this.setState({
+														suggestions: suggestions,
+													});
+												}}
+												onSelect={event => {
+													console.log("select", event);
+													this.setState({
+														course_name: event.suggestion.label,
+													});
 												}}
 											/>
+
+											{/* {this.targetRef.current && (
+												<Drop
+													align={{ top: "bottom", left: "left" }}
+													target={this.targetRef.current}
+												>
+													<Box pad='xsmall' />
+												</Drop>
+											)} */}
+
 											{/* <TextInput
 								placeholder='Abbriviation'
 								value={this.state.course_abbr}
@@ -145,7 +173,7 @@ class AddCourse extends React.Component {
 														// "#9b0062",
 														"#7a7574",
 													]}
-													width='350px'
+													width='500px'
 													onChange={color => {
 														console.log(color);
 														this.setState({
@@ -217,6 +245,7 @@ const mapStateToProps = state => {
 			projects: state.projects,
 			selected_course: state.selectedCourse,
 			selected_ass: state.selectedAss,
+			carletonCourses: state.carletonCourses,
 		};
 	}
 
@@ -227,6 +256,7 @@ const mapStateToProps = state => {
 		courses: state.firestore.ordered["Courses"],
 		selected_course: state.selectedCourse,
 		selected_ass: state.selectedAss,
+		carletonCourses: state.carletonCourses,
 	};
 };
 

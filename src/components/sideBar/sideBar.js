@@ -95,24 +95,24 @@ class SideBar extends React.Component {
 				focusIndicator={false}
 				plain
 				onClick={() => {
-					this.props.select_course(null);
+					this.props.select_course("Calendar");
 					this.props.select_ass(null);
 				}}
 			>
 				{({ hover }) => (
 					<Box
 						height='35px'
-						// background={
-						// 	this.props.selected_course == null
-						// 		? this.props.darkMode
-						// 			? "#4D4B5C"
-						// 			: "brand"
-						// 		: hover
-						// 		? this.props.darkMode
-						// 			? "#30384f"
-						// 			: "brand"
-						// 		: ""
-						// }
+						background={
+							this.props.selected_course === "Calendar"
+								? this.props.darkMode
+									? "brand"
+									: "brand"
+								: hover
+								? this.props.darkMode
+									? "#30384f"
+									: "light-5"
+								: ""
+						}
 						// elevation={this.props.selected_course === null ? "xsmall" : ""}
 						align='start'
 						flex={false}
@@ -217,6 +217,7 @@ class SideBar extends React.Component {
 											left: "medium",
 										}}
 										gap='small'
+										width='280px'
 									>
 										<Box
 											background={
@@ -256,6 +257,7 @@ class SideBar extends React.Component {
 											}
 											weight='500'
 											size='16px'
+											truncate={true}
 										>
 											{course.name}
 										</Text>

@@ -9,9 +9,13 @@ import Detail from "./components/detail/detail";
 import SideBar from "./components/sideBar/sideBar";
 import Assignment from "./components/assignments/assignments";
 import Dashboard from "./components/dashboard/dashboard";
+import CalDashboard from "./components/Calendar/calendar";
+
 import { withFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import LoginModal from "./components/auth/loginModal";
 import { Logout, Google, StatusPlaceholder, Actions } from "grommet-icons";
+import { fetchCarletonCourses } from "./store/actions/fetchCarletonCourses";
+
 import AddCourse from "./components/course/addCourse";
 
 const theme = {
@@ -99,6 +103,10 @@ const theme = {
 };
 
 class App extends React.Component {
+	componentWillMount() {
+		this.props.fetchCarletonCourses();
+	}
+
 	render() {
 		if (isEmpty(this.props.auth)) {
 			return (
@@ -178,6 +186,8 @@ class App extends React.Component {
 														<SideBar />
 														{this.props.selected_course == null ? (
 															<Dashboard />
+														) : this.props.selected_course === "Calendar" ? (
+															<CalDashboard />
 														) : (
 															<>
 																<Assignment />
@@ -238,6 +248,11 @@ class App extends React.Component {
 												{" "}
 												<Dashboard />
 											</Box>
+										) : this.props.selected_course === "Calendar" ? (
+											<Box fill='vertical' background='red	'>
+												{" "}
+												<CalDashboard />
+											</Box>
 										) : this.props.selected_ass == null ? (
 											<Assignment />
 										) : (
@@ -282,6 +297,8 @@ class App extends React.Component {
 
 														{this.props.selected_course == null ? (
 															<Dashboard />
+														) : this.props.selected_course === "Calendar" ? (
+															<CalDashboard />
 														) : (
 															<Detail />
 														)}
@@ -338,8 +355,17 @@ const mapStateToProps = state => {
 	};
 };
 
+const mapDispatchToProps = dispatch => {
+	return {
+		fetchCarletonCourses: () => dispatch(fetchCarletonCourses()),
+	};
+};
+
 export default compose(
-	connect(mapStateToProps),
+	connect(
+		mapStateToProps,
+		mapDispatchToProps
+	),
 	firestoreConnect(props => [
 		{
 			collection: "Users",

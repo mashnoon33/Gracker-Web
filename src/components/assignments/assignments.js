@@ -115,7 +115,7 @@ class Assignments extends React.Component {
 								}}
 								flex={false}
 							>
-								<Text>Add New Course</Text>
+								<Text>Add New Assignment</Text>
 							</Box>
 						</Box>
 					)}
@@ -338,11 +338,13 @@ class Assignments extends React.Component {
 											// background='red'
 											fill='horizontal'
 											direction='row-responsive'
+											align='center'
 										>
 											<Box
 												background={this.props.selected_course.color}
 												round='xxsmall'
 												width='12px'
+												height='25px'
 												flex={false}
 												// fill='vertical'
 												margin={{
@@ -357,8 +359,8 @@ class Assignments extends React.Component {
 													vertical: "2px",
 												}}
 											/>
-											<Box flex={false}>
-												<Text weight='500' size='20px' color='brand'>
+											<Box flex={false} width='300px'>
+												<Text weight='500px' size='20px' color='brand'>
 													{this.props.selected_course.name}
 												</Text>
 											</Box>

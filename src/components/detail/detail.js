@@ -11,6 +11,8 @@ import {
 	CheckBox,
 	ResponsiveContext,
 } from "grommet";
+import { MaskedInput } from "grommet-controls";
+
 import {
 	CatalogOption,
 	Alarm,
@@ -25,6 +27,7 @@ import {
 	checkBox,
 	delete_ass,
 	addAss,
+	saveNote,
 } from "./../../store/actions/projectActions";
 import { select_course } from "./../../store/actions/selectedCourseActions";
 import { select_ass } from "./../../store/actions/selectedAssActions";
@@ -43,6 +46,8 @@ class Detail extends React.Component {
 			selected_course: { id: "" },
 			dueDate: new Date(),
 			prevCourse: { id: "" },
+			lastSave: new Date(),
+			updateDue: false,
 			// course_name: "",
 			// color: "#FFFFFF",
 			// course_abbr: "",
@@ -63,6 +68,9 @@ class Detail extends React.Component {
 					background={this.props.darkMode ? "#20273C" : "#FFFAFF"}
 					flex={false}
 				>
+					<Text weight='bold' color='#767376' size='14px'>
+						NAME
+					</Text>
 					<TextInput
 						placeholder='Assignment Name'
 						value={this.state.ass_name}
@@ -78,6 +86,9 @@ class Detail extends React.Component {
 							<Text>Please add a course first!</Text>
 						) : null}
 					</div>
+					<Text weight='bold' color='#767376' size='14px'>
+						COURSE
+					</Text>
 					<div>
 						{this.props.courses !== undefined &&
 							this.props.courses.map(course => {
@@ -120,6 +131,26 @@ class Detail extends React.Component {
 								);
 							})}
 					</div>
+					<Text weight='bold' color='#767376' size='14px'>
+						TIME
+					</Text>
+					<Box align='center'>
+						<MaskedInput
+							placeholderChar='_'
+							mask={[/[0-2]/, /\d/, ":", /[0-5]/, /\d/]}
+							placeholder='Time'
+							value={moment(this.state.dueDate).format("HH:mm")}
+							// onChange={({ target: { value } }) =>
+							// 	this.setState({
+							// 		dueDate: this.state.dueDate.setHours(value.split(":")[0]),
+							// 	})
+							// }
+							showMask={true}
+						/>
+					</Box>
+					<Text weight='bold' color='#767376' size='14px'>
+						DAY
+					</Text>
 					<Box align='center'>
 						<Calendar
 							date={this.state.dueDate}
@@ -130,7 +161,18 @@ class Detail extends React.Component {
 							}}
 						/>
 					</Box>
-					<Box align='center'>
+					<Box align='center' direction='row' gap='small' justify='end'>
+						<Button
+							plain
+							label='Cancel'
+							onClick={() => {
+								if (this.state.editing) {
+									this.setState({
+										editing: false,
+									});
+								}
+							}}
+						/>
 						<Button
 							primary
 							label={this.props.selected_ass === "add" ? "add" : "Update"}
@@ -142,7 +184,9 @@ class Detail extends React.Component {
 									this.state.dueDate,
 									this.props.selected_ass === "add"
 										? null
-										: this.props.selected_ass.id
+										: this.props.selected_ass.id,
+									null,
+									null
 								);
 
 								this.setState({
@@ -227,6 +271,9 @@ class Detail extends React.Component {
 						</Text>
 					</Box>
 				</Button>
+
+				<Text>{this.props.selected_ass.id}</Text>
+				<Text>{this.props.selected_course.id}</Text>
 
 				<Box direction='row' align='center'>
 					<Box flex={true}>
@@ -322,12 +369,51 @@ class Detail extends React.Component {
 			(this.props.selected_ass !== null) &
 			(this.props.selected_ass !== "add")
 		) {
+			console.log("Not your time yet");
+
+			if (moment().diff(moment(this.state.lastSave), "miniute") > 1) {
+				if (this.state.updateDue) {
+					this.props.saveNote(
+						this.props.selected_ass,
+						this.props.auth.uid,
+						this.state.text,
+						this.state.timestamp
+					);
+					console.log("saved!");
+					this.setState({
+						updateDue: false,
+					});
+				}
+				// else {
+				// 	this.setState({
+				// 		lastSave: new Date(),
+				// 	});
+				// }
+			} else {
+				console.log(
+					"Not your time yet",
+					moment().diff(moment(this.state.lastSave), "miniute")
+				);
+			}
+
 			if (this.state.prevCourse.id !== this.props.selected_ass.id) {
 				if (localStorage.getItem(this.props.selected_ass.id) !== null) {
-					this.setState({
-						text: JSON.parse(localStorage.getItem(this.props.selected_ass.id))
-							.val,
-					});
+					if (
+						this.props.selected_ass.note !== "" &&
+						moment(this.props.selected_ass.noteLastUpdated).isAfter(
+							JSON.parse(localStorage.getItem(this.props.selected_ass.id)).time,
+							"second"
+						)
+					) {
+						this.setState({
+							text: this.props.selected_ass.note,
+						});
+					} else {
+						this.setState({
+							text: JSON.parse(localStorage.getItem(this.props.selected_ass.id))
+								.val,
+						});
+					}
 				}
 				this.setState({
 					prevCourse: this.props.selected_ass,
@@ -478,14 +564,16 @@ class Detail extends React.Component {
 										<ReactQuill
 											value={this.state.text}
 											onChange={value => {
+												var timestamp = new Date();
+
 												this.setState({
 													text: value,
+													timestamp: timestamp,
 												});
 
-												console.log(value);
 												localStorage.setItem(
 													this.props.selected_ass.id,
-													JSON.stringify({ val: value, time: new Date() })
+													JSON.stringify({ val: value, time: timestamp })
 												);
 											}}
 											theme={null}
@@ -530,9 +618,11 @@ const mapDispatchToProps = dispatch => {
 		select_ass: ass => dispatch(select_ass(ass)),
 		select_course: course => dispatch(select_course(course)),
 		checkBox: (ass, uid) => dispatch(checkBox(ass, uid)),
+		saveNote: (ass, uid, note, noteLastUpdated) =>
+			dispatch(saveNote(ass, uid, note, noteLastUpdated)),
 		delete_ass: (ass, uid) => dispatch(delete_ass(ass, uid)),
-		addAss: (assName, course, uid, date, id) =>
-			dispatch(addAss(assName, course, uid, date, id)),
+		addAss: (assName, course, uid, date, id, note, noteLastUpdated) =>
+			dispatch(addAss(assName, course, uid, date, id, note, noteLastUpdated)),
 	};
 };
 

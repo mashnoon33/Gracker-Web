@@ -29,7 +29,7 @@ import Masonry from "react-masonry-component";
 
 // const appTokenKey = "appToken"; // also duplicated in Login.js
 
-class Dashboard extends React.Component {
+class CalDashboard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -676,7 +676,7 @@ class Dashboard extends React.Component {
 		</Keyboard>
 	);
 
-	Days = ({ mode }) => (
+	Days = ({ offset }) => (
 		<Box
 			width='300px'
 			// fill='vertical'
@@ -702,49 +702,45 @@ class Dashboard extends React.Component {
 				>
 					<Text color='white' weight='500' size=' '>
 						{" "}
-						{/* {mode} */}
+						{offset}
 					</Text>
 				</Box>
 
 				<Text size='20px' weight='500' color='#DA4167'>
-					{mode === -1
-						? "Late"
-						: mode === 0
-						? "Today"
-						: mode === 1
-						? "Tomorrow"
-						: mode === 2
-						? "Later"
-						: ""}
+					{offset !== 5
+						? moment()
+								.add(1 + offset, "days")
+								.format("dddd")
+						: "Weekend"}
 				</Text>
-				{/* <Text size='small'>
+				<Text size='small'>
 					{" "}
 					{moment()
-						.add(1 + mode, "days")
+						.add(1 + offset, "days")
 						.format("MMMM Do YYYY")}
-				</Text> */}
+				</Text>
 			</Box>
 			{this.props.asses === undefined ? null : (
 				<>
 					<this.AssCard
 						courses={this.props.courses}
 						asses={this.props.asses.filter(ass => {
-							return mode === -1
-								? moment(ass.dueDate.toDate()).isBefore(moment(), "day")
-								: mode === 0
+							return offset !== 5
 								? moment(ass.dueDate.toDate()).isSame(
-										moment(),
-
+										moment()
+											.startOf("week")
+											.add(1 + offset, "days"),
 										"day"
 								  )
-								: mode === 1
-								? moment(ass.dueDate.toDate()).isSame(
-										moment().add(1, "days"),
-										"day"
-								  )
-								: moment(ass.dueDate.toDate()).isAfter(
-										moment().add(1, "days"),
-										"day"
+								: moment(ass.dueDate.toDate()).isBetween(
+										moment()
+											.startOf("week")
+											.add(1 + offset, "days"),
+										moment()
+											.startOf("week")
+											.add(2 + offset, "days"),
+										null,
+										"[]"
 								  );
 						})}
 					/>
@@ -784,16 +780,16 @@ class Dashboard extends React.Component {
 							weight='500'
 							size='25px'
 						>
-							Dashboard
+							Calendar
 						</Text>
 					</Box>
 				</Box>
 				{/* <Box direction='row' fill='vertical' gap='xsmall'> */}
 				<Masonry>
-					<this.Days mode={-1} />
-					<this.Days mode={0} />
-					<this.Days mode={1} />
-					<this.Days mode={2} />
+					{" "}
+					{Array.from(Array(6).keys()).map(offset => {
+						return <this.Days offset={offset} />;
+					})}
 				</Masonry>
 
 				{/* </Box> */}
@@ -840,4 +836,4 @@ export default compose(
 		mapStateToProps,
 		mapDispatchToProps
 	)
-)(Dashboard);
+)(CalDashboard);

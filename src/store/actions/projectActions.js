@@ -3,7 +3,15 @@ import moment from "moment";
 
 const uuidv1 = require("uuid/v1");
 
-export const addAss = (assName, course, uid, date, uuid) => {
+export const addAss = (
+	assName,
+	course,
+	uid,
+	date,
+	uuid,
+	note,
+	noteLastUpdated
+) => {
 	var ass = {
 		name: assName,
 		id: uuid === null ? uuidv1() : uuid,
@@ -11,6 +19,8 @@ export const addAss = (assName, course, uid, date, uuid) => {
 		dueDate: date,
 		done: false,
 		course: course.id,
+		note: note !== null ? note : "",
+		noteLastUpdated: noteLastUpdated !== null ? noteLastUpdated : new Date(),
 	};
 
 	return (dispatch, getState, { getFirestore, getFirebase }) => {
@@ -122,6 +132,21 @@ export const checkBox = (ass, uid) => {
 			.doc(ass.id)
 			.update({
 				done: !ass.done,
+			});
+	};
+};
+
+export const saveNote = (ass, uid, note, noteLastUpdated) => {
+	return (dispatch, getState, { getFirestore }) => {
+		const firestore = getFirestore();
+		firestore
+			.collection("Users")
+			.doc(uid)
+			.collection("Assignments")
+			.doc(ass.id)
+			.update({
+				note: note,
+				noteLastUpdated: noteLastUpdated,
 			});
 	};
 };
