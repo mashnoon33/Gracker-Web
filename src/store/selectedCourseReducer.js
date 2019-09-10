@@ -1,7 +1,8 @@
 // const initState = {
-// 	name: "Programming Languages",
-// 	id: "d4bdb020-c6cc-11e9-96f0-27fb8a060a8a",
-// 	color: "#8cbd18",
+// 	name: "Painting",
+// 	id: "879d5c8a-093b-4de0-8bd9-438c61fcc233",
+// 	color: "red",
+// 	location: "Boliou 163",
 // };
 const initState = null;
 

@@ -32,8 +32,6 @@ import {
 import { select_course } from "./../../store/actions/selectedCourseActions";
 import { select_ass } from "./../../store/actions/selectedAssActions";
 import moment from "moment";
-import "react-quill/dist/quill.core.css"; // ES6
-import ReactQuill from "react-quill"; // ES6
 
 class Detail extends React.Component {
 	constructor(props) {
@@ -272,9 +270,14 @@ class Detail extends React.Component {
 					</Box>
 				</Button>
 
-				<Text>{this.props.selected_ass.id}</Text>
-				<Text>{this.props.selected_course.id}</Text>
-
+				<Text>
+					{this.props.selected_ass == null ? "" : this.props.selected_ass.id}
+				</Text>
+				<Text>
+					{this.props.selected_course == null
+						? ""
+						: this.props.selected_course.id}
+				</Text>
 				<Box direction='row' align='center'>
 					<Box flex={true}>
 						<DropButton
@@ -560,26 +563,7 @@ class Detail extends React.Component {
 											);
 										}}
 									/> */}
-									<Box flex={false} fill='horizontal'>
-										<ReactQuill
-											value={this.state.text}
-											onChange={value => {
-												var timestamp = new Date();
-
-												this.setState({
-													text: value,
-													timestamp: timestamp,
-												});
-
-												localStorage.setItem(
-													this.props.selected_ass.id,
-													JSON.stringify({ val: value, time: timestamp })
-												);
-											}}
-											theme={null}
-											placeholder="Take some notes! It'll help you remember for later"
-										/>
-									</Box>
+									<Box flex={false} fill='horizontal'></Box>
 								</Box>
 							</Box>
 						) : null}

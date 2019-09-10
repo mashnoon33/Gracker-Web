@@ -1,6 +1,16 @@
 import React from "react";
-import { Box, Grommet, Stack, ResponsiveContext, Text, Button } from "grommet";
+import {
+	Box,
+	Grommet,
+	Stack,
+	ResponsiveContext,
+	Text,
+	Button,
+	Keyboard,
+} from "grommet";
 import { CircleQuestion } from "grommet-icons";
+import { select_course } from "./store/actions/selectedCourseActions";
+
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 
@@ -79,7 +89,7 @@ const theme = {
 			},
 		},
 		font: {
-			family: "Roboto",
+			family: "Rubik",
 			size: "15x",
 			height: "1px",
 		},
@@ -150,28 +160,94 @@ class App extends React.Component {
 		}
 		return (
 			<Grommet theme={theme} full>
-				<Box
-					background={this.props.darkMode ? "#2f3852" : "FFFAFF"}
-					overflow={{
-						vertical: "hidden",
-					}}
-					fill
-					animation={{
-						type: "fadeIn",
-						delay: 0,
-						duration: 2000,
-						size: "xsmall",
+				<Keyboard
+					onTab={() => {
+						// console.log("comma");
+						if (this.props.selected_course === "add")
+							this.props.select_course(null);
+						else this.props.select_course("add");
 					}}
 				>
-					{this.props.selected_course === "add" ? (
-						<AddCourse />
-					) : (
-						<ResponsiveContext.Consumer>
-							{size => {
-								switch (size) {
-									case "large":
-										return (
-											<Stack anchor='bottom-right' fill>
+					<Box
+						background={this.props.darkMode ? "#2f3852" : "FFFAFF"}
+						overflow={{
+							vertical: "hidden",
+						}}
+						fill
+						animation={{
+							type: "fadeIn",
+							delay: 0,
+							duration: 2000,
+							size: "xsmall",
+						}}
+					>
+						>
+						{this.props.selected_course === "add" ? (
+							<AddCourse />
+						) : (
+							<ResponsiveContext.Consumer>
+								{size => {
+									switch (size) {
+										case "large":
+											return (
+												<Stack anchor='bottom-right' fill>
+													<Box
+														fill
+														background={this.props.darkMode ? "#2f3852" : ""}
+													>
+														<Box
+															direction='row'
+															flex
+															overflow={{
+																horizontal: "hidden",
+															}}
+														>
+															<SideBar />
+															{this.props.selected_course == null ? (
+																<Assignment />
+															) : this.props.selected_course === "Calendar" ? (
+																<CalDashboard />
+															) : (
+																<>
+																	<Assignment />
+																	<Detail />
+																</>
+															)}
+														</Box>
+													</Box>
+
+													<Box margin='medium'>
+														<Box
+															pad='small'
+															elevation='medium'
+															background={
+																this.props.darkMode ? "#4D4B5C" : "brand"
+															}
+															round
+														>
+															<CircleQuestion size='medium' />
+														</Box>
+													</Box>
+												</Stack>
+											);
+										case "small":
+											// if (isLoaded(this.props.auth)) {
+											// 	return (
+											// 		<Box fill>
+											// 			<Text> Loading</Text>
+											// 		</Box>
+											// 	);
+											// }
+
+											if (isEmpty(this.props.auth)) {
+												return (
+													<Box fill align='center' justify='center'>
+														<LoginModal />
+													</Box>
+												);
+											}
+
+											return this.props.selected_ass !== null ? (
 												<Box
 													fill
 													background={this.props.darkMode ? "#2f3852" : ""}
@@ -183,150 +259,80 @@ class App extends React.Component {
 															horizontal: "hidden",
 														}}
 													>
-														<SideBar />
-														{this.props.selected_course == null ? (
-															<Dashboard />
-														) : this.props.selected_course === "Calendar" ? (
-															<CalDashboard />
-														) : (
-															<>
-																<Assignment />
-																<Detail />
-															</>
-														)}
+														<Detail />
 													</Box>
 												</Box>
-
-												<Box margin='medium'>
+											) : this.props.selected_course == null ? (
+												<Box fill='vertical' background='red	'>
+													{" "}
+													<Dashboard />
+												</Box>
+											) : this.props.selected_course === "Calendar" ? (
+												<Box fill='vertical' background='red	'>
+													{" "}
+													<CalDashboard />
+												</Box>
+											) : this.props.selected_ass == null ? (
+												<Assignment />
+											) : (
+												<Box
+													fill
+													background={this.props.darkMode ? "#2f3852" : ""}
+												>
 													<Box
-														pad='small'
-														elevation='medium'
-														background={
-															this.props.darkMode ? "#4D4B5C" : "brand"
-														}
-														round
+														direction='row'
+														flex
+														overflow={{
+															horizontal: "hidden",
+														}}
 													>
-														<CircleQuestion size='medium' />
+														<Detail />
 													</Box>
-												</Box>
-											</Stack>
-										);
-									case "small":
-										// if (isLoaded(this.props.auth)) {
-										// 	return (
-										// 		<Box fill>
-										// 			<Text> Loading</Text>
-										// 		</Box>
-										// 	);
-										// }
-
-										if (isEmpty(this.props.auth)) {
-											return (
-												<Box fill align='center' justify='center'>
-													<LoginModal />
 												</Box>
 											);
-										}
 
-										return this.props.selected_ass !== null ? (
-											<Box
-												fill
-												background={this.props.darkMode ? "#2f3852" : ""}
-											>
-												<Box
-													direction='row'
-													flex
-													overflow={{
-														horizontal: "hidden",
-													}}
-												>
-													<Detail />
-												</Box>
-											</Box>
-										) : this.props.selected_course == null ? (
-											<Box fill='vertical' background='red	'>
-												{" "}
-												<Dashboard />
-											</Box>
-										) : this.props.selected_course === "Calendar" ? (
-											<Box fill='vertical' background='red	'>
-												{" "}
-												<CalDashboard />
-											</Box>
-										) : this.props.selected_ass == null ? (
-											<Assignment />
-										) : (
-											<Box
-												fill
-												background={this.props.darkMode ? "#2f3852" : ""}
-											>
-												<Box
-													direction='row'
-													flex
-													overflow={{
-														horizontal: "hidden",
-													}}
-												>
-													<Detail />
-												</Box>
-											</Box>
-										);
-
-									case "medium":
-										return (
-											<Stack anchor='bottom-right' fill>
-												<Box
-													fill
-													background={this.props.darkMode ? "#2f3852" : ""}
-												>
+										case "medium":
+											return (
+												<Stack anchor='bottom-right' fill>
 													<Box
-														direction='row'
-														flex
-														overflow={{
-															horizontal: "hidden",
-														}}
+														fill
+
+														// background={this.props.darkMode ? "#2f3852" : ""}
 													>
-														{this.props.selected_course == null ? (
-															<Box width='360px' flex={false}>
-																{" "}
-																<SideBar />
-															</Box>
-														) : (
+														<Box
+															direction='row'
+															flex
+															overflow={{
+																horizontal: "hidden",
+															}}
+														>
 															<Assignment />
-														)}
-
-														{this.props.selected_course == null ? (
-															<Dashboard />
-														) : this.props.selected_course === "Calendar" ? (
-															<CalDashboard />
-														) : (
-															<Detail />
-														)}
+														</Box>
 													</Box>
-												</Box>
 
-												<Box margin='medium'>
-													<Box
-														pad='small'
-														elevation='medium'
-														background={
-															this.props.darkMode ? "#4D4B5C" : "brand"
-														}
-														round
-													>
-														<CircleQuestion size='medium' />
+													<Box margin='medium'>
+														<Box
+															pad='small'
+															elevation='medium'
+															background={
+																this.props.darkMode ? "#4D4B5C" : "brand"
+															}
+															round
+														>
+															<CircleQuestion size='medium' />
+														</Box>
 													</Box>
-												</Box>
-											</Stack>
-										);
+												</Stack>
+											);
 
-									default:
-										return null;
-								}
-							}}
-						</ResponsiveContext.Consumer>
-					)}
-				</Box>
+										default:
+											return null;
+									}
+								}}
+							</ResponsiveContext.Consumer>
+						)}
+					</Box>
+				</Keyboard>
 			</Grommet>
 		);
 	}
@@ -358,6 +364,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		fetchCarletonCourses: () => dispatch(fetchCarletonCourses()),
+		select_course: course => dispatch(select_course(course)),
 	};
 };
 
@@ -379,6 +386,13 @@ export default compose(
 			doc: !props.auth.uid ? "ddadda" : props.auth.uid,
 			subcollections: [{ collection: "Assignments" }],
 			storeAs: "Assignments",
+			orderBy: [["dueDate", "asc"], ["name", "desc"]],
+		},
+		{
+			collection: "Users",
+			doc: !props.auth.uid ? "ddadda" : props.auth.uid,
+			subcollections: [{ collection: "Exams" }],
+			storeAs: "Exams",
 			orderBy: [["dueDate", "desc"], ["name", "desc"]],
 		},
 	])

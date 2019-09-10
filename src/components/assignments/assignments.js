@@ -44,6 +44,7 @@ class Assignments extends React.Component {
 	AssCard = ({ asses, courses }) => (
 		<Keyboard
 			onDown={() => {
+				console.log("down");
 				if (this.props.selected_ass !== null) {
 					this.props.select_ass(
 						asses[
@@ -72,10 +73,93 @@ class Assignments extends React.Component {
 				// flex='false'
 				// fill='horizontal'
 				fill
-				// background="white"
-				pad={{ left: "00px", right: "00px", top: "10px", bottom: "10px" }}
+				// pad={{ left: "00px", right: "00px", top: "10px", bottom: "10px" }}
 			>
-				<Button
+				<Box fill='horizontal' pad={{ bottom: "medium" }}>
+					{this.props.selected_course !== null ? (
+						<>
+							<Box
+								pad={{ left: "small", top: "medium", bottom: "xsmall" }}
+								direction='row'
+								align='center'
+								gap='small'
+							>
+								<>
+									<Box width='30px'>
+										<Box
+											round='50px'
+											border={{
+												color: this.props.selected_course.color,
+												size: "3px",
+											}}
+											height='15px'
+											width='15px'
+											margin={{
+												right: "2px",
+												vertical: "0px",
+											}}
+											justify='center'
+											align='center'
+											pad={{
+												left: "3px",
+												right: "3px",
+												vertical: "2px",
+											}}
+										/>
+									</Box>
+									<Text size='22px'>{this.props.selected_course.name}</Text>
+								</>
+							</Box>
+							<Box
+								pad={{ left: "small", bottom: "small" }}
+								direction='row'
+								align='center'
+								gap='small'
+							>
+								<Box width='20px'>
+									<Text size='16px'>🏫</Text>
+								</Box>
+								<Text size='16px'>{this.props.selected_course.location}</Text>
+							</Box>
+							<Box
+								pad={{ left: "small", bottom: "small" }}
+								direction='row'
+								gap='small'
+							>
+								<Box width='20px'>
+									<Text size='16px'>🕐</Text>
+								</Box>
+								<Box pad={{ left: "" }} direction='column' gap='small'>
+									{Array.from(Array(6).keys()).map(day => {
+										return this.props.selected_course.schedule[day][
+											"selected"
+										] ? (
+											<Text size='16px'>
+												{moment()
+													.day(day + 1 >= 8 ? 0 : day + 1)
+													.format("dddd") +
+													" : " +
+													this.props.selected_course.schedule[day]["start"] +
+													" - " +
+													this.props.selected_course.schedule[day]["end"]}
+											</Text>
+										) : null;
+									})}
+								</Box>
+							</Box>
+						</>
+					) : (
+						<Box
+							pad={{ left: "small", top: "medium" }}
+							direction='row'
+							align='center'
+							gap='small'
+						>
+							<></>
+						</Box>
+					)}
+				</Box>
+				{/* <Button
 					focusIndicator={false}
 					// disabled={ass.done ? true : false}
 					plain
@@ -119,7 +203,7 @@ class Assignments extends React.Component {
 							</Box>
 						</Box>
 					)}
-				</Button>
+				</Button> */}
 				{asses !== undefined &&
 					asses.map(ass => {
 						return (
@@ -137,10 +221,12 @@ class Assignments extends React.Component {
 							>
 								{({ hover }) => (
 									<Box
-										pad={{ left: "10px", right: "10px" }}
-										height='xxsmall'
-										// width="350px"
+										// background='red'
+										// width='500px'
 										fill='horizontal'
+										border={{
+											side: "bottom",
+										}}
 										background={
 											this.props.selected_ass !== null
 												? this.props.selected_ass.id === ass.id
@@ -149,61 +235,45 @@ class Assignments extends React.Component {
 														: "brand"
 													: hover
 													? this.props.darkMode
-														? "#30384f"
-														: "light-5"
+														? "#322f40"
+														: "light-1"
 													: ""
 												: hover
 												? this.props.darkMode
 													? "#30384f"
-													: "light-5"
+													: "light-1"
 												: ""
 										}
+										// background='brand'
+
+										pad='small'
+										// margin={{ vertical: "xsmall" }}
 										align='center'
 										flex='false'
 										justify='start'
 										direction='row'
 										key={ass.id.toString()}
 									>
-										<Box flex={false}>
+										<Box
+											// flex={false}
+											// margin={{
+											// 	right: "xsmall",
+											// }}
+											width='30px'
+											flex={false}
+										>
 											<CheckBox
 												name={ass.id.toString()}
 												checked={ass.done}
 												onChange={() => {
-													console.log("Mashnoon");
-
 													this.props.checkBox(ass, this.props.auth.uid);
 												}}
 											/>
 										</Box>
-										<Box
-											width='38px'
-											height='38px'
-											align='center'
-											justify='center'
-											direction='column'
-											flex={false}
-											// background='red'
-										>
-											<Text
-												color={this.props.darkMode ? "light-1" : ""}
-												size='small'
-											>
-												{" "}
-												{moment(ass.dueDate.toDate()).format("MMM")}
-											</Text>
-
-											<Text
-												color={this.props.darkMode ? "light-1" : ""}
-												size='medium'
-												weight='bold'
-											>
-												{" "}
-												{ass.dueDate.toDate().getDate()}
-											</Text>
-										</Box>
 
 										<Box
 											direction='column'
+											gap='5px'
 											margin={{
 												left: "10px",
 												top: "0px",
@@ -211,27 +281,83 @@ class Assignments extends React.Component {
 											}}
 											flex={false}
 										>
-											<Box
-												direction='row'
-												width='260px'
-												justify='start'
-												align='center'
-											>
-												{moment(ass.dueDate.toDate()).diff(
-													moment(),
-													"minutes"
-												) < 0 ? (
-													<Box
-														// width='xxsmall'
-														background={
-															this.props.darkMode ? "neutral-4" : "status-error"
+											<Text size='16' truncate={true}>
+												{ass.name}
+											</Text>
+
+											<Box direction='row' justify='start' align='center'>
+												<Box
+													// width='xxsmall'
+													// background={
+													// 	moment(ass.dueDate.toDate()).diff(
+													// 		moment(),
+													// 		"minutes"
+													// 	) < 0
+													// 		? this.props.darkMode
+													// 			? "neutral"
+													// 			: "#FDEDF0"
+													// 		: "#EDF6FD"
+													// }
+													border
+													background={this.props.darkMode ? "" : "#EDEFF3"}
+													round='xxsmall'
+													margin={{
+														right: "5px",
+														vertical: "0px",
+													}}
+													justify='center'
+													align='center'
+													pad='5px'
+												>
+													<Text
+														size='xsmall'
+														weight='bold'
+														color={
+															moment(ass.dueDate.toDate()).diff(
+																moment(),
+																"minutes"
+															) < 0
+																? this.props.darkMode
+																	? "status-error"
+																	: "status-error"
+																: "#2196F3"
 														}
-														round='xxsmall'
-														height='12px'
-														width='20px'
+													>
+														{" "}
+														{moment(ass.dueDate.toDate()).format(
+															"DD MMM, YYYY"
+														)}
+													</Text>
+												</Box>
+
+												<Box
+													// width='xxsmall'
+													background={this.props.darkMode ? "" : "#EDEFF3"}
+													border
+													round='xxsmall'
+													margin={{
+														right: "5px",
+														vertical: "0px",
+													}}
+													justify='center'
+													direction='row'
+													align='center'
+													pad='5px'
+												>
+													<Box
+														round='50px'
+														background={
+															courses
+																? courses.find(obj => obj.id === ass.course)
+																	? courses.find(obj => obj.id === ass.course)
+																			.color
+																	: ""
+																: ""
+														}
+														height='10px'
+														width='10px'
 														margin={{
-															right: "5px",
-															vertical: "0px",
+															right: "10px",
 														}}
 														justify='center'
 														align='center'
@@ -240,31 +366,17 @@ class Assignments extends React.Component {
 															right: "3px",
 															vertical: "2px",
 														}}
-													>
-														<Text size='xsmall' weight='bold' color='white' />
-													</Box>
-												) : null}
-
-												<Text
-													color={this.props.darkMode ? "light-1" : ""}
-													weight='bold'
-													size='12'
-													truncate={true}
-												>
-													{ass.name}
-												</Text>
+													/>
+													<Text weight='bold' size='xsmall'>
+														{courses
+															? courses.find(obj => obj.id === ass.course)
+																? courses.find(obj => obj.id === ass.course)
+																		.name
+																: ""
+															: ""}
+													</Text>
+												</Box>
 											</Box>
-
-											<Text
-												color={this.props.darkMode ? "light-1" : ""}
-												size='9'
-											>
-												{courses
-													? courses.find(obj => obj.id === ass.course)
-														? courses.find(obj => obj.id === ass.course).name
-														: ""
-													: ""}
-											</Text>
 										</Box>
 									</Box>
 								)}
@@ -281,16 +393,14 @@ class Assignments extends React.Component {
 		return (
 			<Box
 				direction='column'
-				width='360px'
-				flex={false}
-				background={this.props.darkMode ? "#29324D" : "light-1"}
 				border={{
 					color: "border",
 
 					side: "right",
 				}}
+				width='400px'
 			>
-				<Box pad={{ vertical: "small" }}>
+				<Box pad={{ vertical: "" }}>
 					{this.props.selected_course !== null ? (
 						<Box direction='row' align='center' gap='small'>
 							<ResponsiveContext.Consumer>
@@ -327,45 +437,12 @@ class Assignments extends React.Component {
 										justify='start'
 										align='center'
 										direction='row'
-										margin={{
-											left: " small",
-											top: "medium",
-											bottom: "small",
-										}}
-									>
-										<Box
-											// flex={false}
-											// background='red'
-											fill='horizontal'
-											direction='row-responsive'
-											align='center'
-										>
-											<Box
-												background={this.props.selected_course.color}
-												round='xxsmall'
-												width='12px'
-												height='25px'
-												flex={false}
-												// fill='vertical'
-												margin={{
-													right: "10px",
-													vertical: "0px",
-												}}
-												justify='center'
-												align='center'
-												pad={{
-													left: "3px",
-													right: "3px",
-													vertical: "2px",
-												}}
-											/>
-											<Box flex={false} width='300px'>
-												<Text weight='500px' size='20px' color='brand'>
-													{this.props.selected_course.name}
-												</Text>
-											</Box>
-										</Box>
-									</Box>
+										// margin={{
+										// 	left: " small",
+										// 	top: "medium",
+										// 	bottom: "small",
+										// }}
+									></Box>
 								</Box>
 							</Box>
 						</Box>
@@ -375,30 +452,34 @@ class Assignments extends React.Component {
 							align='center'
 							gap='small'
 							pad={{ horizontal: "small" }}
-						>
-							{" "}
-							<h3> </h3>
-						</Box>
+						></Box>
 					)}
 				</Box>
 				<Box
-					background={this.props.darkMode ? "#29324D" : "light-1"}
+					// background={this.props.darkMode ? "#29324D" : "red"}
 					// width='medium'
 					// elevation='small'
+					// pad='medium'
 					fill='vertical'
 					direction='column'
 					overflow='auto'
 				>
-					{this.props.selected_course == null ||
-					courses === undefined ||
-					projects === undefined ? null : (
+					{courses === undefined || projects === undefined ? null : (
 						<this.AssCard
-							courses={courses.filter(course => {
-								return course.id === this.props.selected_course.id;
-							})}
-							asses={projects.filter(ass => {
-								return ass.course === this.props.selected_course.id;
-							})}
+							courses={
+								this.props.selected_course == null
+									? courses
+									: courses.filter(course => {
+											return course.id === this.props.selected_course.id;
+									  })
+							}
+							asses={
+								this.props.selected_course == null
+									? projects
+									: projects.filter(ass => {
+											return ass.course === this.props.selected_course.id;
+									  })
+							}
 						/>
 					)}
 				</Box>

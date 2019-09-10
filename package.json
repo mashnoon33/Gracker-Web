@@ -40,7 +40,8 @@
 		"redux-persist": "^5.10.0",
 		"redux-thunk": "^2.3.0",
 		"rxjs": "^6.5.2",
-		"styled-components": "^4.3.2"
+		"styled-components": "^4.3.2",
+		"webfontloader": "^1.6.28"
 	},
 	"scripts": {
 		"start": "react-scripts start",

@@ -79,18 +79,20 @@ class SideBar extends React.Component {
 										? this.props.darkMode
 											? "#FFFAFF"
 											: "#FFFAFF"
+										: this.props.darkMode
+										? "#FFFAFF"
 										: "#0A0908"
 								}
 								weight='500'
 								size='16px'
 							>
-								Dashboard
+								Assignments
 							</Text>
 						</Box>
 					</Box>
 				)}
 			</Button>
-
+			{/* 
 			<Button
 				focusIndicator={false}
 				plain
@@ -157,7 +159,7 @@ class SideBar extends React.Component {
 						</Box>
 					</Box>
 				)}
-			</Button>
+			</Button> */}
 
 			<Box>
 				<Text
@@ -218,21 +220,23 @@ class SideBar extends React.Component {
 										}}
 										gap='small'
 										width='280px'
+										align='center'
 									>
 										<Box
-											background={
-												this.props.selected_course !== null
-													? this.props.selected_course.id === course.id
-														? this.props.darkMode
-															? course.color
-															: "#FFFAFF"
-														: course.color
-													: course.color
-											}
-											round='xxsmall'
-											height='12px'
-											width='10px'
-											fill='vertical'
+											round='50px'
+											border={{
+												color:
+													this.props.selected_course !== null
+														? this.props.selected_course.id === course.id
+															? this.props.darkMode
+																? course.color
+																: "#FFFAFF"
+															: course.color
+														: course.color,
+												size: "3px",
+											}}
+											height='15px'
+											width='15px'
 											margin={{
 												right: "2px",
 												vertical: "0px",
@@ -340,7 +344,6 @@ class SideBar extends React.Component {
 							side: "right",
 						}}
 						background={this.props.darkMode ? "#20273C" : "#F4EFF4"}
-						elevation='small'
 						align='center'
 						direction='column'
 						overflow='auto'

@@ -15,9 +15,16 @@ import {
 import { ReactReduxFirebaseProvider, getFirebase } from "react-redux-firebase";
 import firebase from "./config/firebase";
 import "firebase/database";
+import WebFont from "webfontloader";
 
 import * as serviceWorker from "./serviceWorker";
 const rrfConfig = {};
+
+WebFont.load({
+	google: {
+		families: ["Rubik", "sans-serif"],
+	},
+});
 
 const store = createStore(
 	rootReducer,
@@ -43,9 +50,9 @@ ReactDOM.render(
 		<ReactReduxFirebaseProvider {...rrfProps}>
 			{" "}
 			<div
-				style={{
-					backgroundColor: "#FFFAFF",
-				}}
+			// style={{
+			// 	backgroundColor: "#FFFAFF",
+			// }}
 			>
 				<App />
 			</div>

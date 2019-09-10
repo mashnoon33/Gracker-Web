@@ -4,7 +4,7 @@ import moment from "moment";
 const initState = {
 	name: "First Ass",
 	color: "#8cbd18",
-	id: "4f1797e0-c778-11e9-9976-739cc2b84607",
+	id: "3b85f359-87c5-4ea6-ac90-5767a8a85122",
 	dueDate: new moment(),
 	course: "d4bdb020-c6cc-11e9-96f0-27fb8a060a8a",
 	note: "",
