@@ -47,7 +47,7 @@ class AddCourse extends React.Component {
 	render() {
 		return (
 			<Box
-				background={this.props.darkMode ? "#2f3852" : "FFFAFF"}
+				// background={this.props.darkMode ? "#2f3852" : "FFFAFF"}
 				overflow={{
 					vertical: "hidden",
 				}}
@@ -62,7 +62,7 @@ class AddCourse extends React.Component {
 				<Stack anchor='top-right' fill>
 					<Box
 						fill
-						background={this.props.darkMode ? "#2f3852" : "FFFAFF"}
+						// background={this.props.darkMode ? "#2f3852" : "FFFAFF"}
 						align='center'
 						justify='start'
 					>
@@ -79,7 +79,7 @@ class AddCourse extends React.Component {
 								align='center'
 								justify='start'
 								gap='small'
-								background='#FFFAFF'
+								// background='#FFFAFF'
 								pad={{ top: "xlarge" }}
 							>
 								<ResponsiveContext.Consumer>
@@ -92,7 +92,7 @@ class AddCourse extends React.Component {
 											margin='small'
 											fill='vertical'
 											pad='small'
-											background={this.props.darkMode ? "#FFFAFF" : "#FFFAFF"}
+											// background={this.props.darkMode ? "#FFFAFF" : "#FFFAFF"}
 											width={size === "small" ? "" : "550px"}
 										>
 											<Box
@@ -217,7 +217,7 @@ class AddCourse extends React.Component {
 					<Box margin='medium'>
 						<Box
 							pad='small'
-							background={this.props.darkMode ? "#4D4B5C" : "#ebe4eb"}
+							// background={this.props.darkMode ? "#4D4B5C" : "#ebe4eb"}
 							round='small'
 						>
 							<Button

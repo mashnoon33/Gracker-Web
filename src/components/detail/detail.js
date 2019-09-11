@@ -59,11 +59,8 @@ class Detail extends React.Component {
 					direction='column'
 					gap='small'
 					margin='small'
-					border
-					round='xsmall'
 					pad='small'
 					width={size === "small" ? "430px" : "430px"}
-					background={this.props.darkMode ? "#20273C" : "#FFFAFF"}
 					flex={false}
 				>
 					<Text weight='bold' color='#767376' size='14px'>
@@ -209,7 +206,7 @@ class Detail extends React.Component {
 
 	titleCard = () => {
 		return (
-			<Box background='#FFFAFF' border pad='small' round='xsmall' gap='small'>
+			<Box pad='small' gap='small'>
 				<Box
 					direction='row'
 					justify='start'
@@ -241,7 +238,11 @@ class Detail extends React.Component {
 							}}
 						/>
 					</Box>
-					<Text size='20px' weight='500 ' color='brand'>
+					<Text
+						size='20px'
+						weight='500 '
+						color={!this.props.darkMode ? "brand" : "accent-1"}
+					>
 						{this.props.asses
 							? this.props.asses.find(
 									obj => obj.id === this.props.selected_ass.id
@@ -255,7 +256,7 @@ class Detail extends React.Component {
 				</Box>
 				<Button plain={true} hoverIndicator={false} margin='0px'>
 					<Box direction='row' gap='xsmall'>
-						<CatalogOption size='medium' />{" "}
+						<Text>📕</Text>
 						<Text color={this.props.darkMode ? "light-1" : ""} size='medium'>
 							{this.props.courses
 								? this.props.courses.find(
@@ -270,14 +271,14 @@ class Detail extends React.Component {
 					</Box>
 				</Button>
 
-				<Text>
+				{/* <Text>
 					{this.props.selected_ass == null ? "" : this.props.selected_ass.id}
 				</Text>
 				<Text>
 					{this.props.selected_course == null
 						? ""
 						: this.props.selected_course.id}
-				</Text>
+				</Text> */}
 				<Box direction='row' align='center'>
 					<Box flex={true}>
 						<DropButton
@@ -291,7 +292,7 @@ class Detail extends React.Component {
 							}
 						>
 							<Box direction='row' gap='small'>
-								<Alarm />
+								<Text>⏰</Text>
 
 								<Text>
 									{this.props.selected_ass.dueDate.toDate()

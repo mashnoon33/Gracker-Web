@@ -75,7 +75,7 @@ class Assignments extends React.Component {
 				fill
 				// pad={{ left: "00px", right: "00px", top: "10px", bottom: "10px" }}
 			>
-				<Box fill='horizontal' pad={{ bottom: "medium" }}>
+				<Box fill='horizontal' pad={{ bottom: "small" }}>
 					{this.props.selected_course !== null ? (
 						<>
 							<Box
@@ -232,7 +232,7 @@ class Assignments extends React.Component {
 												? this.props.selected_ass.id === ass.id
 													? this.props.darkMode
 														? "#4D4B5C"
-														: "brand"
+														: "light-3"
 													: hover
 													? this.props.darkMode
 														? "#322f40"
@@ -299,7 +299,19 @@ class Assignments extends React.Component {
 													// 		: "#EDF6FD"
 													// }
 													border
-													background={this.props.darkMode ? "" : "#EDEFF3"}
+													background={
+														this.props.selected_ass !== null
+															? this.props.selected_ass.id === ass.id
+																? this.props.darkMode
+																	? ""
+																	: ""
+																: this.props.darkMode
+																? ""
+																: "#f7f7f7"
+															: this.props.darkMode
+															? ""
+															: "#f7f7f7"
+													}
 													round='xxsmall'
 													margin={{
 														right: "5px",
@@ -332,7 +344,19 @@ class Assignments extends React.Component {
 
 												<Box
 													// width='xxsmall'
-													background={this.props.darkMode ? "" : "#EDEFF3"}
+													background={
+														this.props.selected_ass !== null
+															? this.props.selected_ass.id === ass.id
+																? this.props.darkMode
+																	? ""
+																	: ""
+																: this.props.darkMode
+																? ""
+																: "#f7f7f7"
+															: this.props.darkMode
+															? ""
+															: "#f7f7f7"
+													}
 													border
 													round='xxsmall'
 													margin={{
@@ -398,6 +422,7 @@ class Assignments extends React.Component {
 
 					side: "right",
 				}}
+				flex={false}
 				width='400px'
 			>
 				<Box pad={{ vertical: "" }}>

@@ -121,12 +121,17 @@ class App extends React.Component {
 		if (isEmpty(this.props.auth)) {
 			return (
 				<Grommet theme={theme} full>
-					<Box fill align='center' justify='center' gap='small'>
+					<Box
+						fill
+						align='center'
+						justify='center'
+						gap='small'
+						background={this.props.darkMode ? "" : "white"}
+					>
 						<Box
 							align='center'
 							justify='start'
 							// elevation='small'
-
 							pad='small'
 							round='small'
 						>
@@ -203,15 +208,15 @@ class App extends React.Component {
 															}}
 														>
 															<SideBar />
-															{this.props.selected_course == null ? (
-																<Assignment />
-															) : this.props.selected_course === "Calendar" ? (
-																<CalDashboard />
+															<Assignment />
+															{this.props.selected_ass == null ? (
+																this.props.selected_course == null ? (
+																	<Detail></Detail>
+																) : (
+																	<Detail></Detail>
+																)
 															) : (
-																<>
-																	<Assignment />
-																	<Detail />
-																</>
+																<Detail></Detail>
 															)}
 														</Box>
 													</Box>
