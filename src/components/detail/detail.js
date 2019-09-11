@@ -206,7 +206,7 @@ class Detail extends React.Component {
 
 	titleCard = () => {
 		return (
-			<Box pad='small' gap='small'>
+			<Box pad={{ horizontal: "small" }} gap='small'>
 				<Box
 					direction='row'
 					justify='start'
@@ -369,61 +369,6 @@ class Detail extends React.Component {
 	};
 
 	render() {
-		if (
-			(this.props.selected_ass !== null) &
-			(this.props.selected_ass !== "add")
-		) {
-			console.log("Not your time yet");
-
-			if (moment().diff(moment(this.state.lastSave), "miniute") > 1) {
-				if (this.state.updateDue) {
-					this.props.saveNote(
-						this.props.selected_ass,
-						this.props.auth.uid,
-						this.state.text,
-						this.state.timestamp
-					);
-					console.log("saved!");
-					this.setState({
-						updateDue: false,
-					});
-				}
-				// else {
-				// 	this.setState({
-				// 		lastSave: new Date(),
-				// 	});
-				// }
-			} else {
-				console.log(
-					"Not your time yet",
-					moment().diff(moment(this.state.lastSave), "miniute")
-				);
-			}
-
-			if (this.state.prevCourse.id !== this.props.selected_ass.id) {
-				if (localStorage.getItem(this.props.selected_ass.id) !== null) {
-					if (
-						this.props.selected_ass.note !== "" &&
-						moment(this.props.selected_ass.noteLastUpdated).isAfter(
-							JSON.parse(localStorage.getItem(this.props.selected_ass.id)).time,
-							"second"
-						)
-					) {
-						this.setState({
-							text: this.props.selected_ass.note,
-						});
-					} else {
-						this.setState({
-							text: JSON.parse(localStorage.getItem(this.props.selected_ass.id))
-								.val,
-						});
-					}
-				}
-				this.setState({
-					prevCourse: this.props.selected_ass,
-				});
-			}
-		}
 		if (this.props.selected_ass == null) {
 			return (
 				<Box
@@ -484,7 +429,7 @@ class Detail extends React.Component {
 										flex={false}
 										pad={{
 											horizontal: "small",
-											top: "5px",
+											top: "0px",
 											bottom: "0px",
 										}}
 									>
@@ -544,7 +489,7 @@ class Detail extends React.Component {
 									justify='start'
 									fill='horizontal'
 									flex={false}
-									pad={{ horizontal: "small", top: "5px", bottom: "0px" }}
+									pad={{ horizontal: "small", top: "0px", bottom: "0px" }}
 								>
 									{this.state.editing ? (
 										<this.AddAssCard />
