@@ -3,12 +3,13 @@ import "firebase/firestore";
 import "firebase/auth";
 
 const config = {
-	apiKey: "AIzaSyAgA9N_ZLKBjAXTpECCRMafKIafzzuDnZk",
+	apiKey: "AIzaSyDQu-pwYu1OaHcTrz5YLyDyjfrxvheJF1s",
 	authDomain: "garcker-mash-studio.firebaseapp.com",
 	databaseURL: "https://garcker-mash-studio.firebaseio.com",
-	storageBucket: "garcker-mash-studio.appspot.com",
-	appId: "1:551481167824:web:b1f389e80c18dc5a",
 	projectId: "garcker-mash-studio",
+	storageBucket: "garcker-mash-studio.appspot.com",
+	messagingSenderId: "551481167824",
+	appId: "1:551481167824:web:b1f389e80c18dc5a",
 };
 
 firebase.initializeApp(config);
