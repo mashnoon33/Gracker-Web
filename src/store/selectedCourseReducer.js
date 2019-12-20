@@ -4,7 +4,7 @@
 // 	color: "red",
 // 	location: "Boliou 163",
 // };
-const initState = null;
+const initState = "add";
 
 const selectedCourse = (state = initState, action) => {
 	switch (action.type) {

@@ -4,9 +4,9 @@ import {
 	Button,
 	Text,
 	Calendar,
-	Accordion,
+	MaskedInput,
 	AccordionPanel,
-	Drop,
+	CheckBox,
 	TextInput,
 	Stack,
 	ResponsiveContext,
@@ -43,6 +43,15 @@ class AddCourse extends React.Component {
 		color: "#FFFFFF",
 		course_abbr: "",
 		suggestions: [],
+		schedule: [
+			{ start: null, end: null, selected: false },
+			{ start: null, end: null, selected: false },
+			{ start: null, end: null, selected: false },
+			{ start: null, end: null, selected: false },
+			{ start: null, end: null, selected: false },
+			{ start: null, end: null, selected: false },
+			{ start: null, end: null, selected: false },
+		],
 	};
 	render() {
 		return (
@@ -59,58 +68,58 @@ class AddCourse extends React.Component {
 					size: "xsmall",
 				}}
 			>
-				<Stack anchor='top-right' fill>
+				<Stack anchor="top-right" fill>
 					<Box
 						fill
 						// background={this.props.darkMode ? "#2f3852" : "FFFAFF"}
-						align='center'
-						justify='start'
+						align="center"
+						justify="start"
 					>
 						<Box
-							align='center'
-							justify='start'
+							align="center"
+							justify="start"
 							flex
 							overflow={{
 								horizontal: "hidden",
 							}}
 						>
 							<Box
-								fill='vertical'
-								align='center'
-								justify='start'
-								gap='small'
+								fill="vertical"
+								align="center"
+								justify="start"
+								gap="small"
 								// background='#FFFAFF'
 								pad={{ top: "xlarge" }}
 							>
 								<ResponsiveContext.Consumer>
 									{size => (
 										<Box
-											direction='column'
-											gap='xsmall'
-											align='center'
-											justify='start'
-											margin='small'
-											fill='vertical'
-											pad='small'
+											direction="column"
+											gap="xsmall"
+											align="center"
+											justify="start"
+											margin="small"
+											fill="vertical"
+											pad="small"
 											// background={this.props.darkMode ? "#FFFAFF" : "#FFFAFF"}
 											width={size === "small" ? "" : "550px"}
 										>
 											<Box
-												direction='row'
-												justify='start'
-												align='center'
-												gap='small'
+												direction="row"
+												justify="start"
+												align="center"
+												gap="small"
 											>
-												<Add color='status-ok' />
-												<Text size='medium' weight='bold' color='status-ok'>
+												<Add color="status-ok" />
+												<Text size="medium" weight="bold" color="status-ok">
 													Course
 												</Text>
 											</Box>
 
 											<TextInput
 												ref={this.targetRef}
-												placeholder='Course Name'
-												dropHeight='large'
+												placeholder="Course Name"
+												dropHeight="large"
 												value={this.state.course_name}
 												suggestions={this.state.suggestions}
 												// plain={false}
@@ -157,8 +166,8 @@ class AddCourse extends React.Component {
 									});
 								}}
 							/> */}
-											<Box round='medium' direction='row' gap='small' />
-											<Box align='center'>
+											<Box round="medium" direction="row" gap="small" />
+											<Box align="center">
 												<CirclePicker
 													color={this.state.color}
 													colors={[
@@ -173,7 +182,7 @@ class AddCourse extends React.Component {
 														// "#9b0062",
 														"#7a7574",
 													]}
-													width='500px'
+													width="500px"
 													onChange={color => {
 														console.log(color);
 														this.setState({
@@ -182,10 +191,82 @@ class AddCourse extends React.Component {
 													}}
 												/>
 											</Box>
-											<Box align='center'>
+											<Box align="start" margin={{ top: "large" }} flex={false}>
+												{Array.from(Array(6).keys()).map(day => {
+													return (
+														<Box gap="small" flex={false} direction="row">
+															<CheckBox
+																checked={this.state.schedule[day].selected}
+																onChange={bool => {
+																	this.state.schedule[day].selected = !this
+																		.state.schedule[day].selected;
+																	this.setState({});
+																}}
+															/>
+															<Text>
+																{moment()
+																	.day(day + 1 >= 8 ? 0 : day + 1)
+																	.format("dddd")}
+															</Text>
+															<MaskedInput
+																mask={[
+																	{
+																		length: [1, 2],
+																		regexp: /^1[1-2]$|^[0-9]$/,
+																		placeholder: "hh",
+																	},
+																	{ fixed: ":" },
+																	{
+																		length: 2,
+																		regexp: /^[0-5][0-9]$|^[0-9]$/,
+																		placeholder: "mm",
+																	},
+																]}
+																value={
+																	this.state.schedule[day].start == null
+																		? ""
+																		: this.state.schedule[day].start
+																}
+																onChange={event => {
+																	this.state.schedule[day].start =
+																		event.target.value == null
+																			? " "
+																			: event.target.value;
+
+																	this.setState({});
+																}}
+															/>
+															<MaskedInput
+																mask={[
+																	{
+																		length: [1, 2],
+																		regexp: /^1[1-2]$|^[0-9]$/,
+																		placeholder: "hh",
+																	},
+																	{ fixed: ":" },
+																	{
+																		length: 2,
+																		regexp: /^[0-5][0-9]$|^[0-9]$/,
+																		placeholder: "mm",
+																	},
+																]}
+																value={
+																	this.state.schedule[day].start == null
+																		? ""
+																		: this.state.schedule[day].end
+																}
+																onChange={event => {
+																	/* event.target.value */
+																}}
+															/>
+														</Box>
+													);
+												})}
+											</Box>
+											<Box align="center">
 												<Button
 													primary
-													label='Add'
+													label="Add"
 													onClick={() => {
 														this.props.addCourse(
 															this.state.course_name,
@@ -214,18 +295,18 @@ class AddCourse extends React.Component {
 						</Box>
 					</Box>
 
-					<Box margin='medium'>
+					<Box margin="medium">
 						<Box
-							pad='small'
+							pad="small"
 							// background={this.props.darkMode ? "#4D4B5C" : "#ebe4eb"}
-							round='small'
+							round="small"
 						>
 							<Button
 								onClick={() => {
 									this.props.select_course(null);
 								}}
 							>
-								<Box direction='row' gap='small'>
+								<Box direction="row" gap="small">
 									<Text>Close</Text>
 								</Box>
 							</Button>

@@ -68,11 +68,7 @@ class LoginModal extends React.Component {
 							primary
 							onClick={this.loginWithGoogle}
 						/>
-						<Button
-							icon={<Help color='brand' />}
-							label='Demo'
-							onClick={this.demoLogin}
-						/>
+						
 					</Box>
 				) : (
 					<DropButton
