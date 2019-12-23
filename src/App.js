@@ -378,10 +378,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
-	connect(
-		mapStateToProps,
-		mapDispatchToProps
-	),
+	connect(mapStateToProps, mapDispatchToProps),
 	firestoreConnect(props => [
 		{
 			collection: "Users",
@@ -395,14 +392,20 @@ export default compose(
 			doc: !props.auth.uid ? "ddadda" : props.auth.uid,
 			subcollections: [{ collection: "Assignments" }],
 			storeAs: "Assignments",
-			orderBy: [["dueDate", "asc"], ["name", "desc"]],
+			orderBy: [
+				["dueDate", "asc"],
+				["name", "desc"],
+			],
 		},
 		{
 			collection: "Users",
 			doc: !props.auth.uid ? "ddadda" : props.auth.uid,
 			subcollections: [{ collection: "Exams" }],
 			storeAs: "Exams",
-			orderBy: [["dueDate", "desc"], ["name", "desc"]],
+			orderBy: [
+				["dueDate", "desc"],
+				["name", "desc"],
+			],
 		},
 	])
 )(App);

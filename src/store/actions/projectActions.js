@@ -49,12 +49,14 @@ export const addAss = (
 	};
 };
 
-export const addCourse = (courseName, uid, abbr, color) => {
+export const addCourse = (courseName, uid, abbr, color, schedule, location) => {
 	var course = {
 		abbr: abbr,
 		color: color,
 		id: uuidv1(),
 		name: courseName,
+		schedule: schedule,
+		location: location,
 	};
 
 	return (dispatch, getState, { getFirestore, getFirebase }) => {

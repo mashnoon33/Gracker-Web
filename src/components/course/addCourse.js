@@ -43,6 +43,7 @@ class AddCourse extends React.Component {
 		color: "#FFFFFF",
 		course_abbr: "",
 		suggestions: [],
+		location: "",
 		schedule: [
 			{ start: null, end: null, selected: false },
 			{ start: null, end: null, selected: false },
@@ -68,58 +69,58 @@ class AddCourse extends React.Component {
 					size: "xsmall",
 				}}
 			>
-				<Stack anchor="top-right" fill>
+				<Stack anchor='top-right' fill>
 					<Box
 						fill
 						// background={this.props.darkMode ? "#2f3852" : "FFFAFF"}
-						align="center"
-						justify="start"
+						align='center'
+						justify='start'
 					>
 						<Box
-							align="center"
-							justify="start"
+							align='center'
+							justify='start'
 							flex
 							overflow={{
 								horizontal: "hidden",
 							}}
 						>
 							<Box
-								fill="vertical"
-								align="center"
-								justify="start"
-								gap="small"
+								fill='vertical'
+								align='center'
+								justify='start'
+								gap='small'
 								// background='#FFFAFF'
 								pad={{ top: "xlarge" }}
 							>
 								<ResponsiveContext.Consumer>
 									{size => (
 										<Box
-											direction="column"
-											gap="xsmall"
-											align="center"
-											justify="start"
-											margin="small"
-											fill="vertical"
-											pad="small"
+											direction='column'
+											gap='xsmall'
+											align='center'
+											justify='start'
+											margin='small'
+											fill='vertical'
+											pad='small'
 											// background={this.props.darkMode ? "#FFFAFF" : "#FFFAFF"}
 											width={size === "small" ? "" : "550px"}
 										>
 											<Box
-												direction="row"
-												justify="start"
-												align="center"
-												gap="small"
+												direction='row'
+												justify='start'
+												align='center'
+												gap='small'
 											>
-												<Add color="status-ok" />
-												<Text size="medium" weight="bold" color="status-ok">
+												<Add color='status-ok' />
+												<Text size='medium' weight='bold' color='status-ok'>
 													Course
 												</Text>
 											</Box>
 
 											<TextInput
 												ref={this.targetRef}
-												placeholder="Course Name"
-												dropHeight="large"
+												placeholder='Course Name'
+												dropHeight='large'
 												value={this.state.course_name}
 												suggestions={this.state.suggestions}
 												// plain={false}
@@ -148,26 +149,20 @@ class AddCourse extends React.Component {
 												}}
 											/>
 
-											{/* {this.targetRef.current && (
-												<Drop
-													align={{ top: "bottom", left: "left" }}
-													target={this.targetRef.current}
-												>
-													<Box pad='xsmall' />
-												</Drop>
-											)} */}
+											<TextInput
+												ref={this.targetRef}
+												placeholder='Location'
+												dropHeight='large'
+												value={this.state.location}
+												onChange={event => {
+													this.setState({
+														location: event.target.value,
+													});
+												}}
+											/>
 
-											{/* <TextInput
-								placeholder='Abbriviation'
-								value={this.state.course_abbr}
-								onChange={event => {
-									this.setState({
-										course_abbr: event.target.value,
-									});
-								}}
-							/> */}
-											<Box round="medium" direction="row" gap="small" />
-											<Box align="center">
+											<Box round='medium' direction='row' gap='small' />
+											<Box align='center'>
 												<CirclePicker
 													color={this.state.color}
 													colors={[
@@ -182,7 +177,7 @@ class AddCourse extends React.Component {
 														// "#9b0062",
 														"#7a7574",
 													]}
-													width="500px"
+													width='500px'
 													onChange={color => {
 														console.log(color);
 														this.setState({
@@ -191,10 +186,10 @@ class AddCourse extends React.Component {
 													}}
 												/>
 											</Box>
-											<Box align="start" margin={{ top: "large" }} flex={false}>
+											<Box align='start' margin={{ top: "large" }} flex={false}>
 												{Array.from(Array(6).keys()).map(day => {
 													return (
-														<Box gap="small" flex={false} direction="row">
+														<Box gap='small' flex={false} direction='row'>
 															<CheckBox
 																checked={this.state.schedule[day].selected}
 																onChange={bool => {
@@ -229,11 +224,8 @@ class AddCourse extends React.Component {
 																}
 																onChange={event => {
 																	this.state.schedule[day].start =
-																		event.target.value == null
-																			? " "
-																			: event.target.value;
-
-																	this.setState({});
+																		event.target.value;
+																	this.forceUpdate();
 																}}
 															/>
 															<MaskedInput
@@ -251,28 +243,32 @@ class AddCourse extends React.Component {
 																	},
 																]}
 																value={
-																	this.state.schedule[day].start == null
+																	this.state.schedule[day].end == null
 																		? ""
 																		: this.state.schedule[day].end
 																}
 																onChange={event => {
-																	/* event.target.value */
+																	this.state.schedule[day].end =
+																		event.target.value;
+																	this.forceUpdate();
 																}}
 															/>
 														</Box>
 													);
 												})}
 											</Box>
-											<Box align="center">
+											<Box align='center'>
 												<Button
 													primary
-													label="Add"
+													label='Add'
 													onClick={() => {
 														this.props.addCourse(
 															this.state.course_name,
 															this.props.auth.uid,
 															this.state.course_abbr,
-															this.state.color
+															this.state.color,
+															this.state.schedule,
+															this.state.location
 														);
 														this.setState({
 															course_name: "",
@@ -295,18 +291,18 @@ class AddCourse extends React.Component {
 						</Box>
 					</Box>
 
-					<Box margin="medium">
+					<Box margin='medium'>
 						<Box
-							pad="small"
+							pad='small'
 							// background={this.props.darkMode ? "#4D4B5C" : "#ebe4eb"}
-							round="small"
+							round='small'
 						>
 							<Button
 								onClick={() => {
 									this.props.select_course(null);
 								}}
 							>
-								<Box direction="row" gap="small">
+								<Box direction='row' gap='small'>
 									<Text>Close</Text>
 								</Box>
 							</Button>
@@ -345,14 +341,9 @@ const mapDispatchToProps = dispatch => {
 	return {
 		select_ass: ass => dispatch(select_ass(ass)),
 		select_course: course => dispatch(select_course(course)),
-		addCourse: (courseName, uid, abbr, color) =>
-			dispatch(addCourse(courseName, uid, abbr, color)),
+		addCourse: (courseName, uid, abbr, color, schedule, location) =>
+			dispatch(addCourse(courseName, uid, abbr, color, schedule, location)),
 	};
 };
 
-export default compose(
-	connect(
-		mapStateToProps,
-		mapDispatchToProps
-	)
-)(AddCourse);
+export default compose(connect(mapStateToProps, mapDispatchToProps))(AddCourse);

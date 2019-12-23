@@ -1,10 +1,5 @@
-// const initState = {
-// 	name: "Painting",
-// 	id: "879d5c8a-093b-4de0-8bd9-438c61fcc233",
-// 	color: "red",
-// 	location: "Boliou 163",
-// };
-const initState = "add";
+const initState = null;
+// const initState = "add";
 
 const selectedCourse = (state = initState, action) => {
 	switch (action.type) {
