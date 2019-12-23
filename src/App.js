@@ -25,8 +25,10 @@ import { withFirebase, isLoaded, isEmpty } from "react-redux-firebase";
 import LoginModal from "./components/auth/loginModal";
 import { Logout, Google, StatusPlaceholder, Actions } from "grommet-icons";
 import { fetchCarletonCourses } from "./store/actions/fetchCarletonCourses";
+import { select_ass } from "./store/actions/selectedAssActions";
 
 import AddCourse from "./components/course/addCourse";
+import AddAssignment from "./components/assignments/AddAssignment";
 
 const theme = {
 	checkBox: {
@@ -168,9 +170,8 @@ class App extends React.Component {
 				<Keyboard
 					onTab={() => {
 						// console.log("comma");
-						if (this.props.selected_course === "add")
-							this.props.select_course(null);
-						else this.props.select_course("add");
+						if (this.props.selected_ass === "add") this.props.select_ass(null);
+						else this.props.select_ass("add");
 					}}
 				>
 					<Box
@@ -189,6 +190,8 @@ class App extends React.Component {
 						>
 						{this.props.selected_course === "add" ? (
 							<AddCourse />
+						) : this.props.selected_ass === "add" ? (
+							<AddAssignment></AddAssignment>
 						) : (
 							<ResponsiveContext.Consumer>
 								{size => {
@@ -370,14 +373,12 @@ const mapDispatchToProps = dispatch => {
 	return {
 		fetchCarletonCourses: () => dispatch(fetchCarletonCourses()),
 		select_course: course => dispatch(select_course(course)),
+		select_ass: ass => dispatch(select_ass(ass)),
 	};
 };
 
 export default compose(
-	connect(
-		mapStateToProps,
-		mapDispatchToProps
-	),
+	connect(mapStateToProps, mapDispatchToProps),
 	firestoreConnect(props => [
 		{
 			collection: "Users",
@@ -391,14 +392,20 @@ export default compose(
 			doc: !props.auth.uid ? "ddadda" : props.auth.uid,
 			subcollections: [{ collection: "Assignments" }],
 			storeAs: "Assignments",
-			orderBy: [["dueDate", "asc"], ["name", "desc"]],
+			orderBy: [
+				["dueDate", "asc"],
+				["name", "desc"],
+			],
 		},
 		{
 			collection: "Users",
 			doc: !props.auth.uid ? "ddadda" : props.auth.uid,
 			subcollections: [{ collection: "Exams" }],
 			storeAs: "Exams",
-			orderBy: [["dueDate", "desc"], ["name", "desc"]],
+			orderBy: [
+				["dueDate", "desc"],
+				["name", "desc"],
+			],
 		},
 	])
 )(App);

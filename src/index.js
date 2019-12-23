@@ -17,7 +17,6 @@ import firebase from "./config/firebase";
 import "firebase/database";
 import WebFont from "webfontloader";
 
-import * as serviceWorker from "./serviceWorker";
 const rrfConfig = {};
 
 WebFont.load({
@@ -60,4 +59,3 @@ ReactDOM.render(
 	</Provider>,
 	document.getElementById("root")
 );
-serviceWorker.unregister();

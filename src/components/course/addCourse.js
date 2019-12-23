@@ -4,9 +4,9 @@ import {
 	Button,
 	Text,
 	Calendar,
-	Accordion,
+	MaskedInput,
 	AccordionPanel,
-	Drop,
+	CheckBox,
 	TextInput,
 	Stack,
 	ResponsiveContext,
@@ -43,6 +43,16 @@ class AddCourse extends React.Component {
 		color: "#FFFFFF",
 		course_abbr: "",
 		suggestions: [],
+		location: "",
+		schedule: [
+			{ start: null, end: null, selected: false },
+			{ start: null, end: null, selected: false },
+			{ start: null, end: null, selected: false },
+			{ start: null, end: null, selected: false },
+			{ start: null, end: null, selected: false },
+			{ start: null, end: null, selected: false },
+			{ start: null, end: null, selected: false },
+		],
 	};
 	render() {
 		return (
@@ -139,24 +149,18 @@ class AddCourse extends React.Component {
 												}}
 											/>
 
-											{/* {this.targetRef.current && (
-												<Drop
-													align={{ top: "bottom", left: "left" }}
-													target={this.targetRef.current}
-												>
-													<Box pad='xsmall' />
-												</Drop>
-											)} */}
+											<TextInput
+												ref={this.targetRef}
+												placeholder='Location'
+												dropHeight='large'
+												value={this.state.location}
+												onChange={event => {
+													this.setState({
+														location: event.target.value,
+													});
+												}}
+											/>
 
-											{/* <TextInput
-								placeholder='Abbriviation'
-								value={this.state.course_abbr}
-								onChange={event => {
-									this.setState({
-										course_abbr: event.target.value,
-									});
-								}}
-							/> */}
 											<Box round='medium' direction='row' gap='small' />
 											<Box align='center'>
 												<CirclePicker
@@ -182,6 +186,77 @@ class AddCourse extends React.Component {
 													}}
 												/>
 											</Box>
+											<Box align='start' margin={{ top: "large" }} flex={false}>
+												{Array.from(Array(6).keys()).map(day => {
+													return (
+														<Box gap='small' flex={false} direction='row'>
+															<CheckBox
+																checked={this.state.schedule[day].selected}
+																onChange={bool => {
+																	this.state.schedule[day].selected = !this
+																		.state.schedule[day].selected;
+																	this.setState({});
+																}}
+															/>
+															<Text>
+																{moment()
+																	.day(day + 1 >= 8 ? 0 : day + 1)
+																	.format("dddd")}
+															</Text>
+															<MaskedInput
+																mask={[
+																	{
+																		length: [1, 2],
+																		regexp: /^1[1-2]$|^[0-9]$/,
+																		placeholder: "hh",
+																	},
+																	{ fixed: ":" },
+																	{
+																		length: 2,
+																		regexp: /^[0-5][0-9]$|^[0-9]$/,
+																		placeholder: "mm",
+																	},
+																]}
+																value={
+																	this.state.schedule[day].start == null
+																		? ""
+																		: this.state.schedule[day].start
+																}
+																onChange={event => {
+																	this.state.schedule[day].start =
+																		event.target.value;
+																	this.forceUpdate();
+																}}
+															/>
+															<MaskedInput
+																mask={[
+																	{
+																		length: [1, 2],
+																		regexp: /^1[1-2]$|^[0-9]$/,
+																		placeholder: "hh",
+																	},
+																	{ fixed: ":" },
+																	{
+																		length: 2,
+																		regexp: /^[0-5][0-9]$|^[0-9]$/,
+																		placeholder: "mm",
+																	},
+																]}
+																value={
+																	this.state.schedule[day].end == null
+																		? ""
+																		: this.state.schedule[day].end
+																}
+																onChange={event => {
+																	this.state.schedule[day].end =
+																		event.target.value;
+																	this.forceUpdate();
+																}}
+															/>
+														</Box>
+													);
+												})}
+											</Box>
 											<Box align='center'>
 												<Button
 													primary
@@ -191,7 +266,9 @@ class AddCourse extends React.Component {
 															this.state.course_name,
 															this.props.auth.uid,
 															this.state.course_abbr,
-															this.state.color
+															this.state.color,
+															this.state.schedule,
+															this.state.location
 														);
 														this.setState({
 															course_name: "",
@@ -264,14 +341,9 @@ const mapDispatchToProps = dispatch => {
 	return {
 		select_ass: ass => dispatch(select_ass(ass)),
 		select_course: course => dispatch(select_course(course)),
-		addCourse: (courseName, uid, abbr, color) =>
-			dispatch(addCourse(courseName, uid, abbr, color)),
+		addCourse: (courseName, uid, abbr, color, schedule, location) =>
+			dispatch(addCourse(courseName, uid, abbr, color, schedule, location)),
 	};
 };
 
-export default compose(
-	connect(
-		mapStateToProps,
-		mapDispatchToProps
-	)
-)(AddCourse);
+export default compose(connect(mapStateToProps, mapDispatchToProps))(AddCourse);
